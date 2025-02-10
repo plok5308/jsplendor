@@ -9,7 +9,8 @@ from jsplendor.utils import get_verbose_dict
 
 
 class Game:
-    def __init__(self, verbose_dict=None):
+    def __init__(self, verbose_dict=None, gui=None):
+        self.gui = gui  # Store reference to GUI
         if verbose_dict is None:
             self.verbose_dict = get_verbose_dict()
         else:
@@ -80,9 +81,17 @@ class Game:
             action_result['victory_point'] = victory_point
             action_result['over_coin_count'] = over_coin_count
             action_result['is_get_card'] = get_card
-
+            
+            # Add log messages
+            if self.gui:
+                if get_card:
+                    self.gui.add_log_message(f"Step {self.step}: Got a card")
+                if over_coin_count > 0:
+                    self.gui.add_log_message(f"Step {self.step}: Dropped {over_coin_count} coins")
         else:  # invalid action
             action_result['is_skip'] = True
+            if self.gui:
+                self.gui.add_log_message(f"Step {self.step}: Invalid action")
 
         return action_result
 

@@ -14,7 +14,7 @@ def main():
     load_model = False
 
     env = JsplendorEnv(verbose_dict)
-    exp = 'tmp'
+    exp = 'transformer_model-9967'
     model_path = 'logs/{}/best_model'.format(exp)
 
     if load_model:
@@ -71,7 +71,7 @@ def main():
                 results.append(i)
                 break
 
-            if i==100:
+            if i==99:
                 results.append(i)
 
     print(results)
