@@ -1,4 +1,6 @@
 import torch
+import numpy as np
+import argparse
 from stable_baselines3 import PPO
 from stable_baselines3.common.evaluation import evaluate_policy
 from stable_baselines3.common.callbacks import EvalCallback
@@ -7,6 +9,7 @@ from stable_baselines3.common.utils import set_random_seed
 
 from jsplendor.env import JsplendorEnv, FeatureExtractor
 from jsplendor.utils import get_verbose_dict
+from jsplendor.policy.masked_policy import MaskedActorCriticPolicy
 
 def make_env(rank: int, seed: int=0):
     train_verbose_dict = get_verbose_dict()
@@ -19,19 +22,22 @@ def make_env(rank: int, seed: int=0):
     set_random_seed(seed)
     return _init
 
-def main():
+def main(args):
     eval_verbose_dict = get_verbose_dict()
     eval_verbose_dict['player'] = False
-    num_cpu = 8
-
-    train_env = SubprocVecEnv([make_env(i) for i in range(num_cpu)])
+    
+    if args.debug:
+        train_env = JsplendorEnv(get_verbose_dict())
+    else:
+        train_env = SubprocVecEnv([make_env(i) for i in range(args.num_cpu)])
 
     eval_env = JsplendorEnv(eval_verbose_dict)
-    exp = 'transformer_model-9967'
+    exp = 'transformer_model-vp_action_mask'
     eval_log_dir = 'logs/{}'.format(exp)
 
-    train_steps = 100000000
-    eval_freq = 10000
+    train_steps = 1e+8 # 100M
+    n_steps = 4096
+    eval_freq = n_steps
 
     eval_callback = EvalCallback(
         eval_env, 
@@ -43,36 +49,28 @@ def main():
     policy_kwargs = dict(
             features_extractor_class=FeatureExtractor,
             net_arch=[64],
-            activation_fn=torch.nn.ReLU)
+            activation_fn=torch.nn.ReLU
+    )
 
-    model = PPO("MlpPolicy", 
-                train_env, 
-                n_steps=4096,
-                learning_rate=1e-6,
-                batch_size=512,
-                verbose=False,
-                policy_kwargs=policy_kwargs,
-                tensorboard_log=eval_log_dir,
-                )
-
-    # load pretrained model
-    trained_model = torch.load('./ckpt/model-9997.ckpt')
-    state_dict = trained_model['state_dict']
-    new_state_dict = dict()
-
-    for key, value in state_dict.items():
-        if 'model' in key:
-            new_key = key[6::]
-            new_state_dict[new_key] = value
-        else:
-            new_state_dict[key] = value
-
-    model.policy.load_state_dict(new_state_dict)
-    print('load action trained model.')
+    model = PPO(
+        policy=MaskedActorCriticPolicy,
+        env=train_env,
+        n_steps=n_steps,
+        learning_rate=1e-6,
+        batch_size=512,
+        verbose=False,
+        policy_kwargs=policy_kwargs,
+        tensorboard_log=eval_log_dir,
+    )
 
     model.learn(total_timesteps=train_steps, progress_bar=True, callback=eval_callback)
     print('train done.')
 
 
 if __name__ == "__main__":
-    main()
+    parser = argparse.ArgumentParser(description='Train PPO agent for JSplendor')
+    parser.add_argument('--debug', action='store_true', help='Run in debug mode with single environment')
+    parser.add_argument('--num-cpu', type=int, default=8, help='Number of CPU cores to use')
+    args = parser.parse_args()
+
+    main(args)

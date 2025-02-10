@@ -1,91 +1,77 @@
 import torch
 import numpy as np
+import argparse
 from tqdm import tqdm
 from stable_baselines3 import PPO
 from stable_baselines3.common.evaluation import evaluate_policy
 
 from jsplendor.env import JsplendorEnv, FeatureExtractor
-from jsplendor.utils import get_verbose_dict
+from jsplendor.utils import get_verbose_dict, TestLogger
+from jsplendor.policy.masked_policy import MaskedActorCriticPolicy
 
-def main():
+def main(args):
     np.random.seed(1)
     verbose_dict = get_verbose_dict(True)
 
-    load_model = False
-
     env = JsplendorEnv(verbose_dict)
-    exp = 'transformer_model-9967'
+    exp = 'transformer_model-vp_action_mask'
     model_path = 'logs/{}/best_model'.format(exp)
 
-    if load_model:
+    # Setup logger
+    logger = TestLogger(exp)
+    logger.log_config(args, model_path)
+
+    if args.load_model:
+        logger.info("Loading pretrained model...")
         model = PPO.load(model_path, env=env)
     else:
+        logger.info("Initializing new model...")
         policy_kwargs = dict(
-                features_extractor_class=FeatureExtractor,
-                net_arch=[64],
-                activation_fn=torch.nn.ReLU)
+            features_extractor_class=FeatureExtractor,
+            net_arch=[64],
+            activation_fn=torch.nn.ReLU
+        )
 
-        model = PPO("MlpPolicy", 
-                    env, 
-                    verbose=False,
-                    policy_kwargs=policy_kwargs,
-                    )
-        trained_model = torch.load('./ckpt/model-9997.ckpt')
-        
-        state_dict = trained_model['state_dict']
-        new_state_dict = dict()
+        model = PPO(
+            policy=MaskedActorCriticPolicy,
+            env=env,
+            verbose=False,
+            policy_kwargs=policy_kwargs,
+        )
 
-        for key, value in state_dict.items():
-            if 'model' in key:
-                new_key = key[6::]
-                new_state_dict[new_key] = value
-            else:
-                new_state_dict[key] = value
+    logger.info('Model loaded successfully.')
 
-        model.policy.load_state_dict(new_state_dict)
-
-    print('load model.')
-
-    game_n = 100
-    max_step = 100
+    game_n = args.num_games
+    max_step = args.max_steps
     results = []
-    for exp_i in range(game_n):
+    
+    for exp_i in tqdm(range(game_n), desc="Testing games"):
         obs, _ = env.reset(seed=exp_i)
         for i in range(max_step):
-#            print('[step {}]'.format(i))
-            # debug
-            y1 = model.policy.extract_features(torch.from_numpy(obs).unsqueeze(dim=0).cuda().float())
-            y2 = model.policy.mlp_extractor.policy_net(y1)
-            y3 = model.policy.action_net(y2)
-            torch.set_printoptions(sci_mode=False, precision=2)
-            y4 = torch.softmax(y3, dim=1).detach().cpu().numpy()
-
-            possible_actions = env.get_possible_actions()
-
-            action_cand = y4 * possible_actions
-            action = np.argmax(action_cand)
-            
-#            action, _state = model.predict(obs, deterministic=False)
+            # Get action from model
+            action, _state = model.predict(obs, deterministic=args.deterministic)
             obs, reward, done, _, info = env.step(action)
+            
             if done:
                 results.append(i)
+                logger.log_game_result(exp_i, i, max_step)
                 break
 
-            if i==99:
+            if i == max_step - 1:
                 results.append(i)
+                logger.log_game_result(exp_i, i, max_step)
 
-    print(results)
-    print('mean step: {}'.format(sum(results)/len(results)))
-    
-    fail = 0
-    for result in results:
-        if result == 100:
-            fail += 1
+    # Log statistics and get summary for console
+    mean_steps, success_rate, fail_count = logger.log_statistics(results, game_n, max_step)
 
-    print('fail number: {}'.format(fail))
-
-    print('done')
-
+    # No need for additional console printing as it's handled by the logger
 
 if __name__ == "__main__":
-    main()
+    parser = argparse.ArgumentParser(description='Test PPO agent for JSplendor')
+    parser.add_argument('--load-model', action='store_true', help='Load pretrained model')
+    parser.add_argument('--num-games', type=int, default=10, help='Number of games to test')
+    parser.add_argument('--max-steps', type=int, default=100, help='Maximum steps per game')
+    parser.add_argument('--deterministic', action='store_true', help='Use deterministic actions')
+    args = parser.parse_args()
+
+    main(args)

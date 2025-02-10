@@ -72,15 +72,17 @@ class Game:
         action_result['over_coin_count'] = 0
         action_result['is_skip'] = False
         action_result['is_get_card'] = False
+        action_result['is_noble_visit'] = False
         action_result['step'] = self.step
 
         actions_bool = self.player1.get_all_possible_actions(self.board)
 
         if actions_bool[action]:
-            victory_point, over_coin_count, get_card = self.player1.do_action(self.board, action)
+            victory_point, over_coin_count, get_card, noble_visit = self.player1.do_action(self.board, action)
             action_result['victory_point'] = victory_point
             action_result['over_coin_count'] = over_coin_count
             action_result['is_get_card'] = get_card
+            action_result['is_noble_visit'] = noble_visit
             
             # Add log messages
             if self.gui:
@@ -88,6 +90,8 @@ class Game:
                     self.gui.add_log_message(f"Step {self.step}: Got a card")
                 if over_coin_count > 0:
                     self.gui.add_log_message(f"Step {self.step}: Dropped {over_coin_count} coins")
+                if noble_visit:
+                    self.gui.add_log_message(f"Step {self.step}: Attracted a noble")
         else:  # invalid action
             action_result['is_skip'] = True
             if self.gui:

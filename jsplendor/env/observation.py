@@ -29,10 +29,9 @@ def get_observation_space():
       #victory point - spaces.Box(low=0, high=20, spaces=(1,), dtype=np.uint8)
 
 
-    # 1 + 1 + 6 + 5 + 1 + (6 * 12) + (6 * 3)= 102
+    # 1 + 1 + 6 + 5 + 1 + (6 * 12) + (6 * 3) = 104
 
-    #observation_space = spaces.Box(low=0, high=255, shape=(104,), dtype=np.int32)
-    observation_space = spaces.Box(low=0, high=255, shape=(103,), dtype=np.int32)
+    observation_space = spaces.Box(low=0, high=255, shape=(104,), dtype=np.int32)
     return observation_space
 
 def get_observation(game: Game):
@@ -40,18 +39,16 @@ def get_observation(game: Game):
     board = game.board
 
     obs_start = get_start_obs()
-#    obs0 = get_step_obs(game)
+    obs0 = get_step_obs(game)
     obs1 = get_coin_obs(player1)
     obs2 = get_player_development_obs(player1)
     obs3 = get_player_victory_point_obs(player1)
 
     obs4 = get_table_cards_obs(board)
 
- #   obs = np.concatenate([obs_start, obs0, obs1, obs2, obs3, obs4])
-    obs = np.concatenate([obs_start, obs1, obs2, obs3, obs4])
+    obs = np.concatenate([obs_start, obs0, obs1, obs2, obs3, obs4])
     obs = obs.astype(np.int32)
 
-    assert(np.max(obs) <= 62)
     return obs
 
 def get_start_obs():
@@ -59,12 +56,10 @@ def get_start_obs():
 
     return x
 
-#def get_step_obs(game):
-#    x = np.zeros(1, dtype=np.int32)  # max 300
-#    x[0] = game.step
-##    assert(x[0] < 256)
-#
-#    return x
+def get_step_obs(game):
+    x = np.zeros(1, dtype=np.int32)  
+    x[0] = min(game.step, 255)  # Clip to max 255 to stay within token range
+    return x
 
 def get_coin_obs(player):
     coins = player.coins
@@ -94,7 +89,6 @@ def get_player_victory_point_obs(player):
     x = np.zeros(1, dtype=np.int32)
     x[0] = player.sum_victory_point
 
-    assert(x[0] < 30) # max 30
     bias=12
     x += bias
 

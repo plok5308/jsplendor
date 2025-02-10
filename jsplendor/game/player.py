@@ -37,13 +37,17 @@ class Player(GameComponent):
     def do_action(self, board, action):
         over_coin_count = 0
         get_card = False
+        noble_visit = False
+        
         if action < self.n_coin_action:
             self.get_coins(board, action)
             over_coin_count = self.drop_over_coins(board)
         else:
             get_card = self.buy_development_card(board, action-self.n_coin_action)
+            if get_card:
+                noble_visit = self.check_and_get_nobles(board)
 
-        return self.sum_victory_point, over_coin_count, get_card
+        return self.sum_victory_point, over_coin_count, get_card, noble_visit
 
     def get_all_possible_actions(self, board):
         actions = np.zeros(self.num_actions)
@@ -56,6 +60,7 @@ class Player(GameComponent):
             if self.is_possible_to_buy(board, card_position):
                 actions[i] = 1
 
+        actions = actions.astype(np.bool_)
         return actions
 
     def get_coins(self, board, x):
@@ -181,14 +186,23 @@ class Player(GameComponent):
 
         return get_card
 
-    def update_noble_cards(self, board):
-        for card in board.noble_cards:
+    def check_and_get_nobles(self, board):
+        """Check and acquire any available noble cards."""
+        had_noble_visit = False
+        for card in board.noble_cards[:]:  # Use slice copy to avoid modifying during iteration
             if self.is_get_possible_noble_card(card):
                 self.noble_cards.append(card)
                 board.noble_cards.remove(card)
                 if self.verbose:
                     print('Get {} card.'.format(card))
                 board.noble_cards.append(None)
+                had_noble_visit = True
+        return had_noble_visit
+
+    def update_noble_cards(self, board):
+        """Deprecated - use check_and_get_nobles instead"""
+        noble_visit = self.check_and_get_nobles(board)
+        return noble_visit
 
     def is_get_possible_noble_card(self, card):
         if card is None:
