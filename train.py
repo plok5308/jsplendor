@@ -7,9 +7,10 @@ from stable_baselines3.common.callbacks import EvalCallback
 from stable_baselines3.common.vec_env import SubprocVecEnv
 from stable_baselines3.common.utils import set_random_seed
 
-from jsplendor.env import JsplendorEnv, FeatureExtractor
+from jsplendor.env import JsplendorEnv
 from jsplendor.utils import get_verbose_dict
 from jsplendor.policy.masked_policy import MaskedActorCriticPolicy
+from jsplendor.models.transformer import TransformerFeatureExtractor
 
 def make_env(rank: int, seed: int=0):
     train_verbose_dict = get_verbose_dict()
@@ -32,7 +33,7 @@ def main(args):
         train_env = SubprocVecEnv([make_env(i) for i in range(args.num_cpu)])
 
     eval_env = JsplendorEnv(eval_verbose_dict)
-    exp = 'transformer_model-vp_action_mask'
+    exp = '250211'
     eval_log_dir = 'logs/{}'.format(exp)
 
     train_steps = 1e+8 # 100M
@@ -43,11 +44,11 @@ def main(args):
         eval_env, 
         best_model_save_path=eval_log_dir,
         log_path=eval_log_dir, eval_freq=eval_freq,
-        n_eval_episodes=10, deterministic=False,
+        n_eval_episodes=32, deterministic=True,
         render=False)
 
     policy_kwargs = dict(
-            features_extractor_class=FeatureExtractor,
+            features_extractor_class=TransformerFeatureExtractor,
             net_arch=[64],
             activation_fn=torch.nn.ReLU
     )

@@ -65,10 +65,8 @@ class TestLogger:
         self.logger.info("\n" + "="*50)
         self.logger.info("Starting test with configuration:")
         self.logger.info("-"*30)
-        self.logger.info(f"Load model: {args.load_model}")
         self.logger.info(f"Number of games: {args.num_games}")
         self.logger.info(f"Max steps per game: {args.max_steps}")
-        self.logger.info(f"Deterministic: {args.deterministic}")
         self.logger.info(f"Model path: {model_path}")
         self.logger.info("="*50 + "\n")
 

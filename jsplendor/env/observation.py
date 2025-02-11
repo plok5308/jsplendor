@@ -57,41 +57,31 @@ def get_start_obs():
     return x
 
 def get_step_obs(game):
-    x = np.zeros(1, dtype=np.int32)  
-    x[0] = min(game.step, 255)  # Clip to max 255 to stay within token range
+    x = np.zeros(1, dtype=np.int32)
+    # Keep original integer values (0-127)
+    x[0] = min(game.step, 127)
     return x
 
 def get_coin_obs(player):
     coins = player.coins
     x = np.zeros(6, dtype=np.int32)
     for key, value in coins.items():
+        # Keep original integer values (0-4)
         x[Element[key].value] = value
-
-    bias=1
-    x += bias
-
     return x
 
 def get_player_development_obs(player):
     cards = player.development_cards
     x = np.zeros(5, dtype=np.int32)
     for card in cards:
+        # Keep original integer values (0-20)
         x[Element[card.gem_color].value] += 1
-
-#    x = x / 20
-    
-    bias=7
-    x += bias
-
     return x
 
 def get_player_victory_point_obs(player):
     x = np.zeros(1, dtype=np.int32)
+    # Keep original integer values (0-30)
     x[0] = player.sum_victory_point
-
-    bias=12
-    x += bias
-
     return x
 
 def get_table_cards_obs(board):
@@ -118,11 +108,10 @@ def get_table_cards_obs(board):
 
 def get_table_card_obs(card):
     if card is None:
-        x = np.ones(6, dtype=np.int32) * 10
-
+        x = np.zeros(6, dtype=np.int32)
     else:
         x = np.zeros(6, dtype=np.int32)
-        x[0:5] += card.price
-        x[5] = card.victory_point
-
+        # Keep original integer values
+        x[0:5] = np.array(card.price)  # 0-7
+        x[5] = card.victory_point      # 0-20
     return x
