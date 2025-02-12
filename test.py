@@ -15,7 +15,7 @@ def main(args):
     verbose_dict = get_verbose_dict(True)
 
     env = JsplendorEnv(verbose_dict)
-    exp = '250211'
+    exp = '250212'
     model_path = 'logs/{}/best_model'.format(exp)
 
     # Setup logger

@@ -33,18 +33,18 @@ def main(args):
         train_env = SubprocVecEnv([make_env(i) for i in range(args.num_cpu)])
 
     eval_env = JsplendorEnv(eval_verbose_dict)
-    exp = '250211'
+    exp = '250212'
     eval_log_dir = 'logs/{}'.format(exp)
 
     train_steps = 1e+8 # 100M
-    n_steps = 4096
+    n_steps = 4096*4
     eval_freq = n_steps
 
     eval_callback = EvalCallback(
         eval_env, 
         best_model_save_path=eval_log_dir,
         log_path=eval_log_dir, eval_freq=eval_freq,
-        n_eval_episodes=32, deterministic=True,
+        n_eval_episodes=128, deterministic=False,
         render=False)
 
     policy_kwargs = dict(
