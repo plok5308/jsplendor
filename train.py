@@ -33,7 +33,7 @@ def main(args):
         train_env = SubprocVecEnv([make_env(i) for i in range(args.num_cpu)])
 
     eval_env = JsplendorEnv(eval_verbose_dict)
-    exp = '250212'
+    exp = '250213'
     eval_log_dir = 'logs/{}'.format(exp)
 
     train_steps = 1e+8 # 100M

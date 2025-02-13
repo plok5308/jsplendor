@@ -36,16 +36,22 @@ class JsplendorEnv(gym.Env):
         # Penalties
         self.penalty = dict()
         self.penalty['invalid'] = 1.0  # Increased to discourage invalid moves more strongly
-        self.penalty['over_coin'] = 0.5  # Added penalty for inefficient coin management
+        #self.penalty['over_coin'] = 0.5  # Added penalty for inefficient coin management
+        self.penalty['over_coin'] = 0  # Added penalty for inefficient coin management
         self.penalty['step_over'] = 10.0  # Kept the same
         
         # Rewards
         self.reward = dict()
-        self.reward['get_card'] = 1.0  # Added reward for acquiring cards
-        self.reward['noble_visit'] = 3.0  # New: reward for attracting nobles
-        self.reward['reach_goal'] = 100.0  # Increased base reward
-        self.reward['vp_progress'] = 2.0  # New: reward per victory point gained
+        #self.reward['get_card'] = 1.0  # Added reward for acquiring cards
+        #self.reward['noble_visit'] = 3.0  # New: reward for attracting nobles
+        #self.reward['reach_goal'] = 100.0  # Increased base reward
+        #self.reward['vp_progress'] = 2.0  # New: reward per victory point gained
         
+        self.reward['get_card'] = 0  # Added reward for acquiring cards
+        self.reward['noble_visit'] = 0  # New: reward for attracting nobles
+        self.reward['reach_goal'] = 100.0  # Increased base reward
+        self.reward['vp_progress'] = 0  # New: reward per victory point gained
+
         # Additional tracking
         self.previous_vp = 0  # New: track VP changes
 
