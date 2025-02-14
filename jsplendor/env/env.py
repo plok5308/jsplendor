@@ -149,7 +149,7 @@ class JsplendorEnv(gym.Env):
         np.random.seed(seed)
         self.skip_sum = 0
         self.previous_vp = 0
-        self.game.reset()
+        self.game.reset()  # This resets the game, including noble cards
         
         observation = get_observation(self.game)
         action_mask = self.get_action_mask()
