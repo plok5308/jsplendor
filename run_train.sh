@@ -1,0 +1,1 @@
+python train.py --exp 250214 --load_model ./pretrained/best_model --n_steps 4096

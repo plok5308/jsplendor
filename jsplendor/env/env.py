@@ -49,7 +49,7 @@ class JsplendorEnv(gym.Env):
         
         self.reward['get_card'] = 0  # Added reward for acquiring cards
         self.reward['noble_visit'] = 0  # New: reward for attracting nobles
-        self.reward['reach_goal'] = 100.0  # Increased base reward
+        self.reward['reach_goal'] = 30  # 100->300
         self.reward['vp_progress'] = 0  # New: reward per victory point gained
 
         # Additional tracking
