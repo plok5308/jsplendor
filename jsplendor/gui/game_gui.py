@@ -2,9 +2,11 @@ import pygame
 import os
 import numpy as np
 from jsplendor.env import JsplendorEnv
-from jsplendor.utils import TestLogger
+from jsplendor.utils import TestLogger, Element
 from stable_baselines3 import PPO
 from jsplendor.env.observation import get_observation
+import torch
+from jsplendor.game.utils import get_coin_comb
 
 class SplendorGUI:
     def __init__(self, game):
@@ -244,12 +246,47 @@ class SplendorGUI:
 
     def run(self):
         running = True
+        clock = pygame.time.Clock()
+        game_state_changed = True
+        
         while running:
+            time_delta = clock.tick(60)/1000.0
+            current_time = pygame.time.get_ticks()
+            
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
                     running = False
-
-            self.draw()
+                
+                if event.type == pygame.MOUSEBUTTONDOWN:
+                    if self.ai_button_rect.collidepoint(event.pos):
+                        # Show probabilities before taking action
+                        self.get_action_probabilities()
+                        self.take_ai_action()
+                        game_state_changed = True
+                    elif self.auto_play_rect.collidepoint(event.pos):
+                        self.is_auto_playing = not self.is_auto_playing
+                        self.last_action_time = current_time
+                        game_state_changed = True
+                    elif self.speed_up_rect.collidepoint(event.pos):
+                        self.turn_delay = max(100, self.turn_delay - 100)  # Minimum 0.1s
+                        game_state_changed = True
+                    elif self.speed_down_rect.collidepoint(event.pos):
+                        self.turn_delay = min(5000, self.turn_delay + 100)  # Maximum 5s
+                        game_state_changed = True
+            
+            if self.is_auto_playing and current_time - self.last_action_time >= self.turn_delay:
+                # Show probabilities before taking action
+                self.get_action_probabilities()
+                done = self.take_ai_action()
+                self.last_action_time = current_time
+                game_state_changed = True
+            
+            if game_state_changed:
+                self.screen.fill((200, 200, 200))
+                self.draw()
+                game_state_changed = False
+            
+            pygame.display.flip()
 
         pygame.quit()
 
@@ -261,6 +298,7 @@ class AIGameGUI(SplendorGUI):
         self.env = env
         self.model = model
         self.logger = logger
+        self.verbose = True
         
         # Initialize observation without resetting the env
         self.obs = get_observation(self.env.game)
@@ -269,7 +307,7 @@ class AIGameGUI(SplendorGUI):
         
         # Create AI action button
         self.ai_button_rect = pygame.Rect(
-            self.WINDOW_WIDTH - 280,  # Moved left to make room for auto-play button
+            self.WINDOW_WIDTH - 280,
             self.WINDOW_HEIGHT - 100,
             120,
             40
@@ -339,8 +377,100 @@ class AIGameGUI(SplendorGUI):
         
         # Sync game step
         self.game.step = self.env.game.step
+        
+        # Calculate and show probabilities for the new state
+        self.get_action_probabilities()
+
+    def get_action_probabilities(self):
+        """Calculate and log current action probabilities"""
+        obs_tensor = torch.FloatTensor(self.obs)
+        
+        # Split observation and action mask
+        action_mask = obs_tensor[-self.env.action_space.n:]
+        obs_features = obs_tensor[:-self.env.action_space.n]
+        
+        # Move tensors to the same device as the model
+        device = next(self.model.policy.parameters()).device
+        obs_features = obs_features.to(device)
+        action_mask = action_mask.to(device)
+        
+        # Create observation dictionary
+        obs_dict = {
+            'obs': obs_features.unsqueeze(0),
+            'action_mask': action_mask.unsqueeze(0)
+        }
+        
+        with torch.no_grad():
+            # Get raw logits from policy network
+            features = self.model.policy.extract_features(obs_dict['obs'])
+            latent_pi, _ = self.model.policy.mlp_extractor(features)
+            logits = self.model.policy.action_net(latent_pi)
+            
+            # Apply action mask
+            logits = torch.where(
+                obs_dict['action_mask'].bool(),
+                logits,
+                torch.tensor(-1e+8).to(logits.device)
+            )
+            
+            # Convert to probabilities
+            action_probs = torch.softmax(logits, dim=-1)
+            action_probs = action_probs.squeeze(0).cpu().numpy()
+            
+            # Log probabilities
+            if self.verbose:
+                valid_actions = np.where(self.env.get_action_mask())[0]
+                self.logger.info("-" * 30)
+                self.logger.info("Available actions:")
+                for valid_action in valid_actions:
+                    prob = action_probs[valid_action] * 100
+                    if prob > 0.1:  # Only show significant probabilities
+                        if valid_action < 10:
+                            # Get coin combination for this action using the imported function
+                            coin_ids = get_coin_comb(valid_action)
+                            coins = [Element(ids).name for ids in coin_ids]
+                            desc = f"Get coins: {', '.join(coins)}"
+                        else:
+                            card_pos = valid_action - 10
+                            card = self.env.game.board.flatten_table_cards[card_pos]
+                            if card:
+                                desc = f"Buy {card.name} (Level: {card.level}, VP: {card.victory_point}, Color: {card.gem_color})"
+                            else:
+                                desc = "Buy card (empty slot)"
+                        self.logger.info(f"  Action {valid_action}: {desc} ({prob:.1f}%)")
+
+    def take_ai_action(self):
+        # Get action from model
+        action, _state = self.model.predict(self.obs, deterministic=False)
+        
+        # Log only the selected action
+        if self.verbose:
+            self.logger.info(f"Selected: Action {action}")
+        
+        # Take step in environment
+        self.obs, reward, done, _, info = self.env.step(action)
+        
+        # Store reward in game object for display
+        self.game.last_reward = reward
+        
+        # Sync game state with environment (this will also show new probabilities)
+        self.sync_game_state()
+        
+        if done:
+            self.is_auto_playing = False
+            if self.env.game.player1.sum_victory_point >= self.env.target_vp:
+                self.logger.info("Game Won! Starting new episode...")
+            else:
+                self.logger.info("Episode ended (max steps reached)")
+            self.obs, _ = self.env.reset()
+            self.game.reset()
+            self.sync_game_state()
+            self.game.last_reward = 0.0
+        
+        return done
 
     def draw(self, surface=None):
+        # First draw everything from parent class
         super().draw(surface)
         target_surface = surface if surface is not None else self.screen
         
@@ -378,76 +508,4 @@ class AIGameGUI(SplendorGUI):
         delay_text = self.font.render(f"{self.turn_delay/1000:.1f}s", True, (0, 0, 0))
         center_x = (self.speed_down_rect.centerx + self.speed_up_rect.centerx) // 2
         delay_rect = delay_text.get_rect(center=(center_x, self.speed_down_rect.centery))
-        # Draw background for delay text
-        padding = 5
-        bg_rect = delay_rect.inflate(padding * 2, padding * 2)
-        pygame.draw.rect(target_surface, (220, 220, 220), bg_rect)
-        pygame.draw.rect(target_surface, (50, 100, 200), bg_rect, 1)
-        target_surface.blit(delay_text, delay_rect)
-
-    def take_ai_action(self):
-        # Get action from model
-        action, _state = self.model.predict(self.obs, deterministic=False)
-        
-        # Take step in environment
-        self.obs, reward, done, _, info = self.env.step(action)
-        
-        # Store reward in game object for display
-        self.game.last_reward = reward
-        
-        # Sync game state with environment
-        self.sync_game_state()
-        
-        if done:
-            self.is_auto_playing = False  # Stop auto-play when episode ends
-            if self.env.game.player1.sum_victory_point >= self.env.target_vp:
-                self.logger.info("Game Won! Starting new episode...")
-            else:
-                self.logger.info("Episode ended (max steps reached)")
-            self.obs, _ = self.env.reset()
-            self.game.reset()
-            self.sync_game_state()
-            self.game.last_reward = 0.0
-        
-        return done
-
-    def run(self):
-        running = True
-        clock = pygame.time.Clock()
-        game_state_changed = True
-        
-        while running:
-            time_delta = clock.tick(60)/1000.0
-            current_time = pygame.time.get_ticks()
-            
-            for event in pygame.event.get():
-                if event.type == pygame.QUIT:
-                    running = False
-                
-                if event.type == pygame.MOUSEBUTTONDOWN:
-                    if self.ai_button_rect.collidepoint(event.pos):
-                        self.take_ai_action()
-                        game_state_changed = True
-                    elif self.auto_play_rect.collidepoint(event.pos):
-                        self.is_auto_playing = not self.is_auto_playing
-                        self.last_action_time = current_time
-                        game_state_changed = True
-                    elif self.speed_up_rect.collidepoint(event.pos):
-                        self.turn_delay = max(100, self.turn_delay - 100)  # Minimum 0.1s
-                        game_state_changed = True
-                    elif self.speed_down_rect.collidepoint(event.pos):
-                        self.turn_delay = min(5000, self.turn_delay + 100)  # Maximum 5s
-                        game_state_changed = True
-            
-            # Take AI action if auto-play is enabled and enough time has passed
-            if self.is_auto_playing and current_time - self.last_action_time >= self.turn_delay:
-                done = self.take_ai_action()
-                self.last_action_time = current_time
-                game_state_changed = True
-            
-            if game_state_changed:
-                self.screen.fill((200, 200, 200))
-                self.draw()
-                game_state_changed = False
-            
-            pygame.display.flip() 
+        target_surface.blit(delay_text, delay_rect) 
