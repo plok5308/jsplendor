@@ -1,1 +1,1 @@
-python train.py --exp 250214 --load_model ./pretrained/best_model --n_steps 4096
+python train.py --exp 250215_small_step_penalty --num_cpu 12 --num_eval_cpu 8 --n_steps 16384

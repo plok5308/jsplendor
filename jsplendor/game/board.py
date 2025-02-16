@@ -4,8 +4,8 @@ from jsplendor.game.abs import GameComponent
 
 
 class Board(GameComponent):
-    def __init__(self, name, development_cards, noble_cards, coins, verbose=False):
-        super().__init__(name, development_cards, noble_cards, coins, verbose)
+    def __init__(self, name, development_cards, noble_cards, coins, verbose=False, logger=None):
+        super().__init__(name, development_cards, noble_cards, coins, verbose, logger)
         # parameters
         self.level1_n = 4
         self.level2_n = 4
@@ -69,7 +69,8 @@ class Board(GameComponent):
             return 0
         else:
             table_cards.append(None)
-            print('There is no more level{} cards.'.format(level))
+            if self.verbose:
+                self.logger.info(f'There is no more level{level} cards.')
             return -1
 
     def update_table_development_card(self, card):
@@ -91,24 +92,24 @@ class Board(GameComponent):
         self._flatten_table_cards()
             
     def print_status(self, object_name=None):
-        if object_name is not None:
-            print("[{}]".format(object_name))
+        if not self.verbose:
+            return
             
-        print("Noble cards: ")
-        print(self.noble_cards)
-        print("Coin status: ")
-        print(self.coins)    
-        print("Table level1: ")
-        print(self.table_level1)
-        print("The remain number of Level1: ")
-        print(len(self.level1_cards))
-        print("Table level2: ")
-        print(self.table_level2)
-        print("The remain number of Level2: ")
-        print(len(self.level2_cards))
-        print("Table level3: ")
-        print(self.table_level3)
-        print("The remain number of Level3: ")
-        print(len(self.level3_cards))
-        print("")
+        if object_name is not None:
+            self.logger.info(f"[{object_name}]")
+            
+        self.logger.info("Noble cards: ")
+        self.logger.info(str(self.noble_cards))
+        self.logger.info("Coin status: ")
+        self.logger.info(str(self.coins))    
+        self.logger.info("Table level1: ")
+        self.logger.info(str(self.table_level1))
+        self.logger.info(f"The remain number of Level1: {len(self.level1_cards)}")
+        self.logger.info("Table level2: ")
+        self.logger.info(str(self.table_level2))
+        self.logger.info(f"The remain number of Level2: {len(self.level2_cards)}")
+        self.logger.info("Table level3: ")
+        self.logger.info(str(self.table_level3))
+        self.logger.info(f"The remain number of Level3: {len(self.level3_cards)}")
+        self.logger.info("")
 

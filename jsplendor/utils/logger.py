@@ -23,42 +23,50 @@ class StreamToLogger:
         self.original_stdout.flush()
 
 class TestLogger:
-    def __init__(self, exp_name):
-        self.logger = self._setup_logger(exp_name)
-        self.log_dir = os.path.join('logs', exp_name)
-        
-        # Save original stdout and redirect it
-        self.original_stdout = sys.stdout
-        self.stream_logger = StreamToLogger(self.logger, self.original_stdout)
-        sys.stdout = self.stream_logger
+    def __init__(self, log_dir):
+        self._setup_logger(log_dir)
+        self.log_dir = log_dir
 
-    def __del__(self):
-        # Restore original stdout when logger is destroyed
-        sys.stdout = self.original_stdout
-
-    def _setup_logger(self, exp_name):
+    def _setup_logger(self, log_dir):
         # Create logs directory if it doesn't exist
-        self.log_dir = os.path.join('logs', exp_name)
+        self.log_dir = log_dir
         os.makedirs(self.log_dir, exist_ok=True)
 
         # Create a timestamp for the log file
         timestamp = datetime.now().strftime('%Y%m%d_%H%M%S')
         log_file = os.path.join(self.log_dir, f'test_{timestamp}.log')
+        self.log_file = log_file
 
         # Configure logging
-        logger = logging.getLogger(__name__)
-        logger.setLevel(logging.INFO)
+        self.logger = logging.getLogger('jsplendor')  # Use a single logger name
+        self.logger.setLevel(logging.INFO)
         
         # Clear any existing handlers
-        logger.handlers = []
-        
-        # File handler with detailed format
+        self.logger.handlers = []
+
+        # File handler
         file_handler = logging.FileHandler(log_file)
         file_formatter = logging.Formatter('%(asctime)s [%(levelname)s] %(message)s')
         file_handler.setFormatter(file_formatter)
-        logger.addHandler(file_handler)
+        self.logger.addHandler(file_handler)
 
-        return logger
+        # Console handler
+        console_handler = logging.StreamHandler(sys.stdout)
+        console_formatter = logging.Formatter('[%(levelname)s] %(message)s')
+        console_handler.setFormatter(console_formatter)
+        self.logger.addHandler(console_handler)
+
+        # Prevent log propagation
+        self.logger.propagate = False
+
+    def info(self, message):
+        """Log an info message"""
+        self.logger.info(message)
+
+    @classmethod
+    def get_logger(cls):
+        """Get the shared logger instance"""
+        return logging.getLogger('jsplendor')
 
     def log_config(self, args, model_path):
         """Log test configuration"""
@@ -70,13 +78,12 @@ class TestLogger:
         self.logger.info(f"Model path: {model_path}")
         self.logger.info("="*50 + "\n")
 
-    def log_game_result(self, game_id, steps, max_steps):
+    def log_game_result(self, game_n, steps, max_step):
         """Log individual game results"""
-        if steps < max_steps // 2:
-            self.logger.info(f"Game {game_id} completed quickly in {steps} steps")
-        elif steps == max_steps - 1:
-            self.logger.info(f"Game {game_id} failed to complete within step limit")
-        self.logger.info("-"*50)  # Add separator after each game
+        if steps == max_step - 1:
+            self.logger.info(f"Game {game_n}: Failed (exceeded max steps)")
+        else:
+            self.logger.info(f"Game {game_n}: Completed in {steps} steps")
 
     def log_statistics(self, results, game_n, max_step):
         """Log final statistics"""
@@ -92,17 +99,32 @@ class TestLogger:
         self.logger.info(f"Failed games: {fail_count}/{game_n}")
 
         # Log detailed step distribution
-        self.logger.info("\nStep Distribution:")
-        step_bins = [0, 25, 50, 75, 100]
-        for i in range(len(step_bins)-1):
-            count = sum(1 for x in results if step_bins[i] <= x < step_bins[i+1])
-            self.logger.info(f"Games completed in {step_bins[i]}-{step_bins[i+1]} steps: {count}")
+        self.logger.info("\nDetailed Step Distribution:")
+        
+        # Count games under 20 steps
+        count_under_20 = sum(1 for x in results if x < 20)
+        self.logger.info(f"Games completed under 20 steps: {count_under_20}")
+        
+        # Count games for each step between 20-35
+        for step in range(20, 36):
+            count = sum(1 for x in results if x == step)
+            self.logger.info(f"Games completed in exactly {step} steps: {count}")
+        
+        # Count games over 35 steps
+        count_over_35 = sum(1 for x in results if x > 35)
+        self.logger.info(f"Games completed in over 35 steps: {count_over_35}")
 
-        self.logger.info(f"\nFull log saved to: {self.log_dir}")
+        self.logger.info(f"\nFull log saved to: {os.path.abspath(self.log_file)}")
         self.logger.info("="*50 + "\n")
 
         return mean_steps, success_rate, fail_count
 
+    def __del__(self):
+        # Restore original stdout when logger is destroyed
+        # sys.stdout = self.original_stdout
+        pass
+
     def info(self, message):
         """Log an info message"""
-        self.logger.info(message) 
+        if self.logger:
+            self.logger.info(message) 

@@ -20,6 +20,7 @@ def get_observation_space():
     #[board]
     #coin
       #spaces.Box(low=0, high=5, shape=(10,), dtype=np.uint8)
+
     #table cards observation (single)
       #price - spaces.Box(low=0, high=7, spaces=(5,), dtype=np.uint8)
       #victory point - spaces.Box(low=0, high=20, spaces=(1,), dtype=np.uint8)
@@ -29,12 +30,13 @@ def get_observation_space():
       #victory point - spaces.Box(low=0, high=20, spaces=(1,), dtype=np.uint8)
 
 
-    # 1 + 1 + 6 + 5 + 1 + (6 * 12) + (6 * 3) = 104
+    # 1 + 1 + 6 + 5 + 1 + 6 + (6 * 12) + (6 * 3) = 110
 
-    observation_space = spaces.Box(low=0, high=255, shape=(104,), dtype=np.int32)
+    observation_space = spaces.Box(low=0, high=31, shape=(110,), dtype=np.int32)
     return observation_space
 
 def get_observation(game: Game):
+    # Let's add some debug prints to check the values
     player1 = game.player1
     board = game.board
 
@@ -43,10 +45,10 @@ def get_observation(game: Game):
     obs1 = get_coin_obs(player1)
     obs2 = get_player_development_obs(player1)
     obs3 = get_player_victory_point_obs(player1)
+    obs4 = get_table_coin_obs(board)
+    obs5 = get_table_cards_obs(board)
 
-    obs4 = get_table_cards_obs(board)
-
-    obs = np.concatenate([obs_start, obs0, obs1, obs2, obs3, obs4])
+    obs = np.concatenate([obs_start, obs0, obs1, obs2, obs3, obs4, obs5])
     obs = obs.astype(np.int32)
 
     return obs
@@ -58,8 +60,9 @@ def get_start_obs():
 
 def get_step_obs(game):
     x = np.zeros(1, dtype=np.int32)
-    # Keep original integer values (0-127)
-    x[0] = min(game.step, 127)
+    # Keep original integer values (0-30)
+    x[0] = min(game.step, 30)
+
     return x
 
 def get_coin_obs(player):
@@ -68,6 +71,7 @@ def get_coin_obs(player):
     for key, value in coins.items():
         # Keep original integer values (0-4)
         x[Element[key].value] = value
+
     return x
 
 def get_player_development_obs(player):
@@ -76,32 +80,37 @@ def get_player_development_obs(player):
     for card in cards:
         # Keep original integer values (0-20)
         x[Element[card.gem_color].value] += 1
+
     return x
 
 def get_player_victory_point_obs(player):
     x = np.zeros(1, dtype=np.int32)
     # Keep original integer values (0-30)
     x[0] = player.sum_victory_point
+
+    return x
+
+def get_table_coin_obs(board):
+    coins = board.coins
+    x = np.zeros(6, dtype=np.int32)
+    for key, value in coins.items():
+        x[Element[key].value] = value
+
     return x
 
 def get_table_cards_obs(board):
     cards = board.flatten_table_cards
-   
-    bias=42
+
     for idx, card in enumerate(cards):
         if idx==0:
             obs = get_table_card_obs(card)
-            obs += bias
         else:
             obs_ = get_table_card_obs(card)
-            obs_ += bias
             obs = np.concatenate([obs, obs_])
 
-    bias=52
     cards = board.noble_cards
     for card in cards:
         obs_ = get_table_card_obs(card)
-        obs_ += bias
         obs = np.concatenate([obs, obs_])
 
     return obs
@@ -114,4 +123,9 @@ def get_table_card_obs(card):
         # Keep original integer values
         x[0:5] = np.array(card.price)  # 0-7
         x[5] = card.victory_point      # 0-20
+        
+        # Add debug print for high values
+        if np.max(x) >= 32:
+            print(f"High value in card {card.name}: {np.max(x)}")
+
     return x

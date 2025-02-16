@@ -6,29 +6,34 @@ from jsplendor.game import Player
 from jsplendor.card import get_all_development_cards, get_three_noble_cards
 from jsplendor.coin import get_full_coin_for_board, get_empty_coin
 from jsplendor.utils import get_verbose_dict
+from jsplendor.utils import TestLogger
 
 
 class Game:
     def __init__(self, verbose_dict=None, gui=None):
-        self.gui = gui  # Store reference to GUI
+        self.gui = gui
         if verbose_dict is None:
             self.verbose_dict = get_verbose_dict()
         else:
             self.verbose_dict = verbose_dict
 
         self.verbose = self.verbose_dict['game']
+        if self.verbose:
+            self.logger = TestLogger.get_logger()  # Use shared logger
         self.reset()
 
     def reset(self):
         all_development_cards = get_all_development_cards()
         selected_noble_cards = get_three_noble_cards()
-        board_coins = get_full_coin_for_board()
+        
+        # Pass the shared logger to components
         self.board = Board(
                     name="board",
                     development_cards=all_development_cards,
                     noble_cards=selected_noble_cards,
-                    coins=board_coins,
-                    verbose=self.verbose_dict['board'])
+                    coins=get_full_coin_for_board(),
+                    verbose=self.verbose_dict['board'],
+                    logger=TestLogger.get_logger() if self.verbose_dict['board'] else None)
         
         player1_coins = get_empty_coin()
         self.player1 = Player(
@@ -36,12 +41,13 @@ class Game:
                         development_cards=[],
                         noble_cards=[],
                         coins=player1_coins,
-                        verbose=self.verbose_dict['player'])
+                        verbose=self.verbose_dict['player'],
+                        logger=TestLogger.get_logger() if self.verbose_dict['player'] else None)
         
         self.component_list = [self.board, self.player1]
 
         if self.verbose:
-            print("Initial game status")
+            self.logger.info("Initial game status")
             self.print_status()
 
         self.step = 0
@@ -49,13 +55,14 @@ class Game:
         self.check_all_cards()
 
     def print_status(self):
-        if self.verbose:
-            if self.verbose_dict['board']:
-                self.board.print_status(object_name="board")
-            if self.verbose_dict['player']:
-                self.player1.print_status(object_name="player1")
-        else:
-            pass
+        if not self.verbose:
+            return
+            
+        self.logger.info("Initial game status")
+        if self.verbose_dict['board']:
+            self.board.print_status(object_name="board")
+        if self.verbose_dict['player']:
+            self.player1.print_status(object_name="player1")
 
     def get_random_action_datas(self):  # for collecting data
         actions_bool = self.player1.get_all_possible_actions(self.board)

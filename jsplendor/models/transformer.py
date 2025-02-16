@@ -6,21 +6,21 @@ from x_transformers import TransformerWrapper, Encoder
 
 class TransformerFeatureExtractor(BaseFeaturesExtractor):
     def __init__(self, observation_space: spaces.Box):
-        super().__init__(observation_space, features_dim=256)
+        super().__init__(observation_space, features_dim=32)
         
         # Layer normalization before transformer
-        self.layer_norm = nn.LayerNorm(128)
+        self.layer_norm = nn.LayerNorm(32)
         
         # Calculate total sequence length (observation + action mask)
         total_seq_len = observation_space.shape[0]  # This includes both obs and action mask
         
         self.transformer = TransformerWrapper(
-            num_tokens = 256,    # vocabulary size (0-255 from observation space)
-            max_seq_len = total_seq_len,   # use total sequence length including action mask
+            num_tokens = 32,    # vocabulary size
+            max_seq_len = total_seq_len,
             attn_layers = Encoder(
-                dim = 128,
-                depth = 4,
-                heads = 4
+                dim = 64,        
+                depth = 2,       
+                heads = 2,        
             )
         )
 

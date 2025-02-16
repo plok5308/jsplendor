@@ -2,9 +2,10 @@ import pygame
 import pygame_gui
 from jsplendor.game import Game
 from jsplendor.gui.game_gui import SplendorGUI
-from jsplendor.utils import get_verbose_dict
+from jsplendor.utils import get_verbose_dict, TestLogger
 from jsplendor.env import JsplendorEnv
 from stable_baselines3 import PPO
+import os
 
 class AIControlledGUI:
     def __init__(self):
@@ -12,9 +13,18 @@ class AIControlledGUI:
         
         # Initialize environment and load model
         self.env = JsplendorEnv(self.verbose_dict)
-        exp = '250213'
+        exp = '250215_small_step_penalty'
         model_path = f'logs/{exp}/best_model'
+        log_dir = f'logs/{exp}/'
+        
+        # Initialize logger
+        self.logger = TestLogger(log_dir)
+        self.logger.info("Starting GUI test session")
+        
+        # Load model
+        self.logger.info("Loading pretrained model...")
         self.model = PPO.load(model_path, env=self.env)
+        self.logger.info('Model loaded successfully')
         
         # Initialize observation
         self.obs, _ = self.env.reset()
@@ -113,15 +123,14 @@ class AIControlledGUI:
         # Take step in environment
         self.obs, reward, done, _, info = self.env.step(action)
         
-        # Debug print
-        print(f"Step result: reward={reward}, done={done}, victory_points={self.env.game.player1.sum_victory_point}")
+        # Log to both GUI and terminal
+        self.logger.info(f"Step result: reward={reward:.2f}, done={done}, victory_points={self.env.game.player1.sum_victory_point}")
         
         # Store reward in game object for display
         self.game.last_reward = reward
         
         # Log card acquisition after action
         if info.get('is_get_card'):
-            # Compare with previous state to find new card
             current_dev_cards = set(self.env.game.player1.development_cards)
             new_cards = current_dev_cards - prev_dev_cards
             if new_cards:
@@ -132,38 +141,37 @@ class AIControlledGUI:
                     f"  VP: {new_card.victory_point}\n"
                     f"  Color: {new_card.gem_color}"
                 )
+                self.logger.info(card_info)
                 self.update_log(card_info)
         
         # Sync game state with environment
         self.sync_game_state()
         
         # Log action results
-        self.update_log(f"Action: {action}")
-        self.update_log(f"Reward: {reward:.2f}")
+        action_msg = f"Action: {action}"
+        reward_msg = f"Reward: {reward:.2f}"
+        self.logger.info(action_msg)
+        self.logger.info(reward_msg)
+        self.update_log(action_msg)
+        self.update_log(reward_msg)
         
         if info.get('is_noble_visit'):
-            # Compare with previous state to find new noble
             current_noble_cards = set(self.env.game.player1.noble_cards)
             new_nobles = current_noble_cards - prev_noble_cards
             if new_nobles:
                 new_noble = list(new_nobles)[0]
                 noble_info = f"Noble {new_noble.name} visited! (+{new_noble.victory_point} VP)"
+                self.logger.info(noble_info)
                 self.update_log(noble_info)
         
-        # Only reset if the game is actually finished (victory achieved)
         if done and self.env.game.player1.sum_victory_point >= self.env.target_vp:
-            self.update_log("Game finished! Victory achieved!")
+            victory_msg = "Game finished! Victory achieved!"
+            self.logger.info(victory_msg)
+            self.update_log(victory_msg)
             
-            # Reset environment
             self.obs, _ = self.env.reset()
-            
-            # Reset game state completely
             self.game.reset()
-            
-            # Sync the states after reset
             self.sync_game_state()
-            
-            # Reset reward
             self.game.last_reward = 0.0
 
     def run(self):
@@ -203,7 +211,11 @@ class AIControlledGUI:
 
 def main():
     app = AIControlledGUI()
-    app.run()
+    try:
+        app.run()
+    finally:
+        # Ensure we log the end of the session
+        app.logger.info("GUI test session ended")
 
 if __name__ == "__main__":
     main() 

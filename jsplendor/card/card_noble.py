@@ -22,6 +22,10 @@ class NobleCard:
         self.name = name
         self.victory_point = victory_point
         self.price = price
+        self.logger = None  # Initialize logger as None
+
+    def set_logger(self, logger):
+        self.logger = logger
 
     def __repr__(self):
         return self.name

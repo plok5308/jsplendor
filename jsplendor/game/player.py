@@ -13,8 +13,8 @@ from jsplendor.coin import sum_coins
 # drop the lowest element token.
 
 class Player(GameComponent):
-    def __init__(self, name, development_cards, noble_cards, coins, verbose=False):
-        super().__init__(name, development_cards, noble_cards, coins, verbose)
+    def __init__(self, name, development_cards, noble_cards, coins, verbose=False, logger=None):
+        super().__init__(name, development_cards, noble_cards, coins, verbose, logger)
         self.n_coin_action = 10
         self.n_buy_action = 12
         self.num_actions = self.n_coin_action + self.n_buy_action
@@ -81,7 +81,7 @@ class Player(GameComponent):
             board.coins[color] -= 1
             self.coins[color] += 1
             if self.verbose:
-                print('{} get a {} coin.'.format(self.name, color))
+                self.logger.info(f'{self.name} get a {color} coin.')
         else:
             pass
 
@@ -97,8 +97,8 @@ class Player(GameComponent):
         count = 0
         while (sum_v > 10):
             if self.verbose:
-                print('{} has over coins.'.format(self.name))
-                print(self.coins)
+                self.logger.info(f'{self.name} has over coins.')
+                self.logger.info(str(self.coins))
             self.drop_unnecessary_coin(board)
             sum_v = sum_coins(self.coins)
             count += 1
@@ -107,8 +107,10 @@ class Player(GameComponent):
 
     def drop_unnecessary_coin(self, board):
         price_sum = np.zeros(5, dtype=int)
+        if self.verbose:
+            self.logger.info(f'{self.name} has over coins.')
+            self.logger.info(str(self.coins))
 
-        #table_cards = board.table_level1 + board.table_level2
         table_cards = board.table_level1
         for card in table_cards:
             if card is None:
@@ -127,7 +129,7 @@ class Player(GameComponent):
         board.coins[color] += 1
         self.coins[color] -= 1
         if self.verbose:
-            print('{} drop a {} coin.'.format(self.name, color))
+            self.logger.info(f'{self.name} drop a {color} coin.')
 
     def is_possible_to_buy(self, board, card_position):
         card = board.flatten_table_cards[card_position]
@@ -167,22 +169,18 @@ class Player(GameComponent):
                     board.coins[key] += int(price[Element[key].value])
 
             self.development_cards.append(card)
+            board.update_table_development_card(card)
+            
             self._update_score()
             
             if self.verbose:
-                print('{} get a {} card.'.format(self.name, card))
-
-            board.update_table_development_card(card)
-
-            self.update_noble_cards(board)
-            self._update_score()
+                self.logger.info(f'{self.name} get a {card} card.')
+                self.logger.info(f'VP: {self.sum_victory_point}.')
             get_card = True
-            if self.verbose:
-                print('VP: {}.'.format(self.sum_victory_point))
 
         else:
             if self.verbose:
-                print('Not enough tokens.')
+                self.logger.info('Not enough tokens.')
 
         return get_card
 
@@ -194,7 +192,7 @@ class Player(GameComponent):
                 self.noble_cards.append(card)
                 board.noble_cards.remove(card)
                 if self.verbose:
-                    print('Get {} card.'.format(card))
+                    self.logger.info(f'Get {card} card.')
                 board.noble_cards.append(None)
                 had_noble_visit = True
         return had_noble_visit
@@ -219,10 +217,13 @@ class Player(GameComponent):
         return is_possible
 
     def print_status(self, object_name=None):
+        if not self.verbose:
+            return
+            
         if object_name is not None:
-            print("[{}]".format(object_name))
+            self.logger.info(f"[{object_name}]")
 
-        print("Development cards: ")
+        self.logger.info("Development cards: ")
         l1_cards = []
         l2_cards = []
         l3_cards = []
@@ -234,14 +235,25 @@ class Player(GameComponent):
             if card.level==3:
                 l3_cards.append(card)
 
-        print(l1_cards)
-        print(l2_cards)
-        print(l3_cards)
+        self.logger.info(str(l1_cards))
+        self.logger.info(str(l2_cards))
+        self.logger.info(str(l3_cards))
         
-        print("Noble cards: ")
-        print(self.noble_cards)
-        print("Coin status: ")
-        print(self.coins)    
-        print("Victory point: {}".format(self.sum_victory_point))
-        print("")
+        self.logger.info("Noble cards: ")
+        self.logger.info(str(self.noble_cards))
+        self.logger.info("Coin status: ")
+        self.logger.info(str(self.coins))    
+        self.logger.info(f"Victory point: {self.sum_victory_point}")
+        self.logger.info("")
+
+    def _check_for_duplicates(self):
+        card_names = [card.name for card in self.development_cards]
+        unique_names = set(card_names)
+        if len(card_names) != len(unique_names):
+            print("WARNING: Duplicate cards found!")
+            from collections import Counter
+            counts = Counter(card_names)
+            for name, count in counts.items():
+                if count > 1:
+                    print(f"Card {name} appears {count} times")
 

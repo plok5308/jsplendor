@@ -8,16 +8,26 @@ class Card:
         self.victory_point = victory_point
         self.gem_color = gem_color
         self.price = price
+        self.logger = None  # Initialize logger as None
+
+    def set_logger(self, logger):
+        self.logger = logger
 
     def __repr__(self):
         return self.name
 
     def print_info(self):
-        print('level: {}'.format(self.level))
-        print('victory point: {}'.format(self.victory_point))
-        print('gem color: {}'.format(self.gem_color))
-        print('price [w, u, g, r, k]: {}'.format(self.price))
-        print('')
+        if self.logger:
+            self.logger.info(f'level: {self.level}')
+            self.logger.info(f'victory point: {self.victory_point}')
+            self.logger.info(f'gem color: {self.gem_color}')
+            self.logger.info(f'price: {self.price}')
+        return {
+            'level': self.level,
+            'victory_point': self.victory_point,
+            'gem_color': self.gem_color,
+            'price': self.price
+        }
 
 def get_all_development_cards():
     card_list = []
