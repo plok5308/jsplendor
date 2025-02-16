@@ -2,6 +2,9 @@ import os
 import logging
 import sys
 from datetime import datetime
+import numpy as np
+from jsplendor.utils.element import Element
+from jsplendor.game.utils import get_coin_comb
 
 class StreamToLogger:
     """
@@ -23,7 +26,8 @@ class StreamToLogger:
         self.original_stdout.flush()
 
 class TestLogger:
-    def __init__(self, log_dir):
+    def __init__(self, log_dir, verbose=False):
+        self.verbose = verbose  # Add verbose flag
         self._setup_logger(log_dir)
         self.log_dir = log_dir
 
@@ -61,7 +65,10 @@ class TestLogger:
 
     def info(self, message):
         """Log an info message"""
-        self.logger.info(message)
+        if self.logger:
+            self.logger.info(message)
+            if self.verbose:  # Only print to console if verbose is True
+                print(message)
 
     @classmethod
     def get_logger(cls):
@@ -124,7 +131,56 @@ class TestLogger:
         # sys.stdout = self.original_stdout
         pass
 
-    def info(self, message):
-        """Log an info message"""
-        if self.logger:
-            self.logger.info(message) 
+class ActionLogger:
+    @staticmethod
+    def log_action_probabilities(logger, env, action_probs, verbose=True):
+        """Log available actions and their probabilities"""
+        if not verbose:
+            return
+            
+        valid_actions = np.where(env.get_action_mask())[0]
+        logger.info("-" * 30)
+        logger.info("Available actions:")
+        
+        # Create list of (action, prob, desc) tuples for sorting
+        action_info = []
+        
+        # Get sum of probabilities for valid actions only
+        valid_probs = action_probs[valid_actions]
+        normalization_factor = valid_probs.sum()
+        
+        # Normalize probabilities to sum to 100%
+        normalized_probs = valid_probs / normalization_factor * 100
+        
+        for i, valid_action in enumerate(valid_actions):
+            prob = normalized_probs[i]
+            
+            if valid_action < 10:
+                coin_ids = get_coin_comb(valid_action)
+                coins = [Element(ids).name for ids in coin_ids]
+                desc = f"Get coins: {', '.join(coins)}"
+            else:
+                card_pos = valid_action - 10
+                card = env.game.board.flatten_table_cards[card_pos]
+                if card:
+                    desc = f"Buy {card.name} (Level: {card.level}, VP: {card.victory_point}, Color: {card.gem_color})"
+                else:
+                    desc = "Buy card (empty slot)"
+            action_info.append((valid_action, prob, desc))
+        
+        # Sort by action number in ascending order
+        action_info.sort(key=lambda x: x[0])
+        
+        # Log all actions
+        for action, prob, desc in action_info:
+            logger.info(f"  Action {action}: {desc} ({prob:.1f}%)")
+        
+        # Log probability summary
+        logger.info("-" * 30)
+        logger.info(f"Total probability: 100.0%")
+
+    @staticmethod
+    def log_selected_action(logger, action, verbose=True):
+        """Log the selected action"""
+        if verbose:
+            logger.info(f"Selected: Action {action}") 

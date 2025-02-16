@@ -17,9 +17,11 @@ def main():
     env = JsplendorEnv(verbose_dict)
     
     # Load model
-    exp = '250215_small_step_penalty'
-    model_path = f'logs/{exp}/best_model'
-    log_dir = f'logs/{exp}/'
+    #exp = '250215_small_step_penalty'
+    #model_path = f'logs/{exp}/best_model'
+    #log_dir = f'logs/{exp}/'
+    model_path = 'pretrained/best_model'
+    log_dir = 'pretrained/'
     
     # Initialize logger
     logger = TestLogger(log_dir)

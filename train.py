@@ -50,11 +50,13 @@ def main(args):
         deterministic=False,
         render=False)
 
-    policy_kwargs = dict(
-            features_extractor_class=TransformerFeatureExtractor,
-            net_arch=[64],
-            activation_fn=torch.nn.ReLU
-    )
+    # Create policy kwargs with min_prob and correct architecture
+    policy_kwargs = {
+        'min_prob': args.min_prob,
+        'features_extractor_class': TransformerFeatureExtractor,
+        'net_arch': dict(pi=[64], vf=[64]),  # Changed from list to dict
+        'activation_fn': torch.nn.ReLU
+    }
 
     if args.load_model:
         print(f"Loading pretrained model from {args.load_model}...")
@@ -62,7 +64,8 @@ def main(args):
             args.load_model,
             env=train_env,
             tensorboard_log=eval_log_dir,
-            device='cuda' if torch.cuda.is_available() else 'cpu'  # Load directly to target device
+            device='cuda' if torch.cuda.is_available() else 'cpu',  # Load directly to target device
+            ent_coef=args.ent_coef
         )
         
         # Adjust n_steps and update related parameters
@@ -96,9 +99,9 @@ def main(args):
             n_steps=n_steps,        # Reduced batch size for faster updates
             learning_rate=2e-6,  # Slightly increased for faster learning
             batch_size=2048,     # Increased to better utilize GPU memory
-            verbose=False,
             policy_kwargs=policy_kwargs,
             tensorboard_log=eval_log_dir,
+            ent_coef=args.ent_coef
         )
 
     if args.debug:
@@ -116,6 +119,10 @@ if __name__ == "__main__":
     parser.add_argument('--exp', type=str, default='250213', help='Experiment name for logging')
     parser.add_argument('--n_steps', type=int, default=4096*4, help='Number of steps per update')
     parser.add_argument('--num_eval_cpu', type=int, default=8, help='Number of CPU cores to use for evaluation')
+    parser.add_argument('--min_prob', type=float, default=0,
+                       help='Minimum probability for valid actions')
+    parser.add_argument('--ent_coef', type=float, default=0,
+                       help='Entropy coefficient for exploration')
     args = parser.parse_args()
 
     main(args)

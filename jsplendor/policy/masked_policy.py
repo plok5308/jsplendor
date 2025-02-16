@@ -4,8 +4,9 @@ from stable_baselines3.common.preprocessing import preprocess_obs
 import numpy as np
 
 class MaskedActorCriticPolicy(ActorCriticPolicy):
-    def __init__(self, *args, **kwargs):
+    def __init__(self, *args, min_prob=1e-3, **kwargs):
         super().__init__(*args, **kwargs)
+        self.min_prob = min_prob  # Store minimum probability as class attribute
 
     def forward(self, obs, deterministic=False):
         """Forward pass in all the networks (actor and critic)"""
@@ -27,12 +28,14 @@ class MaskedActorCriticPolicy(ActorCriticPolicy):
         values = self.value_net(latent_vf)
         distribution = self._get_action_dist_from_latent(latent_pi)
         
-        # Apply action mask
-        distribution.distribution.logits = torch.where(
+        # Apply action mask with minimum probability
+        masked_logits = torch.where(
             action_mask.bool(),
-            distribution.distribution.logits,
+            torch.maximum(distribution.distribution.logits, 
+                         torch.log(torch.tensor(self.min_prob).to(distribution.distribution.logits.device))),
             torch.tensor(-1e+8).to(distribution.distribution.logits.device)
         )
+        distribution.distribution.logits = masked_logits
 
         actions = distribution.get_actions(deterministic=deterministic)
         log_prob = distribution.log_prob(actions)

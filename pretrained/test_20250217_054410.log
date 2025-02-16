@@ -1,0 +1,3001 @@
+2025-02-17 05:44:10,839 [INFO] Starting GUI test session
+2025-02-17 05:44:10,839 [INFO] Loading pretrained model...
+2025-02-17 05:44:11,433 [INFO] Model loaded successfully
+2025-02-17 05:44:11,433 [INFO] Initial game status
+2025-02-17 05:44:11,433 [INFO] Initial game status
+2025-02-17 05:44:11,433 [INFO] [board]
+2025-02-17 05:44:11,433 [INFO] Noble cards: 
+2025-02-17 05:44:11,434 [INFO] [noble4, noble2, noble6]
+2025-02-17 05:44:11,434 [INFO] Coin status: 
+2025-02-17 05:44:11,434 [INFO] {'WHITE': 4, 'BLUE': 4, 'GREEN': 4, 'RED': 4, 'BLACK': 4, 'GOLD': 5}
+2025-02-17 05:44:11,434 [INFO] Table level1: 
+2025-02-17 05:44:11,434 [INFO] [l1_BLUE_2, l1_WHITE_1, l1_GREEN_7, l1_BLUE_6]
+2025-02-17 05:44:11,434 [INFO] The remain number of Level1: 36
+2025-02-17 05:44:11,434 [INFO] Table level2: 
+2025-02-17 05:44:11,434 [INFO] [l2_BLACK_2, l2_RED_5, l2_BLUE_5, l2_BLACK_5]
+2025-02-17 05:44:11,434 [INFO] The remain number of Level2: 26
+2025-02-17 05:44:11,434 [INFO] Table level3: 
+2025-02-17 05:44:11,434 [INFO] [l3_BLACK_4, l3_GREEN_3, l3_GREEN_4, l3_RED_2]
+2025-02-17 05:44:11,434 [INFO] The remain number of Level3: 16
+2025-02-17 05:44:11,434 [INFO] 
+2025-02-17 05:44:11,434 [INFO] [player1]
+2025-02-17 05:44:11,434 [INFO] Development cards: 
+2025-02-17 05:44:11,434 [INFO] []
+2025-02-17 05:44:11,434 [INFO] []
+2025-02-17 05:44:11,434 [INFO] []
+2025-02-17 05:44:11,434 [INFO] Noble cards: 
+2025-02-17 05:44:11,434 [INFO] []
+2025-02-17 05:44:11,434 [INFO] Coin status: 
+2025-02-17 05:44:11,434 [INFO] {'WHITE': 0, 'BLUE': 0, 'GREEN': 0, 'RED': 0, 'BLACK': 0, 'GOLD': 0}
+2025-02-17 05:44:11,434 [INFO] Victory point: 0
+2025-02-17 05:44:11,434 [INFO] 
+2025-02-17 05:44:12,240 [INFO] ------------------------------
+2025-02-17 05:44:12,240 [INFO] Available actions:
+2025-02-17 05:44:12,240 [INFO]   Action 0: Get coins: WHITE, BLUE, GREEN (10.2%)
+2025-02-17 05:44:12,240 [INFO]   Action 1: Get coins: WHITE, BLUE, RED (9.7%)
+2025-02-17 05:44:12,240 [INFO]   Action 2: Get coins: WHITE, BLUE, BLACK (10.8%)
+2025-02-17 05:44:12,240 [INFO]   Action 3: Get coins: WHITE, GREEN, RED (10.6%)
+2025-02-17 05:44:12,240 [INFO]   Action 4: Get coins: WHITE, GREEN, BLACK (9.7%)
+2025-02-17 05:44:12,240 [INFO]   Action 5: Get coins: WHITE, RED, BLACK (11.6%)
+2025-02-17 05:44:12,240 [INFO]   Action 6: Get coins: BLUE, GREEN, RED (8.9%)
+2025-02-17 05:44:12,240 [INFO]   Action 7: Get coins: BLUE, GREEN, BLACK (9.5%)
+2025-02-17 05:44:12,240 [INFO]   Action 8: Get coins: BLUE, RED, BLACK (9.6%)
+2025-02-17 05:44:12,240 [INFO]   Action 9: Get coins: GREEN, RED, BLACK (9.5%)
+2025-02-17 05:44:12,240 [INFO] ------------------------------
+2025-02-17 05:44:12,240 [INFO] Total probability: 100.0%
+2025-02-17 05:44:17,082 [INFO] Selected: Action 7
+2025-02-17 05:44:17,083 [INFO] 
+==================================================
+2025-02-17 05:44:17,083 [INFO] Step 1
+2025-02-17 05:44:17,083 [INFO] ------------------------------
+2025-02-17 05:44:17,083 [INFO] player1 get a BLUE coin.
+2025-02-17 05:44:17,083 [INFO] player1 get a GREEN coin.
+2025-02-17 05:44:17,083 [INFO] player1 get a BLACK coin.
+2025-02-17 05:44:17,083 [INFO] Collected coins: BLUE, GREEN, BLACK
+2025-02-17 05:44:17,083 [INFO] Action: 7
+2025-02-17 05:44:17,087 [INFO] ------------------------------
+2025-02-17 05:44:17,087 [INFO] Available actions:
+2025-02-17 05:44:17,087 [INFO]   Action 0: Get coins: WHITE, BLUE, GREEN (10.2%)
+2025-02-17 05:44:17,087 [INFO]   Action 1: Get coins: WHITE, BLUE, RED (9.7%)
+2025-02-17 05:44:17,087 [INFO]   Action 2: Get coins: WHITE, BLUE, BLACK (10.8%)
+2025-02-17 05:44:17,087 [INFO]   Action 3: Get coins: WHITE, GREEN, RED (10.6%)
+2025-02-17 05:44:17,088 [INFO]   Action 4: Get coins: WHITE, GREEN, BLACK (9.7%)
+2025-02-17 05:44:17,088 [INFO]   Action 5: Get coins: WHITE, RED, BLACK (11.6%)
+2025-02-17 05:44:17,088 [INFO]   Action 6: Get coins: BLUE, GREEN, RED (8.8%)
+2025-02-17 05:44:17,088 [INFO]   Action 7: Get coins: BLUE, GREEN, BLACK (9.5%)
+2025-02-17 05:44:17,088 [INFO]   Action 8: Get coins: BLUE, RED, BLACK (9.6%)
+2025-02-17 05:44:17,088 [INFO]   Action 9: Get coins: GREEN, RED, BLACK (9.5%)
+2025-02-17 05:44:17,088 [INFO] ------------------------------
+2025-02-17 05:44:17,088 [INFO] Total probability: 100.0%
+2025-02-17 05:44:17,972 [INFO] Selected: Action 0
+2025-02-17 05:44:17,973 [INFO] 
+==================================================
+2025-02-17 05:44:17,973 [INFO] Step 2
+2025-02-17 05:44:17,973 [INFO] ------------------------------
+2025-02-17 05:44:17,973 [INFO] player1 get a WHITE coin.
+2025-02-17 05:44:17,973 [INFO] player1 get a BLUE coin.
+2025-02-17 05:44:17,973 [INFO] player1 get a GREEN coin.
+2025-02-17 05:44:17,973 [INFO] Collected coins: WHITE, BLUE, GREEN
+2025-02-17 05:44:17,974 [INFO] Action: 0
+2025-02-17 05:44:17,977 [INFO] ------------------------------
+2025-02-17 05:44:17,977 [INFO] Available actions:
+2025-02-17 05:44:17,978 [INFO]   Action 0: Get coins: WHITE, BLUE, GREEN (10.2%)
+2025-02-17 05:44:17,978 [INFO]   Action 1: Get coins: WHITE, BLUE, RED (9.7%)
+2025-02-17 05:44:17,978 [INFO]   Action 2: Get coins: WHITE, BLUE, BLACK (10.8%)
+2025-02-17 05:44:17,978 [INFO]   Action 3: Get coins: WHITE, GREEN, RED (10.6%)
+2025-02-17 05:44:17,978 [INFO]   Action 4: Get coins: WHITE, GREEN, BLACK (9.7%)
+2025-02-17 05:44:17,978 [INFO]   Action 5: Get coins: WHITE, RED, BLACK (11.6%)
+2025-02-17 05:44:17,978 [INFO]   Action 6: Get coins: BLUE, GREEN, RED (8.8%)
+2025-02-17 05:44:17,978 [INFO]   Action 7: Get coins: BLUE, GREEN, BLACK (9.4%)
+2025-02-17 05:44:17,978 [INFO]   Action 8: Get coins: BLUE, RED, BLACK (9.6%)
+2025-02-17 05:44:17,978 [INFO]   Action 9: Get coins: GREEN, RED, BLACK (9.5%)
+2025-02-17 05:44:17,978 [INFO] ------------------------------
+2025-02-17 05:44:17,978 [INFO] Total probability: 100.0%
+2025-02-17 05:44:18,976 [INFO] Selected: Action 6
+2025-02-17 05:44:18,976 [INFO] 
+==================================================
+2025-02-17 05:44:18,976 [INFO] Step 3
+2025-02-17 05:44:18,976 [INFO] ------------------------------
+2025-02-17 05:44:18,977 [INFO] player1 get a BLUE coin.
+2025-02-17 05:44:18,977 [INFO] player1 get a GREEN coin.
+2025-02-17 05:44:18,977 [INFO] player1 get a RED coin.
+2025-02-17 05:44:18,977 [INFO] Collected coins: BLUE, GREEN, RED
+2025-02-17 05:44:18,977 [INFO] Action: 6
+2025-02-17 05:44:18,981 [INFO] ------------------------------
+2025-02-17 05:44:18,981 [INFO] Available actions:
+2025-02-17 05:44:18,981 [INFO]   Action 0: Get coins: WHITE, BLUE, GREEN (0.0%)
+2025-02-17 05:44:18,981 [INFO]   Action 1: Get coins: WHITE, BLUE, RED (0.0%)
+2025-02-17 05:44:18,981 [INFO]   Action 2: Get coins: WHITE, BLUE, BLACK (0.0%)
+2025-02-17 05:44:18,982 [INFO]   Action 3: Get coins: WHITE, GREEN, RED (0.0%)
+2025-02-17 05:44:18,982 [INFO]   Action 4: Get coins: WHITE, GREEN, BLACK (0.0%)
+2025-02-17 05:44:18,982 [INFO]   Action 5: Get coins: WHITE, RED, BLACK (0.0%)
+2025-02-17 05:44:18,982 [INFO]   Action 6: Get coins: BLUE, GREEN, RED (0.0%)
+2025-02-17 05:44:18,982 [INFO]   Action 7: Get coins: BLUE, GREEN, BLACK (0.0%)
+2025-02-17 05:44:18,982 [INFO]   Action 8: Get coins: BLUE, RED, BLACK (0.0%)
+2025-02-17 05:44:18,982 [INFO]   Action 9: Get coins: GREEN, RED, BLACK (0.0%)
+2025-02-17 05:44:18,982 [INFO]   Action 12: Buy l1_BLACK_7 (Level: 1, VP: 0, Color: BLACK) (100.0%)
+2025-02-17 05:44:18,982 [INFO] ------------------------------
+2025-02-17 05:44:18,982 [INFO] Total probability: 100.0%
+2025-02-17 05:44:19,980 [INFO] Selected: Action 12
+2025-02-17 05:44:19,981 [INFO] 
+==================================================
+2025-02-17 05:44:19,981 [INFO] Step 4
+2025-02-17 05:44:19,981 [INFO] ------------------------------
+2025-02-17 05:44:19,981 [INFO] player1 bought card l1_BLACK_7:
+2025-02-17 05:44:19,981 [INFO]   Level: 1
+2025-02-17 05:44:19,981 [INFO]   VP: 0
+2025-02-17 05:44:19,981 [INFO]   Gem Color: BLACK
+2025-02-17 05:44:19,981 [INFO]   Original Price: GREEN: 3
+2025-02-17 05:44:19,981 [INFO]   Actual Price: GREEN: 3
+2025-02-17 05:44:19,982 [INFO] VP: 0
+2025-02-17 05:44:19,982 [INFO] Action: 12
+2025-02-17 05:44:19,985 [INFO] ------------------------------
+2025-02-17 05:44:19,985 [INFO] Available actions:
+2025-02-17 05:44:19,986 [INFO]   Action 0: Get coins: WHITE, BLUE, GREEN (10.2%)
+2025-02-17 05:44:19,986 [INFO]   Action 1: Get coins: WHITE, BLUE, RED (9.6%)
+2025-02-17 05:44:19,986 [INFO]   Action 2: Get coins: WHITE, BLUE, BLACK (10.9%)
+2025-02-17 05:44:19,986 [INFO]   Action 3: Get coins: WHITE, GREEN, RED (10.6%)
+2025-02-17 05:44:19,986 [INFO]   Action 4: Get coins: WHITE, GREEN, BLACK (9.8%)
+2025-02-17 05:44:19,986 [INFO]   Action 5: Get coins: WHITE, RED, BLACK (11.7%)
+2025-02-17 05:44:19,986 [INFO]   Action 6: Get coins: BLUE, GREEN, RED (8.8%)
+2025-02-17 05:44:19,986 [INFO]   Action 7: Get coins: BLUE, GREEN, BLACK (9.4%)
+2025-02-17 05:44:19,986 [INFO]   Action 8: Get coins: BLUE, RED, BLACK (9.6%)
+2025-02-17 05:44:19,986 [INFO]   Action 9: Get coins: GREEN, RED, BLACK (9.5%)
+2025-02-17 05:44:19,986 [INFO] ------------------------------
+2025-02-17 05:44:19,986 [INFO] Total probability: 100.0%
+2025-02-17 05:44:20,983 [INFO] Selected: Action 6
+2025-02-17 05:44:20,983 [INFO] 
+==================================================
+2025-02-17 05:44:20,983 [INFO] Step 5
+2025-02-17 05:44:20,983 [INFO] ------------------------------
+2025-02-17 05:44:20,984 [INFO] player1 get a BLUE coin.
+2025-02-17 05:44:20,984 [INFO] player1 get a GREEN coin.
+2025-02-17 05:44:20,984 [INFO] player1 get a RED coin.
+2025-02-17 05:44:20,984 [INFO] Collected coins: BLUE, GREEN, RED
+2025-02-17 05:44:20,984 [INFO] Action: 6
+2025-02-17 05:44:20,988 [INFO] ------------------------------
+2025-02-17 05:44:20,988 [INFO] Available actions:
+2025-02-17 05:44:20,988 [INFO]   Action 0: Get coins: WHITE, BLUE, GREEN (0.0%)
+2025-02-17 05:44:20,988 [INFO]   Action 1: Get coins: WHITE, BLUE, RED (0.0%)
+2025-02-17 05:44:20,988 [INFO]   Action 2: Get coins: WHITE, BLUE, BLACK (0.0%)
+2025-02-17 05:44:20,989 [INFO]   Action 3: Get coins: WHITE, GREEN, RED (0.0%)
+2025-02-17 05:44:20,989 [INFO]   Action 4: Get coins: WHITE, GREEN, BLACK (0.0%)
+2025-02-17 05:44:20,989 [INFO]   Action 5: Get coins: WHITE, RED, BLACK (0.0%)
+2025-02-17 05:44:20,989 [INFO]   Action 6: Get coins: BLUE, GREEN, RED (0.0%)
+2025-02-17 05:44:20,989 [INFO]   Action 7: Get coins: BLUE, GREEN, BLACK (0.0%)
+2025-02-17 05:44:20,989 [INFO]   Action 8: Get coins: BLUE, RED, BLACK (0.0%)
+2025-02-17 05:44:20,989 [INFO]   Action 9: Get coins: GREEN, RED, BLACK (0.0%)
+2025-02-17 05:44:20,989 [INFO]   Action 10: Buy l1_GREEN_6 (Level: 1, VP: 0, Color: GREEN) (26.0%)
+2025-02-17 05:44:20,989 [INFO]   Action 12: Buy l1_BLACK_8 (Level: 1, VP: 1, Color: BLACK) (27.7%)
+2025-02-17 05:44:20,989 [INFO]   Action 13: Buy l1_BLACK_2 (Level: 1, VP: 0, Color: BLACK) (46.2%)
+2025-02-17 05:44:20,989 [INFO] ------------------------------
+2025-02-17 05:44:20,989 [INFO] Total probability: 100.0%
+2025-02-17 05:44:21,987 [INFO] Selected: Action 10
+2025-02-17 05:44:21,987 [INFO] 
+==================================================
+2025-02-17 05:44:21,987 [INFO] Step 6
+2025-02-17 05:44:21,987 [INFO] ------------------------------
+2025-02-17 05:44:21,988 [INFO] player1 bought card l1_GREEN_6:
+2025-02-17 05:44:21,988 [INFO]   Level: 1
+2025-02-17 05:44:21,988 [INFO]   VP: 0
+2025-02-17 05:44:21,988 [INFO]   Gem Color: GREEN
+2025-02-17 05:44:21,988 [INFO]   Original Price: BLUE: 2, RED: 2
+2025-02-17 05:44:21,988 [INFO]   Actual Price: BLUE: 2, RED: 2
+2025-02-17 05:44:21,988 [INFO] VP: 0
+2025-02-17 05:44:21,989 [INFO] Action: 10
+2025-02-17 05:44:21,992 [INFO] ------------------------------
+2025-02-17 05:44:21,992 [INFO] Available actions:
+2025-02-17 05:44:21,992 [INFO]   Action 0: Get coins: WHITE, BLUE, GREEN (10.2%)
+2025-02-17 05:44:21,992 [INFO]   Action 1: Get coins: WHITE, BLUE, RED (9.5%)
+2025-02-17 05:44:21,993 [INFO]   Action 2: Get coins: WHITE, BLUE, BLACK (10.9%)
+2025-02-17 05:44:21,993 [INFO]   Action 3: Get coins: WHITE, GREEN, RED (10.6%)
+2025-02-17 05:44:21,993 [INFO]   Action 4: Get coins: WHITE, GREEN, BLACK (9.8%)
+2025-02-17 05:44:21,993 [INFO]   Action 5: Get coins: WHITE, RED, BLACK (11.7%)
+2025-02-17 05:44:21,993 [INFO]   Action 6: Get coins: BLUE, GREEN, RED (8.8%)
+2025-02-17 05:44:21,993 [INFO]   Action 7: Get coins: BLUE, GREEN, BLACK (9.4%)
+2025-02-17 05:44:21,993 [INFO]   Action 8: Get coins: BLUE, RED, BLACK (9.7%)
+2025-02-17 05:44:21,993 [INFO]   Action 9: Get coins: GREEN, RED, BLACK (9.4%)
+2025-02-17 05:44:21,993 [INFO] ------------------------------
+2025-02-17 05:44:21,993 [INFO] Total probability: 100.0%
+2025-02-17 05:44:22,990 [INFO] Selected: Action 0
+2025-02-17 05:44:22,990 [INFO] 
+==================================================
+2025-02-17 05:44:22,990 [INFO] Step 7
+2025-02-17 05:44:22,990 [INFO] ------------------------------
+2025-02-17 05:44:22,990 [INFO] player1 get a WHITE coin.
+2025-02-17 05:44:22,990 [INFO] player1 get a BLUE coin.
+2025-02-17 05:44:22,991 [INFO] player1 get a GREEN coin.
+2025-02-17 05:44:22,991 [INFO] Collected coins: WHITE, BLUE, GREEN
+2025-02-17 05:44:22,991 [INFO] Action: 0
+2025-02-17 05:44:22,995 [INFO] ------------------------------
+2025-02-17 05:44:22,995 [INFO] Available actions:
+2025-02-17 05:44:22,995 [INFO]   Action 0: Get coins: WHITE, BLUE, GREEN (10.2%)
+2025-02-17 05:44:22,995 [INFO]   Action 1: Get coins: WHITE, BLUE, RED (9.5%)
+2025-02-17 05:44:22,995 [INFO]   Action 2: Get coins: WHITE, BLUE, BLACK (10.9%)
+2025-02-17 05:44:22,995 [INFO]   Action 3: Get coins: WHITE, GREEN, RED (10.6%)
+2025-02-17 05:44:22,995 [INFO]   Action 4: Get coins: WHITE, GREEN, BLACK (9.8%)
+2025-02-17 05:44:22,995 [INFO]   Action 5: Get coins: WHITE, RED, BLACK (11.7%)
+2025-02-17 05:44:22,995 [INFO]   Action 6: Get coins: BLUE, GREEN, RED (8.8%)
+2025-02-17 05:44:22,995 [INFO]   Action 7: Get coins: BLUE, GREEN, BLACK (9.4%)
+2025-02-17 05:44:22,995 [INFO]   Action 8: Get coins: BLUE, RED, BLACK (9.7%)
+2025-02-17 05:44:22,995 [INFO]   Action 9: Get coins: GREEN, RED, BLACK (9.4%)
+2025-02-17 05:44:22,996 [INFO] ------------------------------
+2025-02-17 05:44:22,996 [INFO] Total probability: 100.0%
+2025-02-17 05:44:23,994 [INFO] Selected: Action 7
+2025-02-17 05:44:23,994 [INFO] 
+==================================================
+2025-02-17 05:44:23,994 [INFO] Step 8
+2025-02-17 05:44:23,994 [INFO] ------------------------------
+2025-02-17 05:44:23,994 [INFO] player1 get a BLUE coin.
+2025-02-17 05:44:23,994 [INFO] player1 get a GREEN coin.
+2025-02-17 05:44:23,994 [INFO] player1 get a BLACK coin.
+2025-02-17 05:44:23,995 [INFO] Collected coins: BLUE, GREEN, BLACK
+2025-02-17 05:44:23,995 [INFO] player1 has over coins.
+2025-02-17 05:44:23,995 [INFO] {'WHITE': 2, 'BLUE': 4, 'GREEN': 3, 'RED': 0, 'BLACK': 2, 'GOLD': 0}
+2025-02-17 05:44:23,995 [INFO] player1 drop a GREEN coin.
+2025-02-17 05:44:23,995 [INFO] Dropped GREEN coin (over 10 limit)
+2025-02-17 05:44:23,995 [INFO] Action: 7
+2025-02-17 05:44:23,999 [INFO] ------------------------------
+2025-02-17 05:44:23,999 [INFO] Available actions:
+2025-02-17 05:44:23,999 [INFO]   Action 0: Get coins: WHITE, BLUE, GREEN (0.0%)
+2025-02-17 05:44:23,999 [INFO]   Action 1: Get coins: WHITE, BLUE, RED (0.0%)
+2025-02-17 05:44:23,999 [INFO]   Action 2: Get coins: WHITE, BLUE, BLACK (0.0%)
+2025-02-17 05:44:23,999 [INFO]   Action 3: Get coins: WHITE, GREEN, RED (0.0%)
+2025-02-17 05:44:23,999 [INFO]   Action 4: Get coins: WHITE, GREEN, BLACK (0.0%)
+2025-02-17 05:44:24,000 [INFO]   Action 5: Get coins: WHITE, RED, BLACK (0.0%)
+2025-02-17 05:44:24,000 [INFO]   Action 6: Get coins: BLUE, GREEN, RED (0.0%)
+2025-02-17 05:44:24,000 [INFO]   Action 7: Get coins: BLUE, GREEN, BLACK (0.0%)
+2025-02-17 05:44:24,000 [INFO]   Action 8: Get coins: BLUE, RED, BLACK (0.0%)
+2025-02-17 05:44:24,000 [INFO]   Action 9: Get coins: GREEN, RED, BLACK (0.0%)
+2025-02-17 05:44:24,000 [INFO]   Action 11: Buy l1_BLACK_8 (Level: 1, VP: 1, Color: BLACK) (100.0%)
+2025-02-17 05:44:24,000 [INFO] ------------------------------
+2025-02-17 05:44:24,000 [INFO] Total probability: 100.0%
+2025-02-17 05:44:25,002 [INFO] Selected: Action 11
+2025-02-17 05:44:25,002 [INFO] 
+==================================================
+2025-02-17 05:44:25,002 [INFO] Step 9
+2025-02-17 05:44:25,002 [INFO] ------------------------------
+2025-02-17 05:44:25,003 [INFO] player1 bought card l1_BLACK_8:
+2025-02-17 05:44:25,003 [INFO]   Level: 1
+2025-02-17 05:44:25,003 [INFO]   VP: 1
+2025-02-17 05:44:25,003 [INFO]   Gem Color: BLACK
+2025-02-17 05:44:25,003 [INFO]   Original Price: BLUE: 4
+2025-02-17 05:44:25,003 [INFO]   Actual Price: BLUE: 4
+2025-02-17 05:44:25,003 [INFO] VP: 1
+2025-02-17 05:44:25,004 [INFO] Action: 11
+2025-02-17 05:44:25,007 [INFO] ------------------------------
+2025-02-17 05:44:25,007 [INFO] Available actions:
+2025-02-17 05:44:25,007 [INFO]   Action 0: Get coins: WHITE, BLUE, GREEN (10.2%)
+2025-02-17 05:44:25,007 [INFO]   Action 1: Get coins: WHITE, BLUE, RED (9.5%)
+2025-02-17 05:44:25,008 [INFO]   Action 2: Get coins: WHITE, BLUE, BLACK (10.9%)
+2025-02-17 05:44:25,008 [INFO]   Action 3: Get coins: WHITE, GREEN, RED (10.6%)
+2025-02-17 05:44:25,008 [INFO]   Action 4: Get coins: WHITE, GREEN, BLACK (9.9%)
+2025-02-17 05:44:25,008 [INFO]   Action 5: Get coins: WHITE, RED, BLACK (11.8%)
+2025-02-17 05:44:25,008 [INFO]   Action 6: Get coins: BLUE, GREEN, RED (8.7%)
+2025-02-17 05:44:25,008 [INFO]   Action 7: Get coins: BLUE, GREEN, BLACK (9.3%)
+2025-02-17 05:44:25,008 [INFO]   Action 8: Get coins: BLUE, RED, BLACK (9.7%)
+2025-02-17 05:44:25,008 [INFO]   Action 9: Get coins: GREEN, RED, BLACK (9.4%)
+2025-02-17 05:44:25,008 [INFO] ------------------------------
+2025-02-17 05:44:25,008 [INFO] Total probability: 100.0%
+2025-02-17 05:44:26,005 [INFO] Selected: Action 8
+2025-02-17 05:44:26,005 [INFO] 
+==================================================
+2025-02-17 05:44:26,005 [INFO] Step 10
+2025-02-17 05:44:26,005 [INFO] ------------------------------
+2025-02-17 05:44:26,005 [INFO] player1 get a BLUE coin.
+2025-02-17 05:44:26,005 [INFO] player1 get a RED coin.
+2025-02-17 05:44:26,005 [INFO] player1 get a BLACK coin.
+2025-02-17 05:44:26,005 [INFO] Collected coins: BLUE, RED, BLACK
+2025-02-17 05:44:26,006 [INFO] Action: 8
+2025-02-17 05:44:26,009 [INFO] ------------------------------
+2025-02-17 05:44:26,009 [INFO] Available actions:
+2025-02-17 05:44:26,009 [INFO]   Action 0: Get coins: WHITE, BLUE, GREEN (10.1%)
+2025-02-17 05:44:26,010 [INFO]   Action 1: Get coins: WHITE, BLUE, RED (9.5%)
+2025-02-17 05:44:26,010 [INFO]   Action 2: Get coins: WHITE, BLUE, BLACK (10.9%)
+2025-02-17 05:44:26,010 [INFO]   Action 3: Get coins: WHITE, GREEN, RED (10.7%)
+2025-02-17 05:44:26,010 [INFO]   Action 4: Get coins: WHITE, GREEN, BLACK (9.9%)
+2025-02-17 05:44:26,010 [INFO]   Action 5: Get coins: WHITE, RED, BLACK (11.8%)
+2025-02-17 05:44:26,010 [INFO]   Action 6: Get coins: BLUE, GREEN, RED (8.7%)
+2025-02-17 05:44:26,010 [INFO]   Action 7: Get coins: BLUE, GREEN, BLACK (9.3%)
+2025-02-17 05:44:26,010 [INFO]   Action 8: Get coins: BLUE, RED, BLACK (9.7%)
+2025-02-17 05:44:26,010 [INFO]   Action 9: Get coins: GREEN, RED, BLACK (9.4%)
+2025-02-17 05:44:26,010 [INFO] ------------------------------
+2025-02-17 05:44:26,010 [INFO] Total probability: 100.0%
+2025-02-17 05:44:27,005 [INFO] Selected: Action 5
+2025-02-17 05:44:27,006 [INFO] 
+==================================================
+2025-02-17 05:44:27,006 [INFO] Step 11
+2025-02-17 05:44:27,006 [INFO] ------------------------------
+2025-02-17 05:44:27,006 [INFO] player1 get a WHITE coin.
+2025-02-17 05:44:27,006 [INFO] player1 get a RED coin.
+2025-02-17 05:44:27,006 [INFO] player1 get a BLACK coin.
+2025-02-17 05:44:27,006 [INFO] Collected coins: WHITE, RED, BLACK
+2025-02-17 05:44:27,006 [INFO] player1 has over coins.
+2025-02-17 05:44:27,006 [INFO] {'WHITE': 3, 'BLUE': 1, 'GREEN': 2, 'RED': 2, 'BLACK': 4, 'GOLD': 0}
+2025-02-17 05:44:27,006 [INFO] player1 drop a GREEN coin.
+2025-02-17 05:44:27,007 [INFO] Dropped GREEN coin (over 10 limit)
+2025-02-17 05:44:27,007 [INFO] player1 has over coins.
+2025-02-17 05:44:27,007 [INFO] {'WHITE': 3, 'BLUE': 1, 'GREEN': 1, 'RED': 2, 'BLACK': 4, 'GOLD': 0}
+2025-02-17 05:44:27,007 [INFO] player1 drop a GREEN coin.
+2025-02-17 05:44:27,007 [INFO] Dropped GREEN coin (over 10 limit)
+2025-02-17 05:44:27,007 [INFO] Action: 5
+2025-02-17 05:44:27,011 [INFO] ------------------------------
+2025-02-17 05:44:27,011 [INFO] Available actions:
+2025-02-17 05:44:27,011 [INFO]   Action 0: Get coins: WHITE, BLUE, GREEN (0.0%)
+2025-02-17 05:44:27,011 [INFO]   Action 1: Get coins: WHITE, BLUE, RED (0.0%)
+2025-02-17 05:44:27,011 [INFO]   Action 2: Get coins: WHITE, BLUE, BLACK (0.0%)
+2025-02-17 05:44:27,011 [INFO]   Action 3: Get coins: WHITE, GREEN, RED (0.0%)
+2025-02-17 05:44:27,011 [INFO]   Action 4: Get coins: WHITE, GREEN, BLACK (0.0%)
+2025-02-17 05:44:27,011 [INFO]   Action 5: Get coins: WHITE, RED, BLACK (0.0%)
+2025-02-17 05:44:27,011 [INFO]   Action 6: Get coins: BLUE, GREEN, RED (0.0%)
+2025-02-17 05:44:27,011 [INFO]   Action 7: Get coins: BLUE, GREEN, BLACK (0.0%)
+2025-02-17 05:44:27,012 [INFO]   Action 8: Get coins: BLUE, RED, BLACK (0.0%)
+2025-02-17 05:44:27,012 [INFO]   Action 9: Get coins: GREEN, RED, BLACK (0.0%)
+2025-02-17 05:44:27,012 [INFO]   Action 10: Buy l1_WHITE_4 (Level: 1, VP: 0, Color: WHITE) (93.3%)
+2025-02-17 05:44:27,012 [INFO]   Action 16: Buy l2_BLACK_6 (Level: 2, VP: 3, Color: BLACK) (6.7%)
+2025-02-17 05:44:27,012 [INFO] ------------------------------
+2025-02-17 05:44:27,012 [INFO] Total probability: 100.0%
+2025-02-17 05:44:28,011 [INFO] Selected: Action 10
+2025-02-17 05:44:28,011 [INFO] 
+==================================================
+2025-02-17 05:44:28,011 [INFO] Step 12
+2025-02-17 05:44:28,011 [INFO] ------------------------------
+2025-02-17 05:44:28,011 [INFO] player1 bought card l1_WHITE_4:
+2025-02-17 05:44:28,011 [INFO]   Level: 1
+2025-02-17 05:44:28,011 [INFO]   VP: 0
+2025-02-17 05:44:28,012 [INFO]   Gem Color: WHITE
+2025-02-17 05:44:28,012 [INFO]   Original Price: WHITE: 3, BLUE: 1, BLACK: 1
+2025-02-17 05:44:28,012 [INFO]   Actual Price: WHITE: 3, BLUE: 1
+2025-02-17 05:44:28,012 [INFO] VP: 1
+2025-02-17 05:44:28,012 [INFO] Action: 10
+2025-02-17 05:44:28,016 [INFO] ------------------------------
+2025-02-17 05:44:28,016 [INFO] Available actions:
+2025-02-17 05:44:28,016 [INFO]   Action 0: Get coins: WHITE, BLUE, GREEN (0.0%)
+2025-02-17 05:44:28,016 [INFO]   Action 1: Get coins: WHITE, BLUE, RED (0.0%)
+2025-02-17 05:44:28,016 [INFO]   Action 2: Get coins: WHITE, BLUE, BLACK (0.0%)
+2025-02-17 05:44:28,016 [INFO]   Action 3: Get coins: WHITE, GREEN, RED (0.0%)
+2025-02-17 05:44:28,016 [INFO]   Action 4: Get coins: WHITE, GREEN, BLACK (0.0%)
+2025-02-17 05:44:28,016 [INFO]   Action 5: Get coins: WHITE, RED, BLACK (0.0%)
+2025-02-17 05:44:28,016 [INFO]   Action 6: Get coins: BLUE, GREEN, RED (0.0%)
+2025-02-17 05:44:28,016 [INFO]   Action 7: Get coins: BLUE, GREEN, BLACK (0.0%)
+2025-02-17 05:44:28,016 [INFO]   Action 8: Get coins: BLUE, RED, BLACK (0.0%)
+2025-02-17 05:44:28,017 [INFO]   Action 9: Get coins: GREEN, RED, BLACK (0.0%)
+2025-02-17 05:44:28,017 [INFO]   Action 13: Buy l1_WHITE_5 (Level: 1, VP: 0, Color: WHITE) (92.9%)
+2025-02-17 05:44:28,017 [INFO]   Action 16: Buy l2_BLACK_6 (Level: 2, VP: 3, Color: BLACK) (7.1%)
+2025-02-17 05:44:28,017 [INFO] ------------------------------
+2025-02-17 05:44:28,017 [INFO] Total probability: 100.0%
+2025-02-17 05:44:29,013 [INFO] Selected: Action 13
+2025-02-17 05:44:29,013 [INFO] 
+==================================================
+2025-02-17 05:44:29,013 [INFO] Step 13
+2025-02-17 05:44:29,013 [INFO] ------------------------------
+2025-02-17 05:44:29,013 [INFO] player1 bought card l1_WHITE_5:
+2025-02-17 05:44:29,014 [INFO]   Level: 1
+2025-02-17 05:44:29,014 [INFO]   VP: 0
+2025-02-17 05:44:29,014 [INFO]   Gem Color: WHITE
+2025-02-17 05:44:29,014 [INFO]   Original Price: RED: 2, BLACK: 1
+2025-02-17 05:44:29,014 [INFO]   Actual Price: RED: 2
+2025-02-17 05:44:29,014 [INFO] VP: 1
+2025-02-17 05:44:29,014 [INFO] Action: 13
+2025-02-17 05:44:29,018 [INFO] ------------------------------
+2025-02-17 05:44:29,018 [INFO] Available actions:
+2025-02-17 05:44:29,018 [INFO]   Action 0: Get coins: WHITE, BLUE, GREEN (0.0%)
+2025-02-17 05:44:29,018 [INFO]   Action 1: Get coins: WHITE, BLUE, RED (0.0%)
+2025-02-17 05:44:29,018 [INFO]   Action 2: Get coins: WHITE, BLUE, BLACK (0.0%)
+2025-02-17 05:44:29,018 [INFO]   Action 3: Get coins: WHITE, GREEN, RED (0.0%)
+2025-02-17 05:44:29,018 [INFO]   Action 4: Get coins: WHITE, GREEN, BLACK (0.0%)
+2025-02-17 05:44:29,018 [INFO]   Action 5: Get coins: WHITE, RED, BLACK (0.0%)
+2025-02-17 05:44:29,018 [INFO]   Action 6: Get coins: BLUE, GREEN, RED (0.0%)
+2025-02-17 05:44:29,019 [INFO]   Action 7: Get coins: BLUE, GREEN, BLACK (0.0%)
+2025-02-17 05:44:29,019 [INFO]   Action 8: Get coins: BLUE, RED, BLACK (0.0%)
+2025-02-17 05:44:29,019 [INFO]   Action 9: Get coins: GREEN, RED, BLACK (0.0%)
+2025-02-17 05:44:29,019 [INFO]   Action 16: Buy l2_BLACK_6 (Level: 2, VP: 3, Color: BLACK) (100.0%)
+2025-02-17 05:44:29,019 [INFO] ------------------------------
+2025-02-17 05:44:29,019 [INFO] Total probability: 100.0%
+2025-02-17 05:44:30,015 [INFO] Selected: Action 16
+2025-02-17 05:44:30,015 [INFO] 
+==================================================
+2025-02-17 05:44:30,016 [INFO] Step 14
+2025-02-17 05:44:30,016 [INFO] ------------------------------
+2025-02-17 05:44:30,016 [INFO] player1 bought card l2_BLACK_6:
+2025-02-17 05:44:30,016 [INFO]   Level: 2
+2025-02-17 05:44:30,016 [INFO]   VP: 3
+2025-02-17 05:44:30,016 [INFO]   Gem Color: BLACK
+2025-02-17 05:44:30,016 [INFO]   Original Price: BLACK: 6
+2025-02-17 05:44:30,016 [INFO]   Actual Price: BLACK: 4
+2025-02-17 05:44:30,016 [INFO] VP: 4
+2025-02-17 05:44:30,017 [INFO] Action: 16
+2025-02-17 05:44:30,021 [INFO] ------------------------------
+2025-02-17 05:44:30,021 [INFO] Available actions:
+2025-02-17 05:44:30,021 [INFO]   Action 0: Get coins: WHITE, BLUE, GREEN (10.1%)
+2025-02-17 05:44:30,021 [INFO]   Action 1: Get coins: WHITE, BLUE, RED (9.4%)
+2025-02-17 05:44:30,021 [INFO]   Action 2: Get coins: WHITE, BLUE, BLACK (11.0%)
+2025-02-17 05:44:30,021 [INFO]   Action 3: Get coins: WHITE, GREEN, RED (10.6%)
+2025-02-17 05:44:30,021 [INFO]   Action 4: Get coins: WHITE, GREEN, BLACK (10.0%)
+2025-02-17 05:44:30,021 [INFO]   Action 5: Get coins: WHITE, RED, BLACK (11.8%)
+2025-02-17 05:44:30,021 [INFO]   Action 6: Get coins: BLUE, GREEN, RED (8.7%)
+2025-02-17 05:44:30,021 [INFO]   Action 7: Get coins: BLUE, GREEN, BLACK (9.3%)
+2025-02-17 05:44:30,021 [INFO]   Action 8: Get coins: BLUE, RED, BLACK (9.7%)
+2025-02-17 05:44:30,021 [INFO]   Action 9: Get coins: GREEN, RED, BLACK (9.4%)
+2025-02-17 05:44:30,021 [INFO] ------------------------------
+2025-02-17 05:44:30,022 [INFO] Total probability: 100.0%
+2025-02-17 05:44:31,017 [INFO] Selected: Action 7
+2025-02-17 05:44:31,017 [INFO] 
+==================================================
+2025-02-17 05:44:31,017 [INFO] Step 15
+2025-02-17 05:44:31,017 [INFO] ------------------------------
+2025-02-17 05:44:31,018 [INFO] player1 get a BLUE coin.
+2025-02-17 05:44:31,018 [INFO] player1 get a GREEN coin.
+2025-02-17 05:44:31,018 [INFO] player1 get a BLACK coin.
+2025-02-17 05:44:31,018 [INFO] Collected coins: BLUE, GREEN, BLACK
+2025-02-17 05:44:31,018 [INFO] Action: 7
+2025-02-17 05:44:31,022 [INFO] ------------------------------
+2025-02-17 05:44:31,022 [INFO] Available actions:
+2025-02-17 05:44:31,022 [INFO]   Action 0: Get coins: WHITE, BLUE, GREEN (10.1%)
+2025-02-17 05:44:31,022 [INFO]   Action 1: Get coins: WHITE, BLUE, RED (9.3%)
+2025-02-17 05:44:31,022 [INFO]   Action 2: Get coins: WHITE, BLUE, BLACK (11.0%)
+2025-02-17 05:44:31,022 [INFO]   Action 3: Get coins: WHITE, GREEN, RED (10.6%)
+2025-02-17 05:44:31,022 [INFO]   Action 4: Get coins: WHITE, GREEN, BLACK (10.0%)
+2025-02-17 05:44:31,023 [INFO]   Action 5: Get coins: WHITE, RED, BLACK (11.8%)
+2025-02-17 05:44:31,023 [INFO]   Action 6: Get coins: BLUE, GREEN, RED (8.7%)
+2025-02-17 05:44:31,023 [INFO]   Action 7: Get coins: BLUE, GREEN, BLACK (9.2%)
+2025-02-17 05:44:31,023 [INFO]   Action 8: Get coins: BLUE, RED, BLACK (9.8%)
+2025-02-17 05:44:31,023 [INFO]   Action 9: Get coins: GREEN, RED, BLACK (9.4%)
+2025-02-17 05:44:31,023 [INFO] ------------------------------
+2025-02-17 05:44:31,023 [INFO] Total probability: 100.0%
+2025-02-17 05:44:32,020 [INFO] Selected: Action 9
+2025-02-17 05:44:32,021 [INFO] 
+==================================================
+2025-02-17 05:44:32,021 [INFO] Step 16
+2025-02-17 05:44:32,021 [INFO] ------------------------------
+2025-02-17 05:44:32,021 [INFO] player1 get a GREEN coin.
+2025-02-17 05:44:32,021 [INFO] player1 get a RED coin.
+2025-02-17 05:44:32,021 [INFO] player1 get a BLACK coin.
+2025-02-17 05:44:32,021 [INFO] Collected coins: GREEN, RED, BLACK
+2025-02-17 05:44:32,022 [INFO] Action: 9
+2025-02-17 05:44:32,025 [INFO] ------------------------------
+2025-02-17 05:44:32,025 [INFO] Available actions:
+2025-02-17 05:44:32,026 [INFO]   Action 0: Get coins: WHITE, BLUE, GREEN (10.1%)
+2025-02-17 05:44:32,026 [INFO]   Action 1: Get coins: WHITE, BLUE, RED (9.3%)
+2025-02-17 05:44:32,026 [INFO]   Action 2: Get coins: WHITE, BLUE, BLACK (11.0%)
+2025-02-17 05:44:32,026 [INFO]   Action 3: Get coins: WHITE, GREEN, RED (10.7%)
+2025-02-17 05:44:32,026 [INFO]   Action 4: Get coins: WHITE, GREEN, BLACK (10.0%)
+2025-02-17 05:44:32,026 [INFO]   Action 5: Get coins: WHITE, RED, BLACK (11.8%)
+2025-02-17 05:44:32,026 [INFO]   Action 6: Get coins: BLUE, GREEN, RED (8.7%)
+2025-02-17 05:44:32,026 [INFO]   Action 7: Get coins: BLUE, GREEN, BLACK (9.2%)
+2025-02-17 05:44:32,026 [INFO]   Action 8: Get coins: BLUE, RED, BLACK (9.8%)
+2025-02-17 05:44:32,026 [INFO]   Action 9: Get coins: GREEN, RED, BLACK (9.4%)
+2025-02-17 05:44:32,026 [INFO] ------------------------------
+2025-02-17 05:44:32,026 [INFO] Total probability: 100.0%
+2025-02-17 05:44:33,020 [INFO] Selected: Action 2
+2025-02-17 05:44:33,021 [INFO] 
+==================================================
+2025-02-17 05:44:33,021 [INFO] Step 17
+2025-02-17 05:44:33,021 [INFO] ------------------------------
+2025-02-17 05:44:33,021 [INFO] player1 get a WHITE coin.
+2025-02-17 05:44:33,021 [INFO] player1 get a BLUE coin.
+2025-02-17 05:44:33,021 [INFO] player1 get a BLACK coin.
+2025-02-17 05:44:33,021 [INFO] Collected coins: WHITE, BLUE, BLACK
+2025-02-17 05:44:33,022 [INFO] Action: 2
+2025-02-17 05:44:33,025 [INFO] ------------------------------
+2025-02-17 05:44:33,025 [INFO] Available actions:
+2025-02-17 05:44:33,025 [INFO]   Action 0: Get coins: WHITE, BLUE, GREEN (0.0%)
+2025-02-17 05:44:33,026 [INFO]   Action 1: Get coins: WHITE, BLUE, RED (0.0%)
+2025-02-17 05:44:33,026 [INFO]   Action 2: Get coins: WHITE, BLUE, BLACK (0.0%)
+2025-02-17 05:44:33,026 [INFO]   Action 3: Get coins: WHITE, GREEN, RED (0.0%)
+2025-02-17 05:44:33,026 [INFO]   Action 4: Get coins: WHITE, GREEN, BLACK (0.0%)
+2025-02-17 05:44:33,026 [INFO]   Action 5: Get coins: WHITE, RED, BLACK (0.0%)
+2025-02-17 05:44:33,026 [INFO]   Action 6: Get coins: BLUE, GREEN, RED (0.0%)
+2025-02-17 05:44:33,026 [INFO]   Action 7: Get coins: BLUE, GREEN, BLACK (0.0%)
+2025-02-17 05:44:33,026 [INFO]   Action 8: Get coins: BLUE, RED, BLACK (0.0%)
+2025-02-17 05:44:33,026 [INFO]   Action 9: Get coins: GREEN, RED, BLACK (0.0%)
+2025-02-17 05:44:33,026 [INFO]   Action 10: Buy l1_BLACK_2 (Level: 1, VP: 0, Color: BLACK) (30.3%)
+2025-02-17 05:44:33,026 [INFO]   Action 17: Buy l2_BLUE_2 (Level: 2, VP: 1, Color: BLUE) (69.7%)
+2025-02-17 05:44:33,026 [INFO] ------------------------------
+2025-02-17 05:44:33,026 [INFO] Total probability: 100.0%
+2025-02-17 05:44:34,023 [INFO] Selected: Action 17
+2025-02-17 05:44:34,023 [INFO] 
+==================================================
+2025-02-17 05:44:34,023 [INFO] Step 18
+2025-02-17 05:44:34,023 [INFO] ------------------------------
+2025-02-17 05:44:34,023 [INFO] player1 bought card l2_BLUE_2:
+2025-02-17 05:44:34,023 [INFO]   Level: 2
+2025-02-17 05:44:34,023 [INFO]   VP: 1
+2025-02-17 05:44:34,023 [INFO]   Gem Color: BLUE
+2025-02-17 05:44:34,024 [INFO]   Original Price: BLUE: 2, GREEN: 3, BLACK: 3
+2025-02-17 05:44:34,024 [INFO]   Actual Price: BLUE: 2, GREEN: 2
+2025-02-17 05:44:34,024 [INFO] VP: 5
+2025-02-17 05:44:34,024 [INFO] Action: 17
+2025-02-17 05:44:34,028 [INFO] ------------------------------
+2025-02-17 05:44:34,028 [INFO] Available actions:
+2025-02-17 05:44:34,028 [INFO]   Action 0: Get coins: WHITE, BLUE, GREEN (10.0%)
+2025-02-17 05:44:34,028 [INFO]   Action 1: Get coins: WHITE, BLUE, RED (9.3%)
+2025-02-17 05:44:34,028 [INFO]   Action 2: Get coins: WHITE, BLUE, BLACK (11.1%)
+2025-02-17 05:44:34,028 [INFO]   Action 3: Get coins: WHITE, GREEN, RED (10.7%)
+2025-02-17 05:44:34,028 [INFO]   Action 4: Get coins: WHITE, GREEN, BLACK (10.1%)
+2025-02-17 05:44:34,028 [INFO]   Action 5: Get coins: WHITE, RED, BLACK (11.9%)
+2025-02-17 05:44:34,028 [INFO]   Action 6: Get coins: BLUE, GREEN, RED (8.7%)
+2025-02-17 05:44:34,028 [INFO]   Action 7: Get coins: BLUE, GREEN, BLACK (9.2%)
+2025-02-17 05:44:34,028 [INFO]   Action 8: Get coins: BLUE, RED, BLACK (9.8%)
+2025-02-17 05:44:34,029 [INFO]   Action 9: Get coins: GREEN, RED, BLACK (9.3%)
+2025-02-17 05:44:34,029 [INFO] ------------------------------
+2025-02-17 05:44:34,029 [INFO] Total probability: 100.0%
+2025-02-17 05:44:35,023 [INFO] Selected: Action 3
+2025-02-17 05:44:35,024 [INFO] 
+==================================================
+2025-02-17 05:44:35,024 [INFO] Step 19
+2025-02-17 05:44:35,024 [INFO] ------------------------------
+2025-02-17 05:44:35,024 [INFO] player1 get a WHITE coin.
+2025-02-17 05:44:35,024 [INFO] player1 get a GREEN coin.
+2025-02-17 05:44:35,024 [INFO] player1 get a RED coin.
+2025-02-17 05:44:35,024 [INFO] Collected coins: WHITE, GREEN, RED
+2025-02-17 05:44:35,025 [INFO] Action: 3
+2025-02-17 05:44:35,028 [INFO] ------------------------------
+2025-02-17 05:44:35,028 [INFO] Available actions:
+2025-02-17 05:44:35,029 [INFO]   Action 0: Get coins: WHITE, BLUE, GREEN (0.0%)
+2025-02-17 05:44:35,029 [INFO]   Action 1: Get coins: WHITE, BLUE, RED (0.0%)
+2025-02-17 05:44:35,029 [INFO]   Action 2: Get coins: WHITE, BLUE, BLACK (0.0%)
+2025-02-17 05:44:35,029 [INFO]   Action 3: Get coins: WHITE, GREEN, RED (0.0%)
+2025-02-17 05:44:35,029 [INFO]   Action 4: Get coins: WHITE, GREEN, BLACK (0.0%)
+2025-02-17 05:44:35,029 [INFO]   Action 5: Get coins: WHITE, RED, BLACK (0.0%)
+2025-02-17 05:44:35,029 [INFO]   Action 6: Get coins: BLUE, GREEN, RED (0.0%)
+2025-02-17 05:44:35,029 [INFO]   Action 7: Get coins: BLUE, GREEN, BLACK (0.0%)
+2025-02-17 05:44:35,029 [INFO]   Action 8: Get coins: BLUE, RED, BLACK (0.0%)
+2025-02-17 05:44:35,029 [INFO]   Action 9: Get coins: GREEN, RED, BLACK (0.0%)
+2025-02-17 05:44:35,029 [INFO]   Action 13: Buy l1_BLUE_3 (Level: 1, VP: 0, Color: BLUE) (100.0%)
+2025-02-17 05:44:35,029 [INFO] ------------------------------
+2025-02-17 05:44:35,029 [INFO] Total probability: 100.0%
+2025-02-17 05:44:36,024 [INFO] Selected: Action 13
+2025-02-17 05:44:36,024 [INFO] 
+==================================================
+2025-02-17 05:44:36,024 [INFO] Step 20
+2025-02-17 05:44:36,024 [INFO] ------------------------------
+2025-02-17 05:44:36,025 [INFO] player1 bought card l1_BLUE_3:
+2025-02-17 05:44:36,025 [INFO]   Level: 1
+2025-02-17 05:44:36,025 [INFO]   VP: 0
+2025-02-17 05:44:36,025 [INFO]   Gem Color: BLUE
+2025-02-17 05:44:36,025 [INFO]   Original Price: WHITE: 1, GREEN: 2, RED: 2
+2025-02-17 05:44:36,025 [INFO]   Actual Price: GREEN: 1, RED: 2
+2025-02-17 05:44:36,025 [INFO] VP: 5
+2025-02-17 05:44:36,026 [INFO] Action: 13
+2025-02-17 05:44:36,029 [INFO] ------------------------------
+2025-02-17 05:44:36,029 [INFO] Available actions:
+2025-02-17 05:44:36,029 [INFO]   Action 0: Get coins: WHITE, BLUE, GREEN (10.0%)
+2025-02-17 05:44:36,029 [INFO]   Action 1: Get coins: WHITE, BLUE, RED (9.2%)
+2025-02-17 05:44:36,029 [INFO]   Action 2: Get coins: WHITE, BLUE, BLACK (11.1%)
+2025-02-17 05:44:36,029 [INFO]   Action 3: Get coins: WHITE, GREEN, RED (10.7%)
+2025-02-17 05:44:36,030 [INFO]   Action 4: Get coins: WHITE, GREEN, BLACK (10.1%)
+2025-02-17 05:44:36,030 [INFO]   Action 5: Get coins: WHITE, RED, BLACK (11.9%)
+2025-02-17 05:44:36,030 [INFO]   Action 6: Get coins: BLUE, GREEN, RED (8.7%)
+2025-02-17 05:44:36,030 [INFO]   Action 7: Get coins: BLUE, GREEN, BLACK (9.1%)
+2025-02-17 05:44:36,030 [INFO]   Action 8: Get coins: BLUE, RED, BLACK (9.8%)
+2025-02-17 05:44:36,030 [INFO]   Action 9: Get coins: GREEN, RED, BLACK (9.3%)
+2025-02-17 05:44:36,030 [INFO] ------------------------------
+2025-02-17 05:44:36,030 [INFO] Total probability: 100.0%
+2025-02-17 05:44:37,026 [INFO] Selected: Action 7
+2025-02-17 05:44:37,026 [INFO] 
+==================================================
+2025-02-17 05:44:37,026 [INFO] Step 21
+2025-02-17 05:44:37,026 [INFO] ------------------------------
+2025-02-17 05:44:37,027 [INFO] player1 get a BLUE coin.
+2025-02-17 05:44:37,027 [INFO] player1 get a GREEN coin.
+2025-02-17 05:44:37,027 [INFO] player1 get a BLACK coin.
+2025-02-17 05:44:37,027 [INFO] Collected coins: BLUE, GREEN, BLACK
+2025-02-17 05:44:37,027 [INFO] Action: 7
+2025-02-17 05:44:37,031 [INFO] ------------------------------
+2025-02-17 05:44:37,031 [INFO] Available actions:
+2025-02-17 05:44:37,031 [INFO]   Action 0: Get coins: WHITE, BLUE, GREEN (0.0%)
+2025-02-17 05:44:37,031 [INFO]   Action 1: Get coins: WHITE, BLUE, RED (0.0%)
+2025-02-17 05:44:37,031 [INFO]   Action 2: Get coins: WHITE, BLUE, BLACK (0.0%)
+2025-02-17 05:44:37,031 [INFO]   Action 3: Get coins: WHITE, GREEN, RED (0.0%)
+2025-02-17 05:44:37,031 [INFO]   Action 4: Get coins: WHITE, GREEN, BLACK (0.0%)
+2025-02-17 05:44:37,031 [INFO]   Action 5: Get coins: WHITE, RED, BLACK (0.0%)
+2025-02-17 05:44:37,031 [INFO]   Action 6: Get coins: BLUE, GREEN, RED (0.0%)
+2025-02-17 05:44:37,031 [INFO]   Action 7: Get coins: BLUE, GREEN, BLACK (0.0%)
+2025-02-17 05:44:37,031 [INFO]   Action 8: Get coins: BLUE, RED, BLACK (0.0%)
+2025-02-17 05:44:37,032 [INFO]   Action 9: Get coins: GREEN, RED, BLACK (0.0%)
+2025-02-17 05:44:37,032 [INFO]   Action 12: Buy l1_WHITE_7 (Level: 1, VP: 0, Color: WHITE) (24.3%)
+2025-02-17 05:44:37,032 [INFO]   Action 18: Buy l3_WHITE_4 (Level: 3, VP: 5, Color: WHITE) (75.7%)
+2025-02-17 05:44:37,032 [INFO] ------------------------------
+2025-02-17 05:44:37,032 [INFO] Total probability: 100.0%
+2025-02-17 05:44:38,028 [INFO] Selected: Action 18
+2025-02-17 05:44:38,028 [INFO] 
+==================================================
+2025-02-17 05:44:38,028 [INFO] Step 22
+2025-02-17 05:44:38,029 [INFO] ------------------------------
+2025-02-17 05:44:38,029 [INFO] player1 bought card l3_WHITE_4:
+2025-02-17 05:44:38,029 [INFO]   Level: 3
+2025-02-17 05:44:38,029 [INFO]   VP: 5
+2025-02-17 05:44:38,029 [INFO]   Gem Color: WHITE
+2025-02-17 05:44:38,029 [INFO]   Original Price: WHITE: 3, BLACK: 7
+2025-02-17 05:44:38,029 [INFO]   Actual Price: WHITE: 1, BLACK: 4
+2025-02-17 05:44:38,029 [INFO] VP: 10
+2025-02-17 05:44:38,030 [INFO] Action: 18
+2025-02-17 05:44:38,033 [INFO] ------------------------------
+2025-02-17 05:44:38,033 [INFO] Available actions:
+2025-02-17 05:44:38,033 [INFO]   Action 0: Get coins: WHITE, BLUE, GREEN (0.0%)
+2025-02-17 05:44:38,033 [INFO]   Action 1: Get coins: WHITE, BLUE, RED (0.0%)
+2025-02-17 05:44:38,033 [INFO]   Action 2: Get coins: WHITE, BLUE, BLACK (0.0%)
+2025-02-17 05:44:38,033 [INFO]   Action 3: Get coins: WHITE, GREEN, RED (0.0%)
+2025-02-17 05:44:38,033 [INFO]   Action 4: Get coins: WHITE, GREEN, BLACK (0.0%)
+2025-02-17 05:44:38,034 [INFO]   Action 5: Get coins: WHITE, RED, BLACK (0.0%)
+2025-02-17 05:44:38,034 [INFO]   Action 6: Get coins: BLUE, GREEN, RED (0.0%)
+2025-02-17 05:44:38,034 [INFO]   Action 7: Get coins: BLUE, GREEN, BLACK (0.0%)
+2025-02-17 05:44:38,034 [INFO]   Action 8: Get coins: BLUE, RED, BLACK (0.0%)
+2025-02-17 05:44:38,034 [INFO]   Action 9: Get coins: GREEN, RED, BLACK (0.0%)
+2025-02-17 05:44:38,034 [INFO]   Action 12: Buy l1_WHITE_7 (Level: 1, VP: 0, Color: WHITE) (100.0%)
+2025-02-17 05:44:38,034 [INFO] ------------------------------
+2025-02-17 05:44:38,034 [INFO] Total probability: 100.0%
+2025-02-17 05:44:39,031 [INFO] Selected: Action 12
+2025-02-17 05:44:39,031 [INFO] 
+==================================================
+2025-02-17 05:44:39,031 [INFO] Step 23
+2025-02-17 05:44:39,031 [INFO] ------------------------------
+2025-02-17 05:44:39,032 [INFO] player1 bought card l1_WHITE_7:
+2025-02-17 05:44:39,032 [INFO]   Level: 1
+2025-02-17 05:44:39,032 [INFO]   VP: 0
+2025-02-17 05:44:39,032 [INFO]   Gem Color: WHITE
+2025-02-17 05:44:39,032 [INFO]   Original Price: BLUE: 3
+2025-02-17 05:44:39,032 [INFO]   Actual Price: BLUE: 1
+2025-02-17 05:44:39,032 [INFO] VP: 10
+2025-02-17 05:44:39,032 [INFO] Action: 12
+2025-02-17 05:44:39,036 [INFO] ------------------------------
+2025-02-17 05:44:39,036 [INFO] Available actions:
+2025-02-17 05:44:39,036 [INFO]   Action 0: Get coins: WHITE, BLUE, GREEN (9.9%)
+2025-02-17 05:44:39,036 [INFO]   Action 1: Get coins: WHITE, BLUE, RED (9.0%)
+2025-02-17 05:44:39,036 [INFO]   Action 2: Get coins: WHITE, BLUE, BLACK (11.2%)
+2025-02-17 05:44:39,036 [INFO]   Action 3: Get coins: WHITE, GREEN, RED (10.7%)
+2025-02-17 05:44:39,036 [INFO]   Action 4: Get coins: WHITE, GREEN, BLACK (10.4%)
+2025-02-17 05:44:39,036 [INFO]   Action 5: Get coins: WHITE, RED, BLACK (11.9%)
+2025-02-17 05:44:39,037 [INFO]   Action 6: Get coins: BLUE, GREEN, RED (8.7%)
+2025-02-17 05:44:39,037 [INFO]   Action 7: Get coins: BLUE, GREEN, BLACK (9.0%)
+2025-02-17 05:44:39,037 [INFO]   Action 8: Get coins: BLUE, RED, BLACK (9.9%)
+2025-02-17 05:44:39,037 [INFO]   Action 9: Get coins: GREEN, RED, BLACK (9.3%)
+2025-02-17 05:44:39,037 [INFO] ------------------------------
+2025-02-17 05:44:39,037 [INFO] Total probability: 100.0%
+2025-02-17 05:44:40,035 [INFO] Selected: Action 5
+2025-02-17 05:44:40,035 [INFO] 
+==================================================
+2025-02-17 05:44:40,035 [INFO] Step 24
+2025-02-17 05:44:40,035 [INFO] ------------------------------
+2025-02-17 05:44:40,035 [INFO] player1 get a WHITE coin.
+2025-02-17 05:44:40,035 [INFO] player1 get a RED coin.
+2025-02-17 05:44:40,035 [INFO] player1 get a BLACK coin.
+2025-02-17 05:44:40,035 [INFO] Collected coins: WHITE, RED, BLACK
+2025-02-17 05:44:40,036 [INFO] Action: 5
+2025-02-17 05:44:40,039 [INFO] ------------------------------
+2025-02-17 05:44:40,040 [INFO] Available actions:
+2025-02-17 05:44:40,040 [INFO]   Action 0: Get coins: WHITE, BLUE, GREEN (0.0%)
+2025-02-17 05:44:40,040 [INFO]   Action 1: Get coins: WHITE, BLUE, RED (0.0%)
+2025-02-17 05:44:40,040 [INFO]   Action 2: Get coins: WHITE, BLUE, BLACK (0.0%)
+2025-02-17 05:44:40,040 [INFO]   Action 3: Get coins: WHITE, GREEN, RED (0.0%)
+2025-02-17 05:44:40,040 [INFO]   Action 4: Get coins: WHITE, GREEN, BLACK (0.0%)
+2025-02-17 05:44:40,040 [INFO]   Action 5: Get coins: WHITE, RED, BLACK (0.0%)
+2025-02-17 05:44:40,040 [INFO]   Action 6: Get coins: BLUE, GREEN, RED (0.0%)
+2025-02-17 05:44:40,040 [INFO]   Action 7: Get coins: BLUE, GREEN, BLACK (0.0%)
+2025-02-17 05:44:40,040 [INFO]   Action 8: Get coins: BLUE, RED, BLACK (0.0%)
+2025-02-17 05:44:40,040 [INFO]   Action 9: Get coins: GREEN, RED, BLACK (0.0%)
+2025-02-17 05:44:40,040 [INFO]   Action 10: Buy l1_BLACK_2 (Level: 1, VP: 0, Color: BLACK) (0.5%)
+2025-02-17 05:44:40,040 [INFO]   Action 12: Buy l1_GREEN_2 (Level: 1, VP: 0, Color: GREEN) (0.6%)
+2025-02-17 05:44:40,040 [INFO]   Action 15: Buy l2_WHITE_6 (Level: 2, VP: 3, Color: WHITE) (98.9%)
+2025-02-17 05:44:40,040 [INFO] ------------------------------
+2025-02-17 05:44:40,040 [INFO] Total probability: 100.0%
+2025-02-17 05:44:41,040 [INFO] Selected: Action 15
+2025-02-17 05:44:41,040 [INFO] 
+==================================================
+2025-02-17 05:44:41,040 [INFO] Step 25
+2025-02-17 05:44:41,040 [INFO] ------------------------------
+2025-02-17 05:44:41,040 [INFO] player1 bought card l2_WHITE_6:
+2025-02-17 05:44:41,041 [INFO]   Level: 2
+2025-02-17 05:44:41,041 [INFO]   VP: 3
+2025-02-17 05:44:41,041 [INFO]   Gem Color: WHITE
+2025-02-17 05:44:41,041 [INFO]   Original Price: WHITE: 6
+2025-02-17 05:44:41,041 [INFO]   Actual Price: WHITE: 2
+2025-02-17 05:44:41,041 [INFO] VP: 13
+2025-02-17 05:44:41,041 [INFO] Action: 15
+2025-02-17 05:44:41,045 [INFO] ------------------------------
+2025-02-17 05:44:41,045 [INFO] Available actions:
+2025-02-17 05:44:41,045 [INFO]   Action 0: Get coins: WHITE, BLUE, GREEN (0.0%)
+2025-02-17 05:44:41,045 [INFO]   Action 1: Get coins: WHITE, BLUE, RED (0.0%)
+2025-02-17 05:44:41,045 [INFO]   Action 2: Get coins: WHITE, BLUE, BLACK (0.0%)
+2025-02-17 05:44:41,045 [INFO]   Action 3: Get coins: WHITE, GREEN, RED (0.0%)
+2025-02-17 05:44:41,045 [INFO]   Action 4: Get coins: WHITE, GREEN, BLACK (0.0%)
+2025-02-17 05:44:41,045 [INFO]   Action 5: Get coins: WHITE, RED, BLACK (0.0%)
+2025-02-17 05:44:41,046 [INFO]   Action 6: Get coins: BLUE, GREEN, RED (0.0%)
+2025-02-17 05:44:41,046 [INFO]   Action 7: Get coins: BLUE, GREEN, BLACK (0.0%)
+2025-02-17 05:44:41,046 [INFO]   Action 8: Get coins: BLUE, RED, BLACK (0.0%)
+2025-02-17 05:44:41,046 [INFO]   Action 9: Get coins: GREEN, RED, BLACK (0.0%)
+2025-02-17 05:44:41,046 [INFO]   Action 10: Buy l1_BLACK_2 (Level: 1, VP: 0, Color: BLACK) (45.5%)
+2025-02-17 05:44:41,046 [INFO]   Action 12: Buy l1_GREEN_2 (Level: 1, VP: 0, Color: GREEN) (54.5%)
+2025-02-17 05:44:41,046 [INFO] ------------------------------
+2025-02-17 05:44:41,046 [INFO] Total probability: 100.0%
+2025-02-17 05:44:42,045 [INFO] Selected: Action 10
+2025-02-17 05:44:42,045 [INFO] 
+==================================================
+2025-02-17 05:44:42,045 [INFO] Step 26
+2025-02-17 05:44:42,045 [INFO] ------------------------------
+2025-02-17 05:44:42,046 [INFO] player1 bought card l1_BLACK_2:
+2025-02-17 05:44:42,046 [INFO]   Level: 1
+2025-02-17 05:44:42,046 [INFO]   VP: 0
+2025-02-17 05:44:42,046 [INFO]   Gem Color: BLACK
+2025-02-17 05:44:42,046 [INFO]   Original Price: WHITE: 1, BLUE: 2, GREEN: 1, RED: 1
+2025-02-17 05:44:42,046 [INFO]   Actual Price: RED: 1
+2025-02-17 05:44:42,046 [INFO] VP: 13
+2025-02-17 05:44:42,047 [INFO] Action: 10
+2025-02-17 05:44:42,050 [INFO] ------------------------------
+2025-02-17 05:44:42,050 [INFO] Available actions:
+2025-02-17 05:44:42,050 [INFO]   Action 0: Get coins: WHITE, BLUE, GREEN (0.0%)
+2025-02-17 05:44:42,050 [INFO]   Action 1: Get coins: WHITE, BLUE, RED (0.0%)
+2025-02-17 05:44:42,050 [INFO]   Action 2: Get coins: WHITE, BLUE, BLACK (0.0%)
+2025-02-17 05:44:42,050 [INFO]   Action 3: Get coins: WHITE, GREEN, RED (0.0%)
+2025-02-17 05:44:42,050 [INFO]   Action 4: Get coins: WHITE, GREEN, BLACK (0.0%)
+2025-02-17 05:44:42,050 [INFO]   Action 5: Get coins: WHITE, RED, BLACK (0.0%)
+2025-02-17 05:44:42,051 [INFO]   Action 6: Get coins: BLUE, GREEN, RED (0.0%)
+2025-02-17 05:44:42,051 [INFO]   Action 7: Get coins: BLUE, GREEN, BLACK (0.0%)
+2025-02-17 05:44:42,051 [INFO]   Action 8: Get coins: BLUE, RED, BLACK (0.0%)
+2025-02-17 05:44:42,051 [INFO]   Action 9: Get coins: GREEN, RED, BLACK (0.0%)
+2025-02-17 05:44:42,051 [INFO]   Action 13: Buy l1_RED_7 (Level: 1, VP: 0, Color: RED) (100.0%)
+2025-02-17 05:44:42,051 [INFO] ------------------------------
+2025-02-17 05:44:42,051 [INFO] Total probability: 100.0%
+2025-02-17 05:44:43,050 [INFO] Selected: Action 13
+2025-02-17 05:44:43,050 [INFO] 
+==================================================
+2025-02-17 05:44:43,050 [INFO] Step 27
+2025-02-17 05:44:43,051 [INFO] ------------------------------
+2025-02-17 05:44:43,051 [INFO] player1 bought card l1_RED_7:
+2025-02-17 05:44:43,051 [INFO]   Level: 1
+2025-02-17 05:44:43,051 [INFO]   VP: 0
+2025-02-17 05:44:43,051 [INFO]   Gem Color: RED
+2025-02-17 05:44:43,051 [INFO]   Original Price: WHITE: 3
+2025-02-17 05:44:43,051 [INFO]   Actual Price: 
+2025-02-17 05:44:43,051 [INFO] VP: 13
+2025-02-17 05:44:43,052 [INFO] Action: 13
+2025-02-17 05:44:43,055 [INFO] ------------------------------
+2025-02-17 05:44:43,055 [INFO] Available actions:
+2025-02-17 05:44:43,055 [INFO]   Action 0: Get coins: WHITE, BLUE, GREEN (0.0%)
+2025-02-17 05:44:43,056 [INFO]   Action 1: Get coins: WHITE, BLUE, RED (0.0%)
+2025-02-17 05:44:43,056 [INFO]   Action 2: Get coins: WHITE, BLUE, BLACK (0.0%)
+2025-02-17 05:44:43,056 [INFO]   Action 3: Get coins: WHITE, GREEN, RED (0.0%)
+2025-02-17 05:44:43,056 [INFO]   Action 4: Get coins: WHITE, GREEN, BLACK (0.0%)
+2025-02-17 05:44:43,056 [INFO]   Action 5: Get coins: WHITE, RED, BLACK (0.0%)
+2025-02-17 05:44:43,056 [INFO]   Action 6: Get coins: BLUE, GREEN, RED (0.0%)
+2025-02-17 05:44:43,056 [INFO]   Action 7: Get coins: BLUE, GREEN, BLACK (0.0%)
+2025-02-17 05:44:43,056 [INFO]   Action 8: Get coins: BLUE, RED, BLACK (0.0%)
+2025-02-17 05:44:43,056 [INFO]   Action 9: Get coins: GREEN, RED, BLACK (0.0%)
+2025-02-17 05:44:43,056 [INFO]   Action 11: Buy l1_GREEN_2 (Level: 1, VP: 0, Color: GREEN) (100.0%)
+2025-02-17 05:44:43,056 [INFO] ------------------------------
+2025-02-17 05:44:43,056 [INFO] Total probability: 100.0%
+2025-02-17 05:44:44,052 [INFO] Selected: Action 11
+2025-02-17 05:44:44,052 [INFO] 
+==================================================
+2025-02-17 05:44:44,052 [INFO] Step 28
+2025-02-17 05:44:44,052 [INFO] ------------------------------
+2025-02-17 05:44:44,053 [INFO] player1 bought card l1_GREEN_2:
+2025-02-17 05:44:44,053 [INFO]   Level: 1
+2025-02-17 05:44:44,053 [INFO]   VP: 0
+2025-02-17 05:44:44,053 [INFO]   Gem Color: GREEN
+2025-02-17 05:44:44,053 [INFO]   Original Price: WHITE: 1, BLUE: 1, RED: 1, BLACK: 2
+2025-02-17 05:44:44,053 [INFO]   Actual Price: 
+2025-02-17 05:44:44,053 [INFO] VP: 13
+2025-02-17 05:44:44,054 [INFO] Action: 11
+2025-02-17 05:44:44,057 [INFO] ------------------------------
+2025-02-17 05:44:44,057 [INFO] Available actions:
+2025-02-17 05:44:44,057 [INFO]   Action 0: Get coins: WHITE, BLUE, GREEN (0.0%)
+2025-02-17 05:44:44,058 [INFO]   Action 1: Get coins: WHITE, BLUE, RED (0.0%)
+2025-02-17 05:44:44,058 [INFO]   Action 2: Get coins: WHITE, BLUE, BLACK (0.0%)
+2025-02-17 05:44:44,058 [INFO]   Action 3: Get coins: WHITE, GREEN, RED (0.0%)
+2025-02-17 05:44:44,058 [INFO]   Action 4: Get coins: WHITE, GREEN, BLACK (0.0%)
+2025-02-17 05:44:44,058 [INFO]   Action 5: Get coins: WHITE, RED, BLACK (0.0%)
+2025-02-17 05:44:44,058 [INFO]   Action 6: Get coins: BLUE, GREEN, RED (0.0%)
+2025-02-17 05:44:44,058 [INFO]   Action 7: Get coins: BLUE, GREEN, BLACK (0.0%)
+2025-02-17 05:44:44,058 [INFO]   Action 8: Get coins: BLUE, RED, BLACK (0.0%)
+2025-02-17 05:44:44,058 [INFO]   Action 9: Get coins: GREEN, RED, BLACK (0.0%)
+2025-02-17 05:44:44,058 [INFO]   Action 13: Buy l1_BLUE_5 (Level: 1, VP: 0, Color: BLUE) (0.3%)
+2025-02-17 05:44:44,058 [INFO]   Action 16: Buy l2_BLACK_2 (Level: 2, VP: 1, Color: BLACK) (99.7%)
+2025-02-17 05:44:44,058 [INFO] ------------------------------
+2025-02-17 05:44:44,058 [INFO] Total probability: 100.0%
+2025-02-17 05:44:45,057 [INFO] Selected: Action 16
+2025-02-17 05:44:45,057 [INFO] 
+==================================================
+2025-02-17 05:44:45,057 [INFO] Step 29
+2025-02-17 05:44:45,057 [INFO] ------------------------------
+2025-02-17 05:44:45,057 [INFO] player1 bought card l2_BLACK_2:
+2025-02-17 05:44:45,057 [INFO]   Level: 2
+2025-02-17 05:44:45,057 [INFO]   VP: 1
+2025-02-17 05:44:45,057 [INFO]   Gem Color: BLACK
+2025-02-17 05:44:45,058 [INFO]   Original Price: WHITE: 3, GREEN: 3, BLACK: 2
+2025-02-17 05:44:45,058 [INFO]   Actual Price: GREEN: 1
+2025-02-17 05:44:45,058 [INFO] VP: 14
+2025-02-17 05:44:45,058 [INFO] Action: 16
+2025-02-17 05:44:45,062 [INFO] ------------------------------
+2025-02-17 05:44:45,062 [INFO] Available actions:
+2025-02-17 05:44:45,062 [INFO]   Action 0: Get coins: WHITE, BLUE, GREEN (0.0%)
+2025-02-17 05:44:45,062 [INFO]   Action 1: Get coins: WHITE, BLUE, RED (0.0%)
+2025-02-17 05:44:45,062 [INFO]   Action 2: Get coins: WHITE, BLUE, BLACK (0.0%)
+2025-02-17 05:44:45,062 [INFO]   Action 3: Get coins: WHITE, GREEN, RED (0.0%)
+2025-02-17 05:44:45,062 [INFO]   Action 4: Get coins: WHITE, GREEN, BLACK (0.0%)
+2025-02-17 05:44:45,062 [INFO]   Action 5: Get coins: WHITE, RED, BLACK (0.0%)
+2025-02-17 05:44:45,062 [INFO]   Action 6: Get coins: BLUE, GREEN, RED (0.0%)
+2025-02-17 05:44:45,062 [INFO]   Action 7: Get coins: BLUE, GREEN, BLACK (0.0%)
+2025-02-17 05:44:45,062 [INFO]   Action 8: Get coins: BLUE, RED, BLACK (0.0%)
+2025-02-17 05:44:45,062 [INFO]   Action 9: Get coins: GREEN, RED, BLACK (0.0%)
+2025-02-17 05:44:45,063 [INFO]   Action 13: Buy l1_BLUE_5 (Level: 1, VP: 0, Color: BLUE) (100.0%)
+2025-02-17 05:44:45,063 [INFO] ------------------------------
+2025-02-17 05:44:45,063 [INFO] Total probability: 100.0%
+2025-02-17 05:44:46,061 [INFO] Selected: Action 13
+2025-02-17 05:44:46,061 [INFO] 
+==================================================
+2025-02-17 05:44:46,061 [INFO] Step 30
+2025-02-17 05:44:46,061 [INFO] ------------------------------
+2025-02-17 05:44:46,061 [INFO] player1 bought card l1_BLUE_5:
+2025-02-17 05:44:46,062 [INFO]   Level: 1
+2025-02-17 05:44:46,062 [INFO]   VP: 0
+2025-02-17 05:44:46,062 [INFO]   Gem Color: BLUE
+2025-02-17 05:44:46,062 [INFO]   Original Price: WHITE: 1, BLACK: 2
+2025-02-17 05:44:46,062 [INFO]   Actual Price: 
+2025-02-17 05:44:46,062 [INFO] VP: 14
+2025-02-17 05:44:46,062 [INFO] Action: 13
+2025-02-17 05:44:46,066 [INFO] ------------------------------
+2025-02-17 05:44:46,066 [INFO] Available actions:
+2025-02-17 05:44:46,066 [INFO]   Action 0: Get coins: WHITE, BLUE, GREEN (0.0%)
+2025-02-17 05:44:46,066 [INFO]   Action 1: Get coins: WHITE, BLUE, RED (0.0%)
+2025-02-17 05:44:46,066 [INFO]   Action 2: Get coins: WHITE, BLUE, BLACK (0.0%)
+2025-02-17 05:44:46,066 [INFO]   Action 3: Get coins: WHITE, GREEN, RED (0.0%)
+2025-02-17 05:44:46,066 [INFO]   Action 4: Get coins: WHITE, GREEN, BLACK (0.0%)
+2025-02-17 05:44:46,066 [INFO]   Action 5: Get coins: WHITE, RED, BLACK (0.0%)
+2025-02-17 05:44:46,066 [INFO]   Action 6: Get coins: BLUE, GREEN, RED (0.0%)
+2025-02-17 05:44:46,066 [INFO]   Action 7: Get coins: BLUE, GREEN, BLACK (0.0%)
+2025-02-17 05:44:46,066 [INFO]   Action 8: Get coins: BLUE, RED, BLACK (0.0%)
+2025-02-17 05:44:46,066 [INFO]   Action 9: Get coins: GREEN, RED, BLACK (0.0%)
+2025-02-17 05:44:46,067 [INFO]   Action 13: Buy l1_BLUE_7 (Level: 1, VP: 0, Color: BLUE) (100.0%)
+2025-02-17 05:44:46,067 [INFO] ------------------------------
+2025-02-17 05:44:46,067 [INFO] Total probability: 100.0%
+2025-02-17 05:44:47,076 [INFO] Selected: Action 13
+2025-02-17 05:44:47,076 [INFO] 
+==================================================
+2025-02-17 05:44:47,076 [INFO] Step 31
+2025-02-17 05:44:47,076 [INFO] ------------------------------
+2025-02-17 05:44:47,077 [INFO] player1 bought card l1_BLUE_7:
+2025-02-17 05:44:47,077 [INFO]   Level: 1
+2025-02-17 05:44:47,077 [INFO]   VP: 0
+2025-02-17 05:44:47,077 [INFO]   Gem Color: BLUE
+2025-02-17 05:44:47,077 [INFO]   Original Price: BLACK: 3
+2025-02-17 05:44:47,077 [INFO]   Actual Price: 
+2025-02-17 05:44:47,077 [INFO] VP: 14
+2025-02-17 05:44:47,078 [INFO] Action: 13
+2025-02-17 05:44:47,081 [INFO] ------------------------------
+2025-02-17 05:44:47,081 [INFO] Available actions:
+2025-02-17 05:44:47,081 [INFO]   Action 0: Get coins: WHITE, BLUE, GREEN (0.0%)
+2025-02-17 05:44:47,081 [INFO]   Action 1: Get coins: WHITE, BLUE, RED (0.0%)
+2025-02-17 05:44:47,081 [INFO]   Action 2: Get coins: WHITE, BLUE, BLACK (0.0%)
+2025-02-17 05:44:47,081 [INFO]   Action 3: Get coins: WHITE, GREEN, RED (0.0%)
+2025-02-17 05:44:47,081 [INFO]   Action 4: Get coins: WHITE, GREEN, BLACK (0.0%)
+2025-02-17 05:44:47,081 [INFO]   Action 5: Get coins: WHITE, RED, BLACK (0.0%)
+2025-02-17 05:44:47,081 [INFO]   Action 6: Get coins: BLUE, GREEN, RED (0.0%)
+2025-02-17 05:44:47,082 [INFO]   Action 7: Get coins: BLUE, GREEN, BLACK (0.0%)
+2025-02-17 05:44:47,082 [INFO]   Action 8: Get coins: BLUE, RED, BLACK (0.0%)
+2025-02-17 05:44:47,082 [INFO]   Action 9: Get coins: GREEN, RED, BLACK (0.0%)
+2025-02-17 05:44:47,082 [INFO]   Action 13: Buy l1_BLUE_1 (Level: 1, VP: 0, Color: BLUE) (100.0%)
+2025-02-17 05:44:47,082 [INFO] ------------------------------
+2025-02-17 05:44:47,082 [INFO] Total probability: 100.0%
+2025-02-17 05:44:48,079 [INFO] Selected: Action 13
+2025-02-17 05:44:48,079 [INFO] 
+==================================================
+2025-02-17 05:44:48,079 [INFO] Step 32
+2025-02-17 05:44:48,079 [INFO] ------------------------------
+2025-02-17 05:44:48,080 [INFO] player1 bought card l1_BLUE_1:
+2025-02-17 05:44:48,080 [INFO]   Level: 1
+2025-02-17 05:44:48,080 [INFO]   VP: 0
+2025-02-17 05:44:48,080 [INFO]   Gem Color: BLUE
+2025-02-17 05:44:48,080 [INFO]   Original Price: WHITE: 1, GREEN: 1, RED: 1, BLACK: 1
+2025-02-17 05:44:48,080 [INFO]   Actual Price: 
+2025-02-17 05:44:48,080 [INFO] VP: 14
+2025-02-17 05:44:48,081 [INFO] Action: 13
+2025-02-17 05:44:48,084 [INFO] ------------------------------
+2025-02-17 05:44:48,084 [INFO] Available actions:
+2025-02-17 05:44:48,084 [INFO]   Action 0: Get coins: WHITE, BLUE, GREEN (9.8%)
+2025-02-17 05:44:48,084 [INFO]   Action 1: Get coins: WHITE, BLUE, RED (8.9%)
+2025-02-17 05:44:48,084 [INFO]   Action 2: Get coins: WHITE, BLUE, BLACK (11.4%)
+2025-02-17 05:44:48,084 [INFO]   Action 3: Get coins: WHITE, GREEN, RED (10.6%)
+2025-02-17 05:44:48,084 [INFO]   Action 4: Get coins: WHITE, GREEN, BLACK (10.6%)
+2025-02-17 05:44:48,084 [INFO]   Action 5: Get coins: WHITE, RED, BLACK (12.1%)
+2025-02-17 05:44:48,084 [INFO]   Action 6: Get coins: BLUE, GREEN, RED (8.6%)
+2025-02-17 05:44:48,084 [INFO]   Action 7: Get coins: BLUE, GREEN, BLACK (8.8%)
+2025-02-17 05:44:48,084 [INFO]   Action 8: Get coins: BLUE, RED, BLACK (10.0%)
+2025-02-17 05:44:48,085 [INFO]   Action 9: Get coins: GREEN, RED, BLACK (9.3%)
+2025-02-17 05:44:48,085 [INFO] ------------------------------
+2025-02-17 05:44:48,085 [INFO] Total probability: 100.0%
+2025-02-17 05:44:49,089 [INFO] Selected: Action 5
+2025-02-17 05:44:49,089 [INFO] 
+==================================================
+2025-02-17 05:44:49,089 [INFO] Step 33
+2025-02-17 05:44:49,089 [INFO] ------------------------------
+2025-02-17 05:44:49,089 [INFO] player1 get a WHITE coin.
+2025-02-17 05:44:49,089 [INFO] player1 get a RED coin.
+2025-02-17 05:44:49,089 [INFO] player1 get a BLACK coin.
+2025-02-17 05:44:49,090 [INFO] Collected coins: WHITE, RED, BLACK
+2025-02-17 05:44:49,090 [INFO] Action: 5
+2025-02-17 05:44:49,093 [INFO] ------------------------------
+2025-02-17 05:44:49,093 [INFO] Available actions:
+2025-02-17 05:44:49,094 [INFO]   Action 0: Get coins: WHITE, BLUE, GREEN (0.0%)
+2025-02-17 05:44:49,094 [INFO]   Action 1: Get coins: WHITE, BLUE, RED (0.0%)
+2025-02-17 05:44:49,094 [INFO]   Action 2: Get coins: WHITE, BLUE, BLACK (0.0%)
+2025-02-17 05:44:49,094 [INFO]   Action 3: Get coins: WHITE, GREEN, RED (0.0%)
+2025-02-17 05:44:49,094 [INFO]   Action 4: Get coins: WHITE, GREEN, BLACK (0.0%)
+2025-02-17 05:44:49,094 [INFO]   Action 5: Get coins: WHITE, RED, BLACK (0.0%)
+2025-02-17 05:44:49,094 [INFO]   Action 6: Get coins: BLUE, GREEN, RED (0.0%)
+2025-02-17 05:44:49,094 [INFO]   Action 7: Get coins: BLUE, GREEN, BLACK (0.0%)
+2025-02-17 05:44:49,094 [INFO]   Action 8: Get coins: BLUE, RED, BLACK (0.0%)
+2025-02-17 05:44:49,094 [INFO]   Action 9: Get coins: GREEN, RED, BLACK (0.0%)
+2025-02-17 05:44:49,094 [INFO]   Action 12: Buy l1_RED_6 (Level: 1, VP: 0, Color: RED) (23.7%)
+2025-02-17 05:44:49,094 [INFO]   Action 13: Buy l1_GREEN_3 (Level: 1, VP: 0, Color: GREEN) (76.3%)
+2025-02-17 05:44:49,094 [INFO] ------------------------------
+2025-02-17 05:44:49,094 [INFO] Total probability: 100.0%
+2025-02-17 05:44:50,092 [INFO] Selected: Action 12
+2025-02-17 05:44:50,093 [INFO] 
+==================================================
+2025-02-17 05:44:50,093 [INFO] Step 34
+2025-02-17 05:44:50,093 [INFO] ------------------------------
+2025-02-17 05:44:50,093 [INFO] player1 bought card l1_RED_6:
+2025-02-17 05:44:50,093 [INFO]   Level: 1
+2025-02-17 05:44:50,093 [INFO]   VP: 0
+2025-02-17 05:44:50,093 [INFO]   Gem Color: RED
+2025-02-17 05:44:50,093 [INFO]   Original Price: WHITE: 2, RED: 2
+2025-02-17 05:44:50,093 [INFO]   Actual Price: RED: 1
+2025-02-17 05:44:50,093 [INFO] VP: 14
+2025-02-17 05:44:50,094 [INFO] Action: 12
+2025-02-17 05:44:50,097 [INFO] ------------------------------
+2025-02-17 05:44:50,097 [INFO] Available actions:
+2025-02-17 05:44:50,097 [INFO]   Action 0: Get coins: WHITE, BLUE, GREEN (0.0%)
+2025-02-17 05:44:50,097 [INFO]   Action 1: Get coins: WHITE, BLUE, RED (0.0%)
+2025-02-17 05:44:50,097 [INFO]   Action 2: Get coins: WHITE, BLUE, BLACK (0.0%)
+2025-02-17 05:44:50,097 [INFO]   Action 3: Get coins: WHITE, GREEN, RED (0.0%)
+2025-02-17 05:44:50,098 [INFO]   Action 4: Get coins: WHITE, GREEN, BLACK (0.0%)
+2025-02-17 05:44:50,098 [INFO]   Action 5: Get coins: WHITE, RED, BLACK (0.0%)
+2025-02-17 05:44:50,098 [INFO]   Action 6: Get coins: BLUE, GREEN, RED (0.0%)
+2025-02-17 05:44:50,098 [INFO]   Action 7: Get coins: BLUE, GREEN, BLACK (0.0%)
+2025-02-17 05:44:50,098 [INFO]   Action 8: Get coins: BLUE, RED, BLACK (0.0%)
+2025-02-17 05:44:50,098 [INFO]   Action 9: Get coins: GREEN, RED, BLACK (0.0%)
+2025-02-17 05:44:50,098 [INFO]   Action 12: Buy l1_GREEN_3 (Level: 1, VP: 0, Color: GREEN) (23.4%)
+2025-02-17 05:44:50,098 [INFO]   Action 13: Buy l1_WHITE_3 (Level: 1, VP: 0, Color: WHITE) (76.6%)
+2025-02-17 05:44:50,098 [INFO] ------------------------------
+2025-02-17 05:44:50,098 [INFO] Total probability: 100.0%
+2025-02-17 05:44:51,095 [INFO] Selected: Action 13
+2025-02-17 05:44:51,095 [INFO] 
+==================================================
+2025-02-17 05:44:51,095 [INFO] Step 35
+2025-02-17 05:44:51,095 [INFO] ------------------------------
+2025-02-17 05:44:51,095 [INFO] player1 bought card l1_WHITE_3:
+2025-02-17 05:44:51,096 [INFO]   Level: 1
+2025-02-17 05:44:51,096 [INFO]   VP: 0
+2025-02-17 05:44:51,096 [INFO]   Gem Color: WHITE
+2025-02-17 05:44:51,096 [INFO]   Original Price: BLUE: 2, GREEN: 2, BLACK: 1
+2025-02-17 05:44:51,096 [INFO]   Actual Price: 
+2025-02-17 05:44:51,096 [INFO] VP: 14
+2025-02-17 05:44:51,096 [INFO] Action: 13
+2025-02-17 05:44:51,100 [INFO] ------------------------------
+2025-02-17 05:44:51,100 [INFO] Available actions:
+2025-02-17 05:44:51,100 [INFO]   Action 0: Get coins: WHITE, BLUE, GREEN (0.0%)
+2025-02-17 05:44:51,100 [INFO]   Action 1: Get coins: WHITE, BLUE, RED (0.0%)
+2025-02-17 05:44:51,100 [INFO]   Action 2: Get coins: WHITE, BLUE, BLACK (0.0%)
+2025-02-17 05:44:51,100 [INFO]   Action 3: Get coins: WHITE, GREEN, RED (0.0%)
+2025-02-17 05:44:51,100 [INFO]   Action 4: Get coins: WHITE, GREEN, BLACK (0.0%)
+2025-02-17 05:44:51,100 [INFO]   Action 5: Get coins: WHITE, RED, BLACK (0.0%)
+2025-02-17 05:44:51,100 [INFO]   Action 6: Get coins: BLUE, GREEN, RED (0.0%)
+2025-02-17 05:44:51,100 [INFO]   Action 7: Get coins: BLUE, GREEN, BLACK (0.0%)
+2025-02-17 05:44:51,100 [INFO]   Action 8: Get coins: BLUE, RED, BLACK (0.0%)
+2025-02-17 05:44:51,100 [INFO]   Action 9: Get coins: GREEN, RED, BLACK (0.0%)
+2025-02-17 05:44:51,100 [INFO]   Action 12: Buy l1_GREEN_3 (Level: 1, VP: 0, Color: GREEN) (23.2%)
+2025-02-17 05:44:51,100 [INFO]   Action 13: Buy l1_RED_8 (Level: 1, VP: 1, Color: RED) (76.8%)
+2025-02-17 05:44:51,100 [INFO] ------------------------------
+2025-02-17 05:44:51,100 [INFO] Total probability: 100.0%
+2025-02-17 05:44:52,111 [INFO] Selected: Action 12
+2025-02-17 05:44:52,111 [INFO] 
+==================================================
+2025-02-17 05:44:52,111 [INFO] Step 36
+2025-02-17 05:44:52,111 [INFO] ------------------------------
+2025-02-17 05:44:52,111 [INFO] player1 bought card l1_GREEN_3:
+2025-02-17 05:44:52,111 [INFO]   Level: 1
+2025-02-17 05:44:52,111 [INFO]   VP: 0
+2025-02-17 05:44:52,112 [INFO]   Gem Color: GREEN
+2025-02-17 05:44:52,112 [INFO]   Original Price: BLUE: 1, RED: 2, BLACK: 2
+2025-02-17 05:44:52,112 [INFO]   Actual Price: 
+2025-02-17 05:44:52,112 [INFO] VP: 14
+2025-02-17 05:44:52,112 [INFO] Get noble7 card.
+2025-02-17 05:44:52,112 [INFO] Action: 12
+2025-02-17 05:44:52,116 [INFO] ------------------------------
+2025-02-17 05:44:52,116 [INFO] Available actions:
+2025-02-17 05:44:52,116 [INFO]   Action 0: Get coins: WHITE, BLUE, GREEN (0.0%)
+2025-02-17 05:44:52,116 [INFO]   Action 1: Get coins: WHITE, BLUE, RED (0.0%)
+2025-02-17 05:44:52,116 [INFO]   Action 2: Get coins: WHITE, BLUE, BLACK (0.0%)
+2025-02-17 05:44:52,116 [INFO]   Action 3: Get coins: WHITE, GREEN, RED (0.0%)
+2025-02-17 05:44:52,116 [INFO]   Action 4: Get coins: WHITE, GREEN, BLACK (0.0%)
+2025-02-17 05:44:52,116 [INFO]   Action 5: Get coins: WHITE, RED, BLACK (0.0%)
+2025-02-17 05:44:52,116 [INFO]   Action 6: Get coins: BLUE, GREEN, RED (0.0%)
+2025-02-17 05:44:52,116 [INFO]   Action 7: Get coins: BLUE, GREEN, BLACK (0.0%)
+2025-02-17 05:44:52,116 [INFO]   Action 8: Get coins: BLUE, RED, BLACK (0.0%)
+2025-02-17 05:44:52,116 [INFO]   Action 9: Get coins: GREEN, RED, BLACK (0.0%)
+2025-02-17 05:44:52,116 [INFO]   Action 12: Buy l1_RED_8 (Level: 1, VP: 1, Color: RED) (0.0%)
+2025-02-17 05:44:52,116 [INFO]   Action 13: Buy l1_WHITE_1 (Level: 1, VP: 0, Color: WHITE) (0.1%)
+2025-02-17 05:44:52,116 [INFO]   Action 15: Buy l2_GREEN_4 (Level: 2, VP: 2, Color: GREEN) (44.6%)
+2025-02-17 05:44:52,116 [INFO]   Action 18: Buy l3_RED_1 (Level: 3, VP: 3, Color: RED) (55.4%)
+2025-02-17 05:44:52,117 [INFO] ------------------------------
+2025-02-17 05:44:52,117 [INFO] Total probability: 100.0%
+2025-02-17 05:44:53,113 [INFO] Selected: Action 15
+2025-02-17 05:44:53,113 [INFO] 
+==================================================
+2025-02-17 05:44:53,113 [INFO] Step 37
+2025-02-17 05:44:53,113 [INFO] ------------------------------
+2025-02-17 05:44:53,114 [INFO] player1 bought card l2_GREEN_4:
+2025-02-17 05:44:53,114 [INFO]   Level: 2
+2025-02-17 05:44:53,114 [INFO]   VP: 2
+2025-02-17 05:44:53,114 [INFO]   Gem Color: GREEN
+2025-02-17 05:44:53,114 [INFO]   Original Price: BLUE: 5, GREEN: 3
+2025-02-17 05:44:53,114 [INFO]   Actual Price: 
+2025-02-17 05:44:53,114 [INFO] VP: 19
+2025-02-17 05:44:53,115 [INFO] Action: 15
+2025-02-17 05:44:53,115 [INFO] ------------------------------
+2025-02-17 05:44:53,115 [INFO] Game finished! Victory achieved!
+2025-02-17 05:44:53,115 [INFO] ==================================================
+
+2025-02-17 05:44:53,118 [INFO] ------------------------------
+2025-02-17 05:44:53,118 [INFO] Available actions:
+2025-02-17 05:44:53,118 [INFO]   Action 0: Get coins: WHITE, BLUE, GREEN (0.0%)
+2025-02-17 05:44:53,118 [INFO]   Action 1: Get coins: WHITE, BLUE, RED (0.0%)
+2025-02-17 05:44:53,118 [INFO]   Action 2: Get coins: WHITE, BLUE, BLACK (0.0%)
+2025-02-17 05:44:53,119 [INFO]   Action 3: Get coins: WHITE, GREEN, RED (0.0%)
+2025-02-17 05:44:53,119 [INFO]   Action 4: Get coins: WHITE, GREEN, BLACK (0.0%)
+2025-02-17 05:44:53,119 [INFO]   Action 5: Get coins: WHITE, RED, BLACK (0.0%)
+2025-02-17 05:44:53,119 [INFO]   Action 6: Get coins: BLUE, GREEN, RED (0.0%)
+2025-02-17 05:44:53,119 [INFO]   Action 7: Get coins: BLUE, GREEN, BLACK (0.0%)
+2025-02-17 05:44:53,119 [INFO]   Action 8: Get coins: BLUE, RED, BLACK (0.0%)
+2025-02-17 05:44:53,119 [INFO]   Action 9: Get coins: GREEN, RED, BLACK (0.0%)
+2025-02-17 05:44:53,119 [INFO]   Action 12: Buy l1_RED_8 (Level: 1, VP: 1, Color: RED) (0.0%)
+2025-02-17 05:44:53,119 [INFO]   Action 13: Buy l1_WHITE_1 (Level: 1, VP: 0, Color: WHITE) (0.0%)
+2025-02-17 05:44:53,119 [INFO]   Action 17: Buy l2_GREEN_2 (Level: 2, VP: 1, Color: GREEN) (81.2%)
+2025-02-17 05:44:53,119 [INFO]   Action 18: Buy l3_RED_1 (Level: 3, VP: 3, Color: RED) (18.7%)
+2025-02-17 05:44:53,119 [INFO] ------------------------------
+2025-02-17 05:44:53,119 [INFO] Total probability: 100.0%
+2025-02-17 05:44:53,119 [INFO] Game Won! Starting new episode...
+2025-02-17 05:44:53,120 [INFO] Initial game status
+2025-02-17 05:44:53,120 [INFO] Initial game status
+2025-02-17 05:44:53,120 [INFO] [board]
+2025-02-17 05:44:53,120 [INFO] Noble cards: 
+2025-02-17 05:44:53,120 [INFO] [noble6, noble7, noble10]
+2025-02-17 05:44:53,120 [INFO] Coin status: 
+2025-02-17 05:44:53,120 [INFO] {'WHITE': 4, 'BLUE': 4, 'GREEN': 4, 'RED': 4, 'BLACK': 4, 'GOLD': 5}
+2025-02-17 05:44:53,120 [INFO] Table level1: 
+2025-02-17 05:44:53,120 [INFO] [l1_BLACK_5, l1_BLACK_4, l1_GREEN_1, l1_BLACK_3]
+2025-02-17 05:44:53,120 [INFO] The remain number of Level1: 36
+2025-02-17 05:44:53,120 [INFO] Table level2: 
+2025-02-17 05:44:53,120 [INFO] [l2_BLACK_3, l2_BLUE_4, l2_RED_6, l2_WHITE_6]
+2025-02-17 05:44:53,120 [INFO] The remain number of Level2: 26
+2025-02-17 05:44:53,121 [INFO] Table level3: 
+2025-02-17 05:44:53,121 [INFO] [l3_BLUE_4, l3_BLACK_2, l3_GREEN_2, l3_WHITE_4]
+2025-02-17 05:44:53,121 [INFO] The remain number of Level3: 16
+2025-02-17 05:44:53,121 [INFO] 
+2025-02-17 05:44:53,121 [INFO] [player1]
+2025-02-17 05:44:53,121 [INFO] Development cards: 
+2025-02-17 05:44:53,121 [INFO] []
+2025-02-17 05:44:53,121 [INFO] []
+2025-02-17 05:44:53,121 [INFO] []
+2025-02-17 05:44:53,121 [INFO] Noble cards: 
+2025-02-17 05:44:53,121 [INFO] []
+2025-02-17 05:44:53,121 [INFO] Coin status: 
+2025-02-17 05:44:53,121 [INFO] {'WHITE': 0, 'BLUE': 0, 'GREEN': 0, 'RED': 0, 'BLACK': 0, 'GOLD': 0}
+2025-02-17 05:44:53,121 [INFO] Victory point: 0
+2025-02-17 05:44:53,121 [INFO] 
+2025-02-17 05:44:53,122 [INFO] Initial game status
+2025-02-17 05:44:53,122 [INFO] Initial game status
+2025-02-17 05:44:53,122 [INFO] [board]
+2025-02-17 05:44:53,122 [INFO] Noble cards: 
+2025-02-17 05:44:53,122 [INFO] [noble5, noble10, noble7]
+2025-02-17 05:44:53,122 [INFO] Coin status: 
+2025-02-17 05:44:53,122 [INFO] {'WHITE': 4, 'BLUE': 4, 'GREEN': 4, 'RED': 4, 'BLACK': 4, 'GOLD': 5}
+2025-02-17 05:44:53,122 [INFO] Table level1: 
+2025-02-17 05:44:53,122 [INFO] [l1_WHITE_6, l1_BLUE_8, l1_BLACK_8, l1_WHITE_8]
+2025-02-17 05:44:53,122 [INFO] The remain number of Level1: 36
+2025-02-17 05:44:53,122 [INFO] Table level2: 
+2025-02-17 05:44:53,122 [INFO] [l2_BLUE_4, l2_BLUE_3, l2_WHITE_6, l2_BLACK_3]
+2025-02-17 05:44:53,122 [INFO] The remain number of Level2: 26
+2025-02-17 05:44:53,123 [INFO] Table level3: 
+2025-02-17 05:44:53,123 [INFO] [l3_RED_2, l3_BLUE_4, l3_BLACK_4, l3_WHITE_1]
+2025-02-17 05:44:53,123 [INFO] The remain number of Level3: 16
+2025-02-17 05:44:53,123 [INFO] 
+2025-02-17 05:44:53,123 [INFO] [player1]
+2025-02-17 05:44:53,123 [INFO] Development cards: 
+2025-02-17 05:44:53,123 [INFO] []
+2025-02-17 05:44:53,123 [INFO] []
+2025-02-17 05:44:53,123 [INFO] []
+2025-02-17 05:44:53,123 [INFO] Noble cards: 
+2025-02-17 05:44:53,123 [INFO] []
+2025-02-17 05:44:53,123 [INFO] Coin status: 
+2025-02-17 05:44:53,123 [INFO] {'WHITE': 0, 'BLUE': 0, 'GREEN': 0, 'RED': 0, 'BLACK': 0, 'GOLD': 0}
+2025-02-17 05:44:53,123 [INFO] Victory point: 0
+2025-02-17 05:44:53,123 [INFO] 
+2025-02-17 05:44:53,126 [INFO] ------------------------------
+2025-02-17 05:44:53,127 [INFO] Available actions:
+2025-02-17 05:44:53,127 [INFO]   Action 0: Get coins: WHITE, BLUE, GREEN (10.2%)
+2025-02-17 05:44:53,127 [INFO]   Action 1: Get coins: WHITE, BLUE, RED (9.7%)
+2025-02-17 05:44:53,127 [INFO]   Action 2: Get coins: WHITE, BLUE, BLACK (10.8%)
+2025-02-17 05:44:53,127 [INFO]   Action 3: Get coins: WHITE, GREEN, RED (10.6%)
+2025-02-17 05:44:53,127 [INFO]   Action 4: Get coins: WHITE, GREEN, BLACK (9.7%)
+2025-02-17 05:44:53,127 [INFO]   Action 5: Get coins: WHITE, RED, BLACK (11.6%)
+2025-02-17 05:44:53,127 [INFO]   Action 6: Get coins: BLUE, GREEN, RED (8.8%)
+2025-02-17 05:44:53,127 [INFO]   Action 7: Get coins: BLUE, GREEN, BLACK (9.5%)
+2025-02-17 05:44:53,127 [INFO]   Action 8: Get coins: BLUE, RED, BLACK (9.6%)
+2025-02-17 05:44:53,127 [INFO]   Action 9: Get coins: GREEN, RED, BLACK (9.5%)
+2025-02-17 05:44:53,127 [INFO] ------------------------------
+2025-02-17 05:44:53,127 [INFO] Total probability: 100.0%
+2025-02-17 05:44:59,196 [INFO] Selected: Action 1
+2025-02-17 05:44:59,196 [INFO] 
+==================================================
+2025-02-17 05:44:59,196 [INFO] Step 1
+2025-02-17 05:44:59,196 [INFO] ------------------------------
+2025-02-17 05:44:59,196 [INFO] player1 get a WHITE coin.
+2025-02-17 05:44:59,197 [INFO] player1 get a BLUE coin.
+2025-02-17 05:44:59,197 [INFO] player1 get a RED coin.
+2025-02-17 05:44:59,197 [INFO] Collected coins: WHITE, BLUE, RED
+2025-02-17 05:44:59,197 [INFO] Action: 1
+2025-02-17 05:44:59,201 [INFO] ------------------------------
+2025-02-17 05:44:59,201 [INFO] Available actions:
+2025-02-17 05:44:59,201 [INFO]   Action 0: Get coins: WHITE, BLUE, GREEN (10.2%)
+2025-02-17 05:44:59,201 [INFO]   Action 1: Get coins: WHITE, BLUE, RED (9.7%)
+2025-02-17 05:44:59,201 [INFO]   Action 2: Get coins: WHITE, BLUE, BLACK (10.8%)
+2025-02-17 05:44:59,201 [INFO]   Action 3: Get coins: WHITE, GREEN, RED (10.6%)
+2025-02-17 05:44:59,201 [INFO]   Action 4: Get coins: WHITE, GREEN, BLACK (9.7%)
+2025-02-17 05:44:59,201 [INFO]   Action 5: Get coins: WHITE, RED, BLACK (11.6%)
+2025-02-17 05:44:59,201 [INFO]   Action 6: Get coins: BLUE, GREEN, RED (8.8%)
+2025-02-17 05:44:59,202 [INFO]   Action 7: Get coins: BLUE, GREEN, BLACK (9.4%)
+2025-02-17 05:44:59,202 [INFO]   Action 8: Get coins: BLUE, RED, BLACK (9.6%)
+2025-02-17 05:44:59,202 [INFO]   Action 9: Get coins: GREEN, RED, BLACK (9.5%)
+2025-02-17 05:44:59,202 [INFO] ------------------------------
+2025-02-17 05:44:59,202 [INFO] Total probability: 100.0%
+2025-02-17 05:45:00,197 [INFO] Selected: Action 1
+2025-02-17 05:45:00,197 [INFO] 
+==================================================
+2025-02-17 05:45:00,197 [INFO] Step 2
+2025-02-17 05:45:00,197 [INFO] ------------------------------
+2025-02-17 05:45:00,198 [INFO] player1 get a WHITE coin.
+2025-02-17 05:45:00,198 [INFO] player1 get a BLUE coin.
+2025-02-17 05:45:00,198 [INFO] player1 get a RED coin.
+2025-02-17 05:45:00,198 [INFO] Collected coins: WHITE, BLUE, RED
+2025-02-17 05:45:00,198 [INFO] Action: 1
+2025-02-17 05:45:00,202 [INFO] ------------------------------
+2025-02-17 05:45:00,202 [INFO] Available actions:
+2025-02-17 05:45:00,202 [INFO]   Action 0: Get coins: WHITE, BLUE, GREEN (0.0%)
+2025-02-17 05:45:00,202 [INFO]   Action 1: Get coins: WHITE, BLUE, RED (0.0%)
+2025-02-17 05:45:00,202 [INFO]   Action 2: Get coins: WHITE, BLUE, BLACK (0.0%)
+2025-02-17 05:45:00,202 [INFO]   Action 3: Get coins: WHITE, GREEN, RED (0.0%)
+2025-02-17 05:45:00,202 [INFO]   Action 4: Get coins: WHITE, GREEN, BLACK (0.0%)
+2025-02-17 05:45:00,202 [INFO]   Action 5: Get coins: WHITE, RED, BLACK (0.0%)
+2025-02-17 05:45:00,202 [INFO]   Action 6: Get coins: BLUE, GREEN, RED (0.0%)
+2025-02-17 05:45:00,202 [INFO]   Action 7: Get coins: BLUE, GREEN, BLACK (0.0%)
+2025-02-17 05:45:00,202 [INFO]   Action 8: Get coins: BLUE, RED, BLACK (0.0%)
+2025-02-17 05:45:00,202 [INFO]   Action 9: Get coins: GREEN, RED, BLACK (0.0%)
+2025-02-17 05:45:00,203 [INFO]   Action 13: Buy l1_BLACK_3 (Level: 1, VP: 0, Color: BLACK) (100.0%)
+2025-02-17 05:45:00,203 [INFO] ------------------------------
+2025-02-17 05:45:00,203 [INFO] Total probability: 100.0%
+2025-02-17 05:45:01,198 [INFO] Selected: Action 13
+2025-02-17 05:45:01,198 [INFO] 
+==================================================
+2025-02-17 05:45:01,198 [INFO] Step 3
+2025-02-17 05:45:01,198 [INFO] ------------------------------
+2025-02-17 05:45:01,198 [INFO] player1 bought card l1_BLACK_3:
+2025-02-17 05:45:01,198 [INFO]   Level: 1
+2025-02-17 05:45:01,199 [INFO]   VP: 0
+2025-02-17 05:45:01,199 [INFO]   Gem Color: BLACK
+2025-02-17 05:45:01,199 [INFO]   Original Price: WHITE: 2, BLUE: 2, RED: 1
+2025-02-17 05:45:01,199 [INFO]   Actual Price: WHITE: 2, BLUE: 2, RED: 1
+2025-02-17 05:45:01,199 [INFO] VP: 0
+2025-02-17 05:45:01,199 [INFO] Action: 13
+2025-02-17 05:45:01,202 [INFO] ------------------------------
+2025-02-17 05:45:01,202 [INFO] Available actions:
+2025-02-17 05:45:01,203 [INFO]   Action 0: Get coins: WHITE, BLUE, GREEN (10.2%)
+2025-02-17 05:45:01,203 [INFO]   Action 1: Get coins: WHITE, BLUE, RED (9.6%)
+2025-02-17 05:45:01,203 [INFO]   Action 2: Get coins: WHITE, BLUE, BLACK (10.8%)
+2025-02-17 05:45:01,203 [INFO]   Action 3: Get coins: WHITE, GREEN, RED (10.6%)
+2025-02-17 05:45:01,203 [INFO]   Action 4: Get coins: WHITE, GREEN, BLACK (9.7%)
+2025-02-17 05:45:01,203 [INFO]   Action 5: Get coins: WHITE, RED, BLACK (11.7%)
+2025-02-17 05:45:01,203 [INFO]   Action 6: Get coins: BLUE, GREEN, RED (8.8%)
+2025-02-17 05:45:01,203 [INFO]   Action 7: Get coins: BLUE, GREEN, BLACK (9.4%)
+2025-02-17 05:45:01,203 [INFO]   Action 8: Get coins: BLUE, RED, BLACK (9.6%)
+2025-02-17 05:45:01,203 [INFO]   Action 9: Get coins: GREEN, RED, BLACK (9.5%)
+2025-02-17 05:45:01,203 [INFO] ------------------------------
+2025-02-17 05:45:01,203 [INFO] Total probability: 100.0%
+2025-02-17 05:45:02,199 [INFO] Selected: Action 9
+2025-02-17 05:45:02,199 [INFO] 
+==================================================
+2025-02-17 05:45:02,199 [INFO] Step 4
+2025-02-17 05:45:02,199 [INFO] ------------------------------
+2025-02-17 05:45:02,200 [INFO] player1 get a GREEN coin.
+2025-02-17 05:45:02,200 [INFO] player1 get a RED coin.
+2025-02-17 05:45:02,200 [INFO] player1 get a BLACK coin.
+2025-02-17 05:45:02,200 [INFO] Collected coins: GREEN, RED, BLACK
+2025-02-17 05:45:02,200 [INFO] Action: 9
+2025-02-17 05:45:02,204 [INFO] ------------------------------
+2025-02-17 05:45:02,204 [INFO] Available actions:
+2025-02-17 05:45:02,204 [INFO]   Action 0: Get coins: WHITE, BLUE, GREEN (10.2%)
+2025-02-17 05:45:02,204 [INFO]   Action 1: Get coins: WHITE, BLUE, RED (9.6%)
+2025-02-17 05:45:02,205 [INFO]   Action 2: Get coins: WHITE, BLUE, BLACK (10.9%)
+2025-02-17 05:45:02,205 [INFO]   Action 3: Get coins: WHITE, GREEN, RED (10.6%)
+2025-02-17 05:45:02,205 [INFO]   Action 4: Get coins: WHITE, GREEN, BLACK (9.8%)
+2025-02-17 05:45:02,205 [INFO]   Action 5: Get coins: WHITE, RED, BLACK (11.7%)
+2025-02-17 05:45:02,205 [INFO]   Action 6: Get coins: BLUE, GREEN, RED (8.8%)
+2025-02-17 05:45:02,205 [INFO]   Action 7: Get coins: BLUE, GREEN, BLACK (9.4%)
+2025-02-17 05:45:02,205 [INFO]   Action 8: Get coins: BLUE, RED, BLACK (9.6%)
+2025-02-17 05:45:02,205 [INFO]   Action 9: Get coins: GREEN, RED, BLACK (9.4%)
+2025-02-17 05:45:02,205 [INFO] ------------------------------
+2025-02-17 05:45:02,205 [INFO] Total probability: 100.0%
+2025-02-17 05:45:03,200 [INFO] Selected: Action 6
+2025-02-17 05:45:03,201 [INFO] 
+==================================================
+2025-02-17 05:45:03,201 [INFO] Step 5
+2025-02-17 05:45:03,201 [INFO] ------------------------------
+2025-02-17 05:45:03,201 [INFO] player1 get a BLUE coin.
+2025-02-17 05:45:03,201 [INFO] player1 get a GREEN coin.
+2025-02-17 05:45:03,201 [INFO] player1 get a RED coin.
+2025-02-17 05:45:03,201 [INFO] Collected coins: BLUE, GREEN, RED
+2025-02-17 05:45:03,202 [INFO] Action: 6
+2025-02-17 05:45:03,205 [INFO] ------------------------------
+2025-02-17 05:45:03,205 [INFO] Available actions:
+2025-02-17 05:45:03,205 [INFO]   Action 0: Get coins: WHITE, BLUE, GREEN (0.0%)
+2025-02-17 05:45:03,205 [INFO]   Action 1: Get coins: WHITE, BLUE, RED (0.0%)
+2025-02-17 05:45:03,205 [INFO]   Action 2: Get coins: WHITE, BLUE, BLACK (0.0%)
+2025-02-17 05:45:03,205 [INFO]   Action 3: Get coins: WHITE, GREEN, RED (0.0%)
+2025-02-17 05:45:03,206 [INFO]   Action 4: Get coins: WHITE, GREEN, BLACK (0.0%)
+2025-02-17 05:45:03,206 [INFO]   Action 5: Get coins: WHITE, RED, BLACK (0.0%)
+2025-02-17 05:45:03,206 [INFO]   Action 6: Get coins: BLUE, GREEN, RED (0.0%)
+2025-02-17 05:45:03,206 [INFO]   Action 7: Get coins: BLUE, GREEN, BLACK (0.0%)
+2025-02-17 05:45:03,206 [INFO]   Action 8: Get coins: BLUE, RED, BLACK (0.0%)
+2025-02-17 05:45:03,206 [INFO]   Action 9: Get coins: GREEN, RED, BLACK (0.0%)
+2025-02-17 05:45:03,206 [INFO]   Action 10: Buy l1_BLACK_5 (Level: 1, VP: 0, Color: BLACK) (50.6%)
+2025-02-17 05:45:03,206 [INFO]   Action 11: Buy l1_BLACK_4 (Level: 1, VP: 0, Color: BLACK) (49.4%)
+2025-02-17 05:45:03,206 [INFO] ------------------------------
+2025-02-17 05:45:03,206 [INFO] Total probability: 100.0%
+2025-02-17 05:45:04,201 [INFO] Selected: Action 10
+2025-02-17 05:45:04,201 [INFO] 
+==================================================
+2025-02-17 05:45:04,201 [INFO] Step 6
+2025-02-17 05:45:04,201 [INFO] ------------------------------
+2025-02-17 05:45:04,202 [INFO] player1 bought card l1_BLACK_5:
+2025-02-17 05:45:04,202 [INFO]   Level: 1
+2025-02-17 05:45:04,202 [INFO]   VP: 0
+2025-02-17 05:45:04,202 [INFO]   Gem Color: BLACK
+2025-02-17 05:45:04,202 [INFO]   Original Price: GREEN: 2, RED: 1
+2025-02-17 05:45:04,202 [INFO]   Actual Price: GREEN: 2, RED: 1
+2025-02-17 05:45:04,202 [INFO] VP: 0
+2025-02-17 05:45:04,202 [INFO] Action: 10
+2025-02-17 05:45:04,206 [INFO] ------------------------------
+2025-02-17 05:45:04,206 [INFO] Available actions:
+2025-02-17 05:45:04,206 [INFO]   Action 0: Get coins: WHITE, BLUE, GREEN (10.2%)
+2025-02-17 05:45:04,206 [INFO]   Action 1: Get coins: WHITE, BLUE, RED (9.5%)
+2025-02-17 05:45:04,206 [INFO]   Action 2: Get coins: WHITE, BLUE, BLACK (10.9%)
+2025-02-17 05:45:04,206 [INFO]   Action 3: Get coins: WHITE, GREEN, RED (10.6%)
+2025-02-17 05:45:04,206 [INFO]   Action 4: Get coins: WHITE, GREEN, BLACK (9.8%)
+2025-02-17 05:45:04,206 [INFO]   Action 5: Get coins: WHITE, RED, BLACK (11.7%)
+2025-02-17 05:45:04,206 [INFO]   Action 6: Get coins: BLUE, GREEN, RED (8.8%)
+2025-02-17 05:45:04,206 [INFO]   Action 7: Get coins: BLUE, GREEN, BLACK (9.4%)
+2025-02-17 05:45:04,206 [INFO]   Action 8: Get coins: BLUE, RED, BLACK (9.7%)
+2025-02-17 05:45:04,207 [INFO]   Action 9: Get coins: GREEN, RED, BLACK (9.4%)
+2025-02-17 05:45:04,207 [INFO] ------------------------------
+2025-02-17 05:45:04,207 [INFO] Total probability: 100.0%
+2025-02-17 05:45:05,202 [INFO] Selected: Action 5
+2025-02-17 05:45:05,202 [INFO] 
+==================================================
+2025-02-17 05:45:05,202 [INFO] Step 7
+2025-02-17 05:45:05,203 [INFO] ------------------------------
+2025-02-17 05:45:05,203 [INFO] player1 get a WHITE coin.
+2025-02-17 05:45:05,203 [INFO] player1 get a RED coin.
+2025-02-17 05:45:05,203 [INFO] player1 get a BLACK coin.
+2025-02-17 05:45:05,203 [INFO] Collected coins: WHITE, RED, BLACK
+2025-02-17 05:45:05,203 [INFO] Action: 5
+2025-02-17 05:45:05,207 [INFO] ------------------------------
+2025-02-17 05:45:05,207 [INFO] Available actions:
+2025-02-17 05:45:05,207 [INFO]   Action 0: Get coins: WHITE, BLUE, GREEN (0.0%)
+2025-02-17 05:45:05,207 [INFO]   Action 1: Get coins: WHITE, BLUE, RED (0.0%)
+2025-02-17 05:45:05,207 [INFO]   Action 2: Get coins: WHITE, BLUE, BLACK (0.0%)
+2025-02-17 05:45:05,207 [INFO]   Action 3: Get coins: WHITE, GREEN, RED (0.0%)
+2025-02-17 05:45:05,207 [INFO]   Action 4: Get coins: WHITE, GREEN, BLACK (0.0%)
+2025-02-17 05:45:05,207 [INFO]   Action 5: Get coins: WHITE, RED, BLACK (0.0%)
+2025-02-17 05:45:05,207 [INFO]   Action 6: Get coins: BLUE, GREEN, RED (0.0%)
+2025-02-17 05:45:05,207 [INFO]   Action 7: Get coins: BLUE, GREEN, BLACK (0.0%)
+2025-02-17 05:45:05,207 [INFO]   Action 8: Get coins: BLUE, RED, BLACK (0.0%)
+2025-02-17 05:45:05,208 [INFO]   Action 9: Get coins: GREEN, RED, BLACK (0.0%)
+2025-02-17 05:45:05,208 [INFO]   Action 11: Buy l1_GREEN_1 (Level: 1, VP: 0, Color: GREEN) (100.0%)
+2025-02-17 05:45:05,208 [INFO] ------------------------------
+2025-02-17 05:45:05,208 [INFO] Total probability: 100.0%
+2025-02-17 05:45:06,216 [INFO] Selected: Action 11
+2025-02-17 05:45:06,216 [INFO] 
+==================================================
+2025-02-17 05:45:06,216 [INFO] Step 8
+2025-02-17 05:45:06,216 [INFO] ------------------------------
+2025-02-17 05:45:06,216 [INFO] player1 bought card l1_GREEN_1:
+2025-02-17 05:45:06,216 [INFO]   Level: 1
+2025-02-17 05:45:06,216 [INFO]   VP: 0
+2025-02-17 05:45:06,217 [INFO]   Gem Color: GREEN
+2025-02-17 05:45:06,217 [INFO]   Original Price: WHITE: 1, BLUE: 1, RED: 1, BLACK: 1
+2025-02-17 05:45:06,217 [INFO]   Actual Price: WHITE: 1, BLUE: 1, RED: 1
+2025-02-17 05:45:06,217 [INFO] VP: 0
+2025-02-17 05:45:06,217 [INFO] Action: 11
+2025-02-17 05:45:06,221 [INFO] ------------------------------
+2025-02-17 05:45:06,221 [INFO] Available actions:
+2025-02-17 05:45:06,221 [INFO]   Action 0: Get coins: WHITE, BLUE, GREEN (10.1%)
+2025-02-17 05:45:06,221 [INFO]   Action 1: Get coins: WHITE, BLUE, RED (9.5%)
+2025-02-17 05:45:06,221 [INFO]   Action 2: Get coins: WHITE, BLUE, BLACK (10.9%)
+2025-02-17 05:45:06,221 [INFO]   Action 3: Get coins: WHITE, GREEN, RED (10.6%)
+2025-02-17 05:45:06,221 [INFO]   Action 4: Get coins: WHITE, GREEN, BLACK (9.9%)
+2025-02-17 05:45:06,221 [INFO]   Action 5: Get coins: WHITE, RED, BLACK (11.7%)
+2025-02-17 05:45:06,221 [INFO]   Action 6: Get coins: BLUE, GREEN, RED (8.7%)
+2025-02-17 05:45:06,221 [INFO]   Action 7: Get coins: BLUE, GREEN, BLACK (9.3%)
+2025-02-17 05:45:06,221 [INFO]   Action 8: Get coins: BLUE, RED, BLACK (9.7%)
+2025-02-17 05:45:06,221 [INFO]   Action 9: Get coins: GREEN, RED, BLACK (9.4%)
+2025-02-17 05:45:06,221 [INFO] ------------------------------
+2025-02-17 05:45:06,221 [INFO] Total probability: 100.0%
+2025-02-17 05:45:07,216 [INFO] Selected: Action 2
+2025-02-17 05:45:07,216 [INFO] 
+==================================================
+2025-02-17 05:45:07,216 [INFO] Step 9
+2025-02-17 05:45:07,216 [INFO] ------------------------------
+2025-02-17 05:45:07,217 [INFO] player1 get a WHITE coin.
+2025-02-17 05:45:07,217 [INFO] player1 get a BLUE coin.
+2025-02-17 05:45:07,217 [INFO] player1 get a BLACK coin.
+2025-02-17 05:45:07,217 [INFO] Collected coins: WHITE, BLUE, BLACK
+2025-02-17 05:45:07,217 [INFO] Action: 2
+2025-02-17 05:45:07,221 [INFO] ------------------------------
+2025-02-17 05:45:07,221 [INFO] Available actions:
+2025-02-17 05:45:07,221 [INFO]   Action 0: Get coins: WHITE, BLUE, GREEN (10.1%)
+2025-02-17 05:45:07,221 [INFO]   Action 1: Get coins: WHITE, BLUE, RED (9.5%)
+2025-02-17 05:45:07,221 [INFO]   Action 2: Get coins: WHITE, BLUE, BLACK (11.0%)
+2025-02-17 05:45:07,221 [INFO]   Action 3: Get coins: WHITE, GREEN, RED (10.7%)
+2025-02-17 05:45:07,221 [INFO]   Action 4: Get coins: WHITE, GREEN, BLACK (9.9%)
+2025-02-17 05:45:07,221 [INFO]   Action 5: Get coins: WHITE, RED, BLACK (11.8%)
+2025-02-17 05:45:07,222 [INFO]   Action 6: Get coins: BLUE, GREEN, RED (8.7%)
+2025-02-17 05:45:07,222 [INFO]   Action 7: Get coins: BLUE, GREEN, BLACK (9.3%)
+2025-02-17 05:45:07,222 [INFO]   Action 8: Get coins: BLUE, RED, BLACK (9.7%)
+2025-02-17 05:45:07,222 [INFO]   Action 9: Get coins: GREEN, RED, BLACK (9.4%)
+2025-02-17 05:45:07,222 [INFO] ------------------------------
+2025-02-17 05:45:07,222 [INFO] Total probability: 100.0%
+2025-02-17 05:45:08,221 [INFO] Selected: Action 1
+2025-02-17 05:45:08,221 [INFO] 
+==================================================
+2025-02-17 05:45:08,221 [INFO] Step 10
+2025-02-17 05:45:08,221 [INFO] ------------------------------
+2025-02-17 05:45:08,221 [INFO] player1 get a WHITE coin.
+2025-02-17 05:45:08,221 [INFO] player1 get a BLUE coin.
+2025-02-17 05:45:08,221 [INFO] player1 get a RED coin.
+2025-02-17 05:45:08,221 [INFO] Collected coins: WHITE, BLUE, RED
+2025-02-17 05:45:08,222 [INFO] Action: 1
+2025-02-17 05:45:08,225 [INFO] ------------------------------
+2025-02-17 05:45:08,225 [INFO] Available actions:
+2025-02-17 05:45:08,225 [INFO]   Action 0: Get coins: WHITE, BLUE, GREEN (0.0%)
+2025-02-17 05:45:08,225 [INFO]   Action 1: Get coins: WHITE, BLUE, RED (0.0%)
+2025-02-17 05:45:08,226 [INFO]   Action 2: Get coins: WHITE, BLUE, BLACK (0.0%)
+2025-02-17 05:45:08,226 [INFO]   Action 3: Get coins: WHITE, GREEN, RED (0.0%)
+2025-02-17 05:45:08,226 [INFO]   Action 4: Get coins: WHITE, GREEN, BLACK (0.0%)
+2025-02-17 05:45:08,226 [INFO]   Action 5: Get coins: WHITE, RED, BLACK (0.0%)
+2025-02-17 05:45:08,226 [INFO]   Action 6: Get coins: BLUE, GREEN, RED (0.0%)
+2025-02-17 05:45:08,226 [INFO]   Action 7: Get coins: BLUE, GREEN, BLACK (0.0%)
+2025-02-17 05:45:08,226 [INFO]   Action 8: Get coins: BLUE, RED, BLACK (0.0%)
+2025-02-17 05:45:08,226 [INFO]   Action 9: Get coins: GREEN, RED, BLACK (0.0%)
+2025-02-17 05:45:08,226 [INFO]   Action 10: Buy l1_BLACK_4 (Level: 1, VP: 0, Color: BLACK) (31.8%)
+2025-02-17 05:45:08,226 [INFO]   Action 13: Buy l1_GREEN_6 (Level: 1, VP: 0, Color: GREEN) (63.7%)
+2025-02-17 05:45:08,226 [INFO]   Action 15: Buy l2_BLUE_4 (Level: 2, VP: 2, Color: BLUE) (4.5%)
+2025-02-17 05:45:08,226 [INFO] ------------------------------
+2025-02-17 05:45:08,226 [INFO] Total probability: 100.0%
+2025-02-17 05:45:09,221 [INFO] Selected: Action 10
+2025-02-17 05:45:09,221 [INFO] 
+==================================================
+2025-02-17 05:45:09,221 [INFO] Step 11
+2025-02-17 05:45:09,221 [INFO] ------------------------------
+2025-02-17 05:45:09,221 [INFO] player1 bought card l1_BLACK_4:
+2025-02-17 05:45:09,221 [INFO]   Level: 1
+2025-02-17 05:45:09,222 [INFO]   VP: 0
+2025-02-17 05:45:09,222 [INFO]   Gem Color: BLACK
+2025-02-17 05:45:09,222 [INFO]   Original Price: GREEN: 1, RED: 3, BLACK: 1
+2025-02-17 05:45:09,222 [INFO]   Actual Price: RED: 3
+2025-02-17 05:45:09,222 [INFO] VP: 0
+2025-02-17 05:45:09,222 [INFO] Action: 10
+2025-02-17 05:45:09,225 [INFO] ------------------------------
+2025-02-17 05:45:09,226 [INFO] Available actions:
+2025-02-17 05:45:09,226 [INFO]   Action 0: Get coins: WHITE, BLUE, GREEN (0.0%)
+2025-02-17 05:45:09,226 [INFO]   Action 1: Get coins: WHITE, BLUE, RED (0.0%)
+2025-02-17 05:45:09,226 [INFO]   Action 2: Get coins: WHITE, BLUE, BLACK (0.0%)
+2025-02-17 05:45:09,226 [INFO]   Action 3: Get coins: WHITE, GREEN, RED (0.0%)
+2025-02-17 05:45:09,226 [INFO]   Action 4: Get coins: WHITE, GREEN, BLACK (0.0%)
+2025-02-17 05:45:09,226 [INFO]   Action 5: Get coins: WHITE, RED, BLACK (0.0%)
+2025-02-17 05:45:09,226 [INFO]   Action 6: Get coins: BLUE, GREEN, RED (0.0%)
+2025-02-17 05:45:09,226 [INFO]   Action 7: Get coins: BLUE, GREEN, BLACK (0.0%)
+2025-02-17 05:45:09,226 [INFO]   Action 8: Get coins: BLUE, RED, BLACK (0.0%)
+2025-02-17 05:45:09,226 [INFO]   Action 9: Get coins: GREEN, RED, BLACK (0.0%)
+2025-02-17 05:45:09,226 [INFO]   Action 13: Buy l1_GREEN_8 (Level: 1, VP: 1, Color: GREEN) (100.0%)
+2025-02-17 05:45:09,226 [INFO] ------------------------------
+2025-02-17 05:45:09,226 [INFO] Total probability: 100.0%
+2025-02-17 05:45:10,223 [INFO] Selected: Action 13
+2025-02-17 05:45:10,223 [INFO] 
+==================================================
+2025-02-17 05:45:10,223 [INFO] Step 12
+2025-02-17 05:45:10,223 [INFO] ------------------------------
+2025-02-17 05:45:10,223 [INFO] player1 bought card l1_GREEN_8:
+2025-02-17 05:45:10,223 [INFO]   Level: 1
+2025-02-17 05:45:10,223 [INFO]   VP: 1
+2025-02-17 05:45:10,223 [INFO]   Gem Color: GREEN
+2025-02-17 05:45:10,223 [INFO]   Original Price: BLACK: 4
+2025-02-17 05:45:10,223 [INFO]   Actual Price: BLACK: 1
+2025-02-17 05:45:10,224 [INFO] VP: 1
+2025-02-17 05:45:10,224 [INFO] Action: 13
+2025-02-17 05:45:10,227 [INFO] ------------------------------
+2025-02-17 05:45:10,227 [INFO] Available actions:
+2025-02-17 05:45:10,228 [INFO]   Action 0: Get coins: WHITE, BLUE, GREEN (0.0%)
+2025-02-17 05:45:10,228 [INFO]   Action 1: Get coins: WHITE, BLUE, RED (0.0%)
+2025-02-17 05:45:10,228 [INFO]   Action 2: Get coins: WHITE, BLUE, BLACK (0.0%)
+2025-02-17 05:45:10,228 [INFO]   Action 3: Get coins: WHITE, GREEN, RED (0.0%)
+2025-02-17 05:45:10,228 [INFO]   Action 4: Get coins: WHITE, GREEN, BLACK (0.0%)
+2025-02-17 05:45:10,228 [INFO]   Action 5: Get coins: WHITE, RED, BLACK (0.0%)
+2025-02-17 05:45:10,228 [INFO]   Action 6: Get coins: BLUE, GREEN, RED (0.0%)
+2025-02-17 05:45:10,228 [INFO]   Action 7: Get coins: BLUE, GREEN, BLACK (0.0%)
+2025-02-17 05:45:10,228 [INFO]   Action 8: Get coins: BLUE, RED, BLACK (0.0%)
+2025-02-17 05:45:10,228 [INFO]   Action 9: Get coins: GREEN, RED, BLACK (0.0%)
+2025-02-17 05:45:10,228 [INFO]   Action 10: Buy l1_BLACK_6 (Level: 1, VP: 0, Color: BLACK) (100.0%)
+2025-02-17 05:45:10,228 [INFO] ------------------------------
+2025-02-17 05:45:10,228 [INFO] Total probability: 100.0%
+2025-02-17 05:45:11,224 [INFO] Selected: Action 10
+2025-02-17 05:45:11,224 [INFO] 
+==================================================
+2025-02-17 05:45:11,224 [INFO] Step 13
+2025-02-17 05:45:11,224 [INFO] ------------------------------
+2025-02-17 05:45:11,225 [INFO] player1 bought card l1_BLACK_6:
+2025-02-17 05:45:11,225 [INFO]   Level: 1
+2025-02-17 05:45:11,225 [INFO]   VP: 0
+2025-02-17 05:45:11,225 [INFO]   Gem Color: BLACK
+2025-02-17 05:45:11,225 [INFO]   Original Price: WHITE: 2, GREEN: 2
+2025-02-17 05:45:11,225 [INFO]   Actual Price: WHITE: 2
+2025-02-17 05:45:11,225 [INFO] VP: 1
+2025-02-17 05:45:11,225 [INFO] Action: 10
+2025-02-17 05:45:11,229 [INFO] ------------------------------
+2025-02-17 05:45:11,229 [INFO] Available actions:
+2025-02-17 05:45:11,229 [INFO]   Action 0: Get coins: WHITE, BLUE, GREEN (10.1%)
+2025-02-17 05:45:11,229 [INFO]   Action 1: Get coins: WHITE, BLUE, RED (9.4%)
+2025-02-17 05:45:11,229 [INFO]   Action 2: Get coins: WHITE, BLUE, BLACK (11.0%)
+2025-02-17 05:45:11,229 [INFO]   Action 3: Get coins: WHITE, GREEN, RED (10.7%)
+2025-02-17 05:45:11,229 [INFO]   Action 4: Get coins: WHITE, GREEN, BLACK (9.9%)
+2025-02-17 05:45:11,229 [INFO]   Action 5: Get coins: WHITE, RED, BLACK (11.8%)
+2025-02-17 05:45:11,229 [INFO]   Action 6: Get coins: BLUE, GREEN, RED (8.7%)
+2025-02-17 05:45:11,229 [INFO]   Action 7: Get coins: BLUE, GREEN, BLACK (9.3%)
+2025-02-17 05:45:11,229 [INFO]   Action 8: Get coins: BLUE, RED, BLACK (9.7%)
+2025-02-17 05:45:11,229 [INFO]   Action 9: Get coins: GREEN, RED, BLACK (9.4%)
+2025-02-17 05:45:11,229 [INFO] ------------------------------
+2025-02-17 05:45:11,229 [INFO] Total probability: 100.0%
+2025-02-17 05:45:12,226 [INFO] Selected: Action 2
+2025-02-17 05:45:12,226 [INFO] 
+==================================================
+2025-02-17 05:45:12,227 [INFO] Step 14
+2025-02-17 05:45:12,227 [INFO] ------------------------------
+2025-02-17 05:45:12,227 [INFO] player1 get a WHITE coin.
+2025-02-17 05:45:12,227 [INFO] player1 get a BLUE coin.
+2025-02-17 05:45:12,227 [INFO] player1 get a BLACK coin.
+2025-02-17 05:45:12,227 [INFO] Collected coins: WHITE, BLUE, BLACK
+2025-02-17 05:45:12,227 [INFO] Action: 2
+2025-02-17 05:45:12,231 [INFO] ------------------------------
+2025-02-17 05:45:12,231 [INFO] Available actions:
+2025-02-17 05:45:12,231 [INFO]   Action 0: Get coins: WHITE, BLUE, GREEN (0.0%)
+2025-02-17 05:45:12,231 [INFO]   Action 1: Get coins: WHITE, BLUE, RED (0.0%)
+2025-02-17 05:45:12,231 [INFO]   Action 2: Get coins: WHITE, BLUE, BLACK (0.0%)
+2025-02-17 05:45:12,231 [INFO]   Action 3: Get coins: WHITE, GREEN, RED (0.0%)
+2025-02-17 05:45:12,231 [INFO]   Action 4: Get coins: WHITE, GREEN, BLACK (0.0%)
+2025-02-17 05:45:12,231 [INFO]   Action 5: Get coins: WHITE, RED, BLACK (0.0%)
+2025-02-17 05:45:12,231 [INFO]   Action 6: Get coins: BLUE, GREEN, RED (0.0%)
+2025-02-17 05:45:12,231 [INFO]   Action 7: Get coins: BLUE, GREEN, BLACK (0.0%)
+2025-02-17 05:45:12,231 [INFO]   Action 8: Get coins: BLUE, RED, BLACK (0.0%)
+2025-02-17 05:45:12,232 [INFO]   Action 9: Get coins: GREEN, RED, BLACK (0.0%)
+2025-02-17 05:45:12,232 [INFO]   Action 10: Buy l1_WHITE_7 (Level: 1, VP: 0, Color: WHITE) (32.3%)
+2025-02-17 05:45:12,232 [INFO]   Action 13: Buy l1_RED_1 (Level: 1, VP: 0, Color: RED) (67.7%)
+2025-02-17 05:45:12,232 [INFO] ------------------------------
+2025-02-17 05:45:12,232 [INFO] Total probability: 100.0%
+2025-02-17 05:45:13,231 [INFO] Selected: Action 13
+2025-02-17 05:45:13,231 [INFO] 
+==================================================
+2025-02-17 05:45:13,231 [INFO] Step 15
+2025-02-17 05:45:13,231 [INFO] ------------------------------
+2025-02-17 05:45:13,232 [INFO] player1 bought card l1_RED_1:
+2025-02-17 05:45:13,232 [INFO]   Level: 1
+2025-02-17 05:45:13,232 [INFO]   VP: 0
+2025-02-17 05:45:13,232 [INFO]   Gem Color: RED
+2025-02-17 05:45:13,232 [INFO]   Original Price: WHITE: 1, BLUE: 1, GREEN: 1, BLACK: 1
+2025-02-17 05:45:13,232 [INFO]   Actual Price: WHITE: 1, BLUE: 1
+2025-02-17 05:45:13,232 [INFO] VP: 1
+2025-02-17 05:45:13,232 [INFO] Action: 13
+2025-02-17 05:45:13,236 [INFO] ------------------------------
+2025-02-17 05:45:13,236 [INFO] Available actions:
+2025-02-17 05:45:13,236 [INFO]   Action 0: Get coins: WHITE, BLUE, GREEN (10.1%)
+2025-02-17 05:45:13,236 [INFO]   Action 1: Get coins: WHITE, BLUE, RED (9.3%)
+2025-02-17 05:45:13,236 [INFO]   Action 2: Get coins: WHITE, BLUE, BLACK (11.0%)
+2025-02-17 05:45:13,236 [INFO]   Action 3: Get coins: WHITE, GREEN, RED (10.7%)
+2025-02-17 05:45:13,236 [INFO]   Action 4: Get coins: WHITE, GREEN, BLACK (10.0%)
+2025-02-17 05:45:13,236 [INFO]   Action 5: Get coins: WHITE, RED, BLACK (11.8%)
+2025-02-17 05:45:13,236 [INFO]   Action 6: Get coins: BLUE, GREEN, RED (8.7%)
+2025-02-17 05:45:13,236 [INFO]   Action 7: Get coins: BLUE, GREEN, BLACK (9.2%)
+2025-02-17 05:45:13,236 [INFO]   Action 8: Get coins: BLUE, RED, BLACK (9.8%)
+2025-02-17 05:45:13,236 [INFO]   Action 9: Get coins: GREEN, RED, BLACK (9.4%)
+2025-02-17 05:45:13,236 [INFO] ------------------------------
+2025-02-17 05:45:13,236 [INFO] Total probability: 100.0%
+2025-02-17 05:45:14,233 [INFO] Selected: Action 2
+2025-02-17 05:45:14,234 [INFO] 
+==================================================
+2025-02-17 05:45:14,234 [INFO] Step 16
+2025-02-17 05:45:14,234 [INFO] ------------------------------
+2025-02-17 05:45:14,234 [INFO] player1 get a WHITE coin.
+2025-02-17 05:45:14,234 [INFO] player1 get a BLUE coin.
+2025-02-17 05:45:14,234 [INFO] player1 get a BLACK coin.
+2025-02-17 05:45:14,234 [INFO] Collected coins: WHITE, BLUE, BLACK
+2025-02-17 05:45:14,235 [INFO] Action: 2
+2025-02-17 05:45:14,238 [INFO] ------------------------------
+2025-02-17 05:45:14,238 [INFO] Available actions:
+2025-02-17 05:45:14,238 [INFO]   Action 0: Get coins: WHITE, BLUE, GREEN (0.0%)
+2025-02-17 05:45:14,239 [INFO]   Action 1: Get coins: WHITE, BLUE, RED (0.0%)
+2025-02-17 05:45:14,239 [INFO]   Action 2: Get coins: WHITE, BLUE, BLACK (0.0%)
+2025-02-17 05:45:14,239 [INFO]   Action 3: Get coins: WHITE, GREEN, RED (0.0%)
+2025-02-17 05:45:14,239 [INFO]   Action 4: Get coins: WHITE, GREEN, BLACK (0.0%)
+2025-02-17 05:45:14,239 [INFO]   Action 5: Get coins: WHITE, RED, BLACK (0.0%)
+2025-02-17 05:45:14,239 [INFO]   Action 6: Get coins: BLUE, GREEN, RED (0.0%)
+2025-02-17 05:45:14,239 [INFO]   Action 7: Get coins: BLUE, GREEN, BLACK (0.0%)
+2025-02-17 05:45:14,239 [INFO]   Action 8: Get coins: BLUE, RED, BLACK (0.0%)
+2025-02-17 05:45:14,239 [INFO]   Action 9: Get coins: GREEN, RED, BLACK (0.0%)
+2025-02-17 05:45:14,239 [INFO]   Action 10: Buy l1_WHITE_7 (Level: 1, VP: 0, Color: WHITE) (100.0%)
+2025-02-17 05:45:14,239 [INFO] ------------------------------
+2025-02-17 05:45:14,239 [INFO] Total probability: 100.0%
+2025-02-17 05:45:15,235 [INFO] Selected: Action 10
+2025-02-17 05:45:15,235 [INFO] 
+==================================================
+2025-02-17 05:45:15,235 [INFO] Step 17
+2025-02-17 05:45:15,235 [INFO] ------------------------------
+2025-02-17 05:45:15,235 [INFO] player1 bought card l1_WHITE_7:
+2025-02-17 05:45:15,235 [INFO]   Level: 1
+2025-02-17 05:45:15,235 [INFO]   VP: 0
+2025-02-17 05:45:15,235 [INFO]   Gem Color: WHITE
+2025-02-17 05:45:15,235 [INFO]   Original Price: BLUE: 3
+2025-02-17 05:45:15,235 [INFO]   Actual Price: BLUE: 3
+2025-02-17 05:45:15,236 [INFO] VP: 1
+2025-02-17 05:45:15,236 [INFO] Action: 10
+2025-02-17 05:45:15,239 [INFO] ------------------------------
+2025-02-17 05:45:15,240 [INFO] Available actions:
+2025-02-17 05:45:15,240 [INFO]   Action 0: Get coins: WHITE, BLUE, GREEN (0.0%)
+2025-02-17 05:45:15,240 [INFO]   Action 1: Get coins: WHITE, BLUE, RED (0.0%)
+2025-02-17 05:45:15,240 [INFO]   Action 2: Get coins: WHITE, BLUE, BLACK (0.0%)
+2025-02-17 05:45:15,240 [INFO]   Action 3: Get coins: WHITE, GREEN, RED (0.0%)
+2025-02-17 05:45:15,240 [INFO]   Action 4: Get coins: WHITE, GREEN, BLACK (0.0%)
+2025-02-17 05:45:15,240 [INFO]   Action 5: Get coins: WHITE, RED, BLACK (0.0%)
+2025-02-17 05:45:15,240 [INFO]   Action 6: Get coins: BLUE, GREEN, RED (0.0%)
+2025-02-17 05:45:15,240 [INFO]   Action 7: Get coins: BLUE, GREEN, BLACK (0.0%)
+2025-02-17 05:45:15,240 [INFO]   Action 8: Get coins: BLUE, RED, BLACK (0.0%)
+2025-02-17 05:45:15,240 [INFO]   Action 9: Get coins: GREEN, RED, BLACK (0.0%)
+2025-02-17 05:45:15,240 [INFO]   Action 12: Buy l1_RED_3 (Level: 1, VP: 0, Color: RED) (39.9%)
+2025-02-17 05:45:15,240 [INFO]   Action 15: Buy l2_BLUE_4 (Level: 2, VP: 2, Color: BLUE) (60.1%)
+2025-02-17 05:45:15,240 [INFO] ------------------------------
+2025-02-17 05:45:15,240 [INFO] Total probability: 100.0%
+2025-02-17 05:45:16,234 [INFO] Selected: Action 12
+2025-02-17 05:45:16,234 [INFO] 
+==================================================
+2025-02-17 05:45:16,234 [INFO] Step 18
+2025-02-17 05:45:16,234 [INFO] ------------------------------
+2025-02-17 05:45:16,234 [INFO] player1 bought card l1_RED_3:
+2025-02-17 05:45:16,235 [INFO]   Level: 1
+2025-02-17 05:45:16,235 [INFO]   VP: 0
+2025-02-17 05:45:16,235 [INFO]   Gem Color: RED
+2025-02-17 05:45:16,235 [INFO]   Original Price: WHITE: 2, GREEN: 1, BLACK: 2
+2025-02-17 05:45:16,235 [INFO]   Actual Price: WHITE: 1
+2025-02-17 05:45:16,235 [INFO] VP: 1
+2025-02-17 05:45:16,235 [INFO] Action: 12
+2025-02-17 05:45:16,239 [INFO] ------------------------------
+2025-02-17 05:45:16,239 [INFO] Available actions:
+2025-02-17 05:45:16,239 [INFO]   Action 0: Get coins: WHITE, BLUE, GREEN (0.0%)
+2025-02-17 05:45:16,239 [INFO]   Action 1: Get coins: WHITE, BLUE, RED (0.0%)
+2025-02-17 05:45:16,239 [INFO]   Action 2: Get coins: WHITE, BLUE, BLACK (0.0%)
+2025-02-17 05:45:16,239 [INFO]   Action 3: Get coins: WHITE, GREEN, RED (0.0%)
+2025-02-17 05:45:16,239 [INFO]   Action 4: Get coins: WHITE, GREEN, BLACK (0.0%)
+2025-02-17 05:45:16,239 [INFO]   Action 5: Get coins: WHITE, RED, BLACK (0.0%)
+2025-02-17 05:45:16,239 [INFO]   Action 6: Get coins: BLUE, GREEN, RED (0.0%)
+2025-02-17 05:45:16,239 [INFO]   Action 7: Get coins: BLUE, GREEN, BLACK (0.0%)
+2025-02-17 05:45:16,239 [INFO]   Action 8: Get coins: BLUE, RED, BLACK (0.0%)
+2025-02-17 05:45:16,239 [INFO]   Action 9: Get coins: GREEN, RED, BLACK (0.0%)
+2025-02-17 05:45:16,239 [INFO]   Action 11: Buy l1_BLUE_2 (Level: 1, VP: 0, Color: BLUE) (100.0%)
+2025-02-17 05:45:16,239 [INFO] ------------------------------
+2025-02-17 05:45:16,239 [INFO] Total probability: 100.0%
+2025-02-17 05:45:17,235 [INFO] Selected: Action 11
+2025-02-17 05:45:17,235 [INFO] 
+==================================================
+2025-02-17 05:45:17,235 [INFO] Step 19
+2025-02-17 05:45:17,236 [INFO] ------------------------------
+2025-02-17 05:45:17,236 [INFO] player1 bought card l1_BLUE_2:
+2025-02-17 05:45:17,236 [INFO]   Level: 1
+2025-02-17 05:45:17,236 [INFO]   VP: 0
+2025-02-17 05:45:17,236 [INFO]   Gem Color: BLUE
+2025-02-17 05:45:17,236 [INFO]   Original Price: WHITE: 1, GREEN: 1, RED: 2, BLACK: 1
+2025-02-17 05:45:17,236 [INFO]   Actual Price: 
+2025-02-17 05:45:17,236 [INFO] VP: 1
+2025-02-17 05:45:17,237 [INFO] Action: 11
+2025-02-17 05:45:17,240 [INFO] ------------------------------
+2025-02-17 05:45:17,240 [INFO] Available actions:
+2025-02-17 05:45:17,240 [INFO]   Action 0: Get coins: WHITE, BLUE, GREEN (0.0%)
+2025-02-17 05:45:17,240 [INFO]   Action 1: Get coins: WHITE, BLUE, RED (0.0%)
+2025-02-17 05:45:17,241 [INFO]   Action 2: Get coins: WHITE, BLUE, BLACK (0.0%)
+2025-02-17 05:45:17,241 [INFO]   Action 3: Get coins: WHITE, GREEN, RED (0.0%)
+2025-02-17 05:45:17,241 [INFO]   Action 4: Get coins: WHITE, GREEN, BLACK (0.0%)
+2025-02-17 05:45:17,241 [INFO]   Action 5: Get coins: WHITE, RED, BLACK (0.0%)
+2025-02-17 05:45:17,241 [INFO]   Action 6: Get coins: BLUE, GREEN, RED (0.0%)
+2025-02-17 05:45:17,241 [INFO]   Action 7: Get coins: BLUE, GREEN, BLACK (0.0%)
+2025-02-17 05:45:17,241 [INFO]   Action 8: Get coins: BLUE, RED, BLACK (0.0%)
+2025-02-17 05:45:17,241 [INFO]   Action 9: Get coins: GREEN, RED, BLACK (0.0%)
+2025-02-17 05:45:17,241 [INFO]   Action 11: Buy l1_GREEN_3 (Level: 1, VP: 0, Color: GREEN) (100.0%)
+2025-02-17 05:45:17,241 [INFO] ------------------------------
+2025-02-17 05:45:17,241 [INFO] Total probability: 100.0%
+2025-02-17 05:45:18,238 [INFO] Selected: Action 11
+2025-02-17 05:45:18,238 [INFO] 
+==================================================
+2025-02-17 05:45:18,238 [INFO] Step 20
+2025-02-17 05:45:18,238 [INFO] ------------------------------
+2025-02-17 05:45:18,239 [INFO] player1 bought card l1_GREEN_3:
+2025-02-17 05:45:18,239 [INFO]   Level: 1
+2025-02-17 05:45:18,239 [INFO]   VP: 0
+2025-02-17 05:45:18,239 [INFO]   Gem Color: GREEN
+2025-02-17 05:45:18,239 [INFO]   Original Price: BLUE: 1, RED: 2, BLACK: 2
+2025-02-17 05:45:18,239 [INFO]   Actual Price: 
+2025-02-17 05:45:18,239 [INFO] VP: 1
+2025-02-17 05:45:18,240 [INFO] Action: 11
+2025-02-17 05:45:18,243 [INFO] ------------------------------
+2025-02-17 05:45:18,243 [INFO] Available actions:
+2025-02-17 05:45:18,243 [INFO]   Action 0: Get coins: WHITE, BLUE, GREEN (0.0%)
+2025-02-17 05:45:18,243 [INFO]   Action 1: Get coins: WHITE, BLUE, RED (0.0%)
+2025-02-17 05:45:18,243 [INFO]   Action 2: Get coins: WHITE, BLUE, BLACK (0.0%)
+2025-02-17 05:45:18,243 [INFO]   Action 3: Get coins: WHITE, GREEN, RED (0.0%)
+2025-02-17 05:45:18,243 [INFO]   Action 4: Get coins: WHITE, GREEN, BLACK (0.0%)
+2025-02-17 05:45:18,243 [INFO]   Action 5: Get coins: WHITE, RED, BLACK (0.0%)
+2025-02-17 05:45:18,243 [INFO]   Action 6: Get coins: BLUE, GREEN, RED (0.0%)
+2025-02-17 05:45:18,243 [INFO]   Action 7: Get coins: BLUE, GREEN, BLACK (0.0%)
+2025-02-17 05:45:18,243 [INFO]   Action 8: Get coins: BLUE, RED, BLACK (0.0%)
+2025-02-17 05:45:18,244 [INFO]   Action 9: Get coins: GREEN, RED, BLACK (0.0%)
+2025-02-17 05:45:18,244 [INFO]   Action 13: Buy l1_WHITE_1 (Level: 1, VP: 0, Color: WHITE) (100.0%)
+2025-02-17 05:45:18,244 [INFO] ------------------------------
+2025-02-17 05:45:18,244 [INFO] Total probability: 100.0%
+2025-02-17 05:45:19,241 [INFO] Selected: Action 13
+2025-02-17 05:45:19,241 [INFO] 
+==================================================
+2025-02-17 05:45:19,241 [INFO] Step 21
+2025-02-17 05:45:19,241 [INFO] ------------------------------
+2025-02-17 05:45:19,241 [INFO] player1 bought card l1_WHITE_1:
+2025-02-17 05:45:19,242 [INFO]   Level: 1
+2025-02-17 05:45:19,242 [INFO]   VP: 0
+2025-02-17 05:45:19,242 [INFO]   Gem Color: WHITE
+2025-02-17 05:45:19,242 [INFO]   Original Price: BLUE: 1, GREEN: 1, RED: 1, BLACK: 1
+2025-02-17 05:45:19,242 [INFO]   Actual Price: 
+2025-02-17 05:45:19,242 [INFO] VP: 1
+2025-02-17 05:45:19,242 [INFO] Action: 13
+2025-02-17 05:45:19,246 [INFO] ------------------------------
+2025-02-17 05:45:19,246 [INFO] Available actions:
+2025-02-17 05:45:19,246 [INFO]   Action 0: Get coins: WHITE, BLUE, GREEN (0.0%)
+2025-02-17 05:45:19,246 [INFO]   Action 1: Get coins: WHITE, BLUE, RED (0.0%)
+2025-02-17 05:45:19,246 [INFO]   Action 2: Get coins: WHITE, BLUE, BLACK (0.0%)
+2025-02-17 05:45:19,246 [INFO]   Action 3: Get coins: WHITE, GREEN, RED (0.0%)
+2025-02-17 05:45:19,246 [INFO]   Action 4: Get coins: WHITE, GREEN, BLACK (0.0%)
+2025-02-17 05:45:19,246 [INFO]   Action 5: Get coins: WHITE, RED, BLACK (0.0%)
+2025-02-17 05:45:19,246 [INFO]   Action 6: Get coins: BLUE, GREEN, RED (0.0%)
+2025-02-17 05:45:19,246 [INFO]   Action 7: Get coins: BLUE, GREEN, BLACK (0.0%)
+2025-02-17 05:45:19,246 [INFO]   Action 8: Get coins: BLUE, RED, BLACK (0.0%)
+2025-02-17 05:45:19,246 [INFO]   Action 9: Get coins: GREEN, RED, BLACK (0.0%)
+2025-02-17 05:45:19,246 [INFO]   Action 15: Buy l2_BLUE_4 (Level: 2, VP: 2, Color: BLUE) (100.0%)
+2025-02-17 05:45:19,246 [INFO] ------------------------------
+2025-02-17 05:45:19,246 [INFO] Total probability: 100.0%
+2025-02-17 05:45:20,245 [INFO] Selected: Action 15
+2025-02-17 05:45:20,245 [INFO] 
+==================================================
+2025-02-17 05:45:20,245 [INFO] Step 22
+2025-02-17 05:45:20,245 [INFO] ------------------------------
+2025-02-17 05:45:20,246 [INFO] player1 bought card l2_BLUE_4:
+2025-02-17 05:45:20,246 [INFO]   Level: 2
+2025-02-17 05:45:20,246 [INFO]   VP: 2
+2025-02-17 05:45:20,246 [INFO]   Gem Color: BLUE
+2025-02-17 05:45:20,246 [INFO]   Original Price: WHITE: 2, RED: 1, BLACK: 4
+2025-02-17 05:45:20,246 [INFO]   Actual Price: 
+2025-02-17 05:45:20,246 [INFO] VP: 3
+2025-02-17 05:45:20,247 [INFO] Action: 15
+2025-02-17 05:45:20,250 [INFO] ------------------------------
+2025-02-17 05:45:20,250 [INFO] Available actions:
+2025-02-17 05:45:20,250 [INFO]   Action 0: Get coins: WHITE, BLUE, GREEN (0.0%)
+2025-02-17 05:45:20,250 [INFO]   Action 1: Get coins: WHITE, BLUE, RED (0.0%)
+2025-02-17 05:45:20,250 [INFO]   Action 2: Get coins: WHITE, BLUE, BLACK (0.0%)
+2025-02-17 05:45:20,250 [INFO]   Action 3: Get coins: WHITE, GREEN, RED (0.0%)
+2025-02-17 05:45:20,250 [INFO]   Action 4: Get coins: WHITE, GREEN, BLACK (0.0%)
+2025-02-17 05:45:20,250 [INFO]   Action 5: Get coins: WHITE, RED, BLACK (0.0%)
+2025-02-17 05:45:20,251 [INFO]   Action 6: Get coins: BLUE, GREEN, RED (0.0%)
+2025-02-17 05:45:20,251 [INFO]   Action 7: Get coins: BLUE, GREEN, BLACK (0.0%)
+2025-02-17 05:45:20,251 [INFO]   Action 8: Get coins: BLUE, RED, BLACK (0.0%)
+2025-02-17 05:45:20,251 [INFO]   Action 9: Get coins: GREEN, RED, BLACK (0.0%)
+2025-02-17 05:45:20,251 [INFO]   Action 10: Buy l1_GREEN_6 (Level: 1, VP: 0, Color: GREEN) (0.3%)
+2025-02-17 05:45:20,251 [INFO]   Action 17: Buy l2_WHITE_1 (Level: 2, VP: 1, Color: WHITE) (99.7%)
+2025-02-17 05:45:20,251 [INFO] ------------------------------
+2025-02-17 05:45:20,251 [INFO] Total probability: 100.0%
+2025-02-17 05:45:21,246 [INFO] Selected: Action 17
+2025-02-17 05:45:21,246 [INFO] 
+==================================================
+2025-02-17 05:45:21,246 [INFO] Step 23
+2025-02-17 05:45:21,246 [INFO] ------------------------------
+2025-02-17 05:45:21,246 [INFO] player1 bought card l2_WHITE_1:
+2025-02-17 05:45:21,246 [INFO]   Level: 2
+2025-02-17 05:45:21,246 [INFO]   VP: 1
+2025-02-17 05:45:21,246 [INFO]   Gem Color: WHITE
+2025-02-17 05:45:21,247 [INFO]   Original Price: GREEN: 3, RED: 2, BLACK: 2
+2025-02-17 05:45:21,247 [INFO]   Actual Price: 
+2025-02-17 05:45:21,247 [INFO] VP: 4
+2025-02-17 05:45:21,247 [INFO] Action: 17
+2025-02-17 05:45:21,250 [INFO] ------------------------------
+2025-02-17 05:45:21,251 [INFO] Available actions:
+2025-02-17 05:45:21,251 [INFO]   Action 0: Get coins: WHITE, BLUE, GREEN (0.0%)
+2025-02-17 05:45:21,251 [INFO]   Action 1: Get coins: WHITE, BLUE, RED (0.0%)
+2025-02-17 05:45:21,251 [INFO]   Action 2: Get coins: WHITE, BLUE, BLACK (0.0%)
+2025-02-17 05:45:21,251 [INFO]   Action 3: Get coins: WHITE, GREEN, RED (0.0%)
+2025-02-17 05:45:21,251 [INFO]   Action 4: Get coins: WHITE, GREEN, BLACK (0.0%)
+2025-02-17 05:45:21,251 [INFO]   Action 5: Get coins: WHITE, RED, BLACK (0.0%)
+2025-02-17 05:45:21,251 [INFO]   Action 6: Get coins: BLUE, GREEN, RED (0.0%)
+2025-02-17 05:45:21,251 [INFO]   Action 7: Get coins: BLUE, GREEN, BLACK (0.0%)
+2025-02-17 05:45:21,251 [INFO]   Action 8: Get coins: BLUE, RED, BLACK (0.0%)
+2025-02-17 05:45:21,251 [INFO]   Action 9: Get coins: GREEN, RED, BLACK (0.0%)
+2025-02-17 05:45:21,251 [INFO]   Action 10: Buy l1_GREEN_6 (Level: 1, VP: 0, Color: GREEN) (0.5%)
+2025-02-17 05:45:21,251 [INFO]   Action 12: Buy l1_RED_7 (Level: 1, VP: 0, Color: RED) (0.5%)
+2025-02-17 05:45:21,251 [INFO]   Action 21: Buy l3_WHITE_4 (Level: 3, VP: 5, Color: WHITE) (99.0%)
+2025-02-17 05:45:21,251 [INFO] ------------------------------
+2025-02-17 05:45:21,251 [INFO] Total probability: 100.0%
+2025-02-17 05:45:22,248 [INFO] Selected: Action 21
+2025-02-17 05:45:22,248 [INFO] 
+==================================================
+2025-02-17 05:45:22,248 [INFO] Step 24
+2025-02-17 05:45:22,248 [INFO] ------------------------------
+2025-02-17 05:45:22,249 [INFO] player1 bought card l3_WHITE_4:
+2025-02-17 05:45:22,249 [INFO]   Level: 3
+2025-02-17 05:45:22,249 [INFO]   VP: 5
+2025-02-17 05:45:22,249 [INFO]   Gem Color: WHITE
+2025-02-17 05:45:22,249 [INFO]   Original Price: WHITE: 3, BLACK: 7
+2025-02-17 05:45:22,249 [INFO]   Actual Price: BLACK: 3
+2025-02-17 05:45:22,249 [INFO] VP: 9
+2025-02-17 05:45:22,250 [INFO] Action: 21
+2025-02-17 05:45:22,253 [INFO] ------------------------------
+2025-02-17 05:45:22,254 [INFO] Available actions:
+2025-02-17 05:45:22,254 [INFO]   Action 0: Get coins: WHITE, BLUE, GREEN (0.0%)
+2025-02-17 05:45:22,254 [INFO]   Action 1: Get coins: WHITE, BLUE, RED (0.0%)
+2025-02-17 05:45:22,254 [INFO]   Action 2: Get coins: WHITE, BLUE, BLACK (0.0%)
+2025-02-17 05:45:22,254 [INFO]   Action 3: Get coins: WHITE, GREEN, RED (0.0%)
+2025-02-17 05:45:22,254 [INFO]   Action 4: Get coins: WHITE, GREEN, BLACK (0.0%)
+2025-02-17 05:45:22,254 [INFO]   Action 5: Get coins: WHITE, RED, BLACK (0.0%)
+2025-02-17 05:45:22,254 [INFO]   Action 6: Get coins: BLUE, GREEN, RED (0.0%)
+2025-02-17 05:45:22,254 [INFO]   Action 7: Get coins: BLUE, GREEN, BLACK (0.0%)
+2025-02-17 05:45:22,254 [INFO]   Action 8: Get coins: BLUE, RED, BLACK (0.0%)
+2025-02-17 05:45:22,254 [INFO]   Action 9: Get coins: GREEN, RED, BLACK (0.0%)
+2025-02-17 05:45:22,254 [INFO]   Action 10: Buy l1_GREEN_6 (Level: 1, VP: 0, Color: GREEN) (0.0%)
+2025-02-17 05:45:22,254 [INFO]   Action 12: Buy l1_RED_7 (Level: 1, VP: 0, Color: RED) (0.0%)
+2025-02-17 05:45:22,254 [INFO]   Action 17: Buy l2_GREEN_3 (Level: 2, VP: 2, Color: GREEN) (99.9%)
+2025-02-17 05:45:22,254 [INFO] ------------------------------
+2025-02-17 05:45:22,254 [INFO] Total probability: 100.0%
+2025-02-17 05:45:23,250 [INFO] Selected: Action 17
+2025-02-17 05:45:23,250 [INFO] 
+==================================================
+2025-02-17 05:45:23,250 [INFO] Step 25
+2025-02-17 05:45:23,250 [INFO] ------------------------------
+2025-02-17 05:45:23,250 [INFO] player1 bought card l2_GREEN_3:
+2025-02-17 05:45:23,250 [INFO]   Level: 2
+2025-02-17 05:45:23,250 [INFO]   VP: 2
+2025-02-17 05:45:23,251 [INFO]   Gem Color: GREEN
+2025-02-17 05:45:23,251 [INFO]   Original Price: WHITE: 4, BLUE: 2, BLACK: 1
+2025-02-17 05:45:23,251 [INFO]   Actual Price: 
+2025-02-17 05:45:23,251 [INFO] VP: 11
+2025-02-17 05:45:23,251 [INFO] Action: 17
+2025-02-17 05:45:23,255 [INFO] ------------------------------
+2025-02-17 05:45:23,255 [INFO] Available actions:
+2025-02-17 05:45:23,255 [INFO]   Action 0: Get coins: WHITE, BLUE, GREEN (0.0%)
+2025-02-17 05:45:23,255 [INFO]   Action 1: Get coins: WHITE, BLUE, RED (0.0%)
+2025-02-17 05:45:23,255 [INFO]   Action 2: Get coins: WHITE, BLUE, BLACK (0.0%)
+2025-02-17 05:45:23,255 [INFO]   Action 3: Get coins: WHITE, GREEN, RED (0.0%)
+2025-02-17 05:45:23,255 [INFO]   Action 4: Get coins: WHITE, GREEN, BLACK (0.0%)
+2025-02-17 05:45:23,256 [INFO]   Action 5: Get coins: WHITE, RED, BLACK (0.0%)
+2025-02-17 05:45:23,256 [INFO]   Action 6: Get coins: BLUE, GREEN, RED (0.0%)
+2025-02-17 05:45:23,256 [INFO]   Action 7: Get coins: BLUE, GREEN, BLACK (0.0%)
+2025-02-17 05:45:23,256 [INFO]   Action 8: Get coins: BLUE, RED, BLACK (0.0%)
+2025-02-17 05:45:23,256 [INFO]   Action 9: Get coins: GREEN, RED, BLACK (0.0%)
+2025-02-17 05:45:23,256 [INFO]   Action 10: Buy l1_GREEN_6 (Level: 1, VP: 0, Color: GREEN) (0.1%)
+2025-02-17 05:45:23,256 [INFO]   Action 12: Buy l1_RED_7 (Level: 1, VP: 0, Color: RED) (0.1%)
+2025-02-17 05:45:23,256 [INFO]   Action 13: Buy l1_WHITE_8 (Level: 1, VP: 1, Color: WHITE) (0.2%)
+2025-02-17 05:45:23,256 [INFO]   Action 14: Buy l2_BLACK_3 (Level: 2, VP: 2, Color: BLACK) (99.6%)
+2025-02-17 05:45:23,256 [INFO] ------------------------------
+2025-02-17 05:45:23,256 [INFO] Total probability: 100.0%
+2025-02-17 05:45:24,256 [INFO] Selected: Action 14
+2025-02-17 05:45:24,257 [INFO] 
+==================================================
+2025-02-17 05:45:24,257 [INFO] Step 26
+2025-02-17 05:45:24,257 [INFO] ------------------------------
+2025-02-17 05:45:24,257 [INFO] player1 bought card l2_BLACK_3:
+2025-02-17 05:45:24,257 [INFO]   Level: 2
+2025-02-17 05:45:24,257 [INFO]   VP: 2
+2025-02-17 05:45:24,257 [INFO]   Gem Color: BLACK
+2025-02-17 05:45:24,257 [INFO]   Original Price: BLUE: 1, GREEN: 4, RED: 2
+2025-02-17 05:45:24,257 [INFO]   Actual Price: 
+2025-02-17 05:45:24,257 [INFO] VP: 13
+2025-02-17 05:45:24,258 [INFO] Action: 14
+2025-02-17 05:45:24,261 [INFO] ------------------------------
+2025-02-17 05:45:24,261 [INFO] Available actions:
+2025-02-17 05:45:24,262 [INFO]   Action 0: Get coins: WHITE, BLUE, GREEN (0.0%)
+2025-02-17 05:45:24,262 [INFO]   Action 1: Get coins: WHITE, BLUE, RED (0.0%)
+2025-02-17 05:45:24,262 [INFO]   Action 2: Get coins: WHITE, BLUE, BLACK (0.0%)
+2025-02-17 05:45:24,262 [INFO]   Action 3: Get coins: WHITE, GREEN, RED (0.0%)
+2025-02-17 05:45:24,262 [INFO]   Action 4: Get coins: WHITE, GREEN, BLACK (0.0%)
+2025-02-17 05:45:24,262 [INFO]   Action 5: Get coins: WHITE, RED, BLACK (0.0%)
+2025-02-17 05:45:24,262 [INFO]   Action 6: Get coins: BLUE, GREEN, RED (0.0%)
+2025-02-17 05:45:24,262 [INFO]   Action 7: Get coins: BLUE, GREEN, BLACK (0.0%)
+2025-02-17 05:45:24,262 [INFO]   Action 8: Get coins: BLUE, RED, BLACK (0.0%)
+2025-02-17 05:45:24,262 [INFO]   Action 9: Get coins: GREEN, RED, BLACK (0.0%)
+2025-02-17 05:45:24,262 [INFO]   Action 10: Buy l1_GREEN_6 (Level: 1, VP: 0, Color: GREEN) (16.9%)
+2025-02-17 05:45:24,262 [INFO]   Action 12: Buy l1_RED_7 (Level: 1, VP: 0, Color: RED) (20.5%)
+2025-02-17 05:45:24,262 [INFO]   Action 13: Buy l1_WHITE_8 (Level: 1, VP: 1, Color: WHITE) (62.5%)
+2025-02-17 05:45:24,262 [INFO] ------------------------------
+2025-02-17 05:45:24,262 [INFO] Total probability: 100.0%
+2025-02-17 05:45:25,259 [INFO] Selected: Action 13
+2025-02-17 05:45:25,259 [INFO] 
+==================================================
+2025-02-17 05:45:25,259 [INFO] Step 27
+2025-02-17 05:45:25,259 [INFO] ------------------------------
+2025-02-17 05:45:25,259 [INFO] player1 bought card l1_WHITE_8:
+2025-02-17 05:45:25,259 [INFO]   Level: 1
+2025-02-17 05:45:25,259 [INFO]   VP: 1
+2025-02-17 05:45:25,259 [INFO]   Gem Color: WHITE
+2025-02-17 05:45:25,259 [INFO]   Original Price: GREEN: 4
+2025-02-17 05:45:25,259 [INFO]   Actual Price: 
+2025-02-17 05:45:25,259 [INFO] VP: 14
+2025-02-17 05:45:25,260 [INFO] Action: 13
+2025-02-17 05:45:25,263 [INFO] ------------------------------
+2025-02-17 05:45:25,263 [INFO] Available actions:
+2025-02-17 05:45:25,264 [INFO]   Action 0: Get coins: WHITE, BLUE, GREEN (0.0%)
+2025-02-17 05:45:25,264 [INFO]   Action 1: Get coins: WHITE, BLUE, RED (0.0%)
+2025-02-17 05:45:25,264 [INFO]   Action 2: Get coins: WHITE, BLUE, BLACK (0.0%)
+2025-02-17 05:45:25,264 [INFO]   Action 3: Get coins: WHITE, GREEN, RED (0.0%)
+2025-02-17 05:45:25,264 [INFO]   Action 4: Get coins: WHITE, GREEN, BLACK (0.0%)
+2025-02-17 05:45:25,264 [INFO]   Action 5: Get coins: WHITE, RED, BLACK (0.0%)
+2025-02-17 05:45:25,264 [INFO]   Action 6: Get coins: BLUE, GREEN, RED (0.0%)
+2025-02-17 05:45:25,264 [INFO]   Action 7: Get coins: BLUE, GREEN, BLACK (0.0%)
+2025-02-17 05:45:25,264 [INFO]   Action 8: Get coins: BLUE, RED, BLACK (0.0%)
+2025-02-17 05:45:25,264 [INFO]   Action 9: Get coins: GREEN, RED, BLACK (0.0%)
+2025-02-17 05:45:25,264 [INFO]   Action 10: Buy l1_GREEN_6 (Level: 1, VP: 0, Color: GREEN) (15.8%)
+2025-02-17 05:45:25,264 [INFO]   Action 12: Buy l1_RED_7 (Level: 1, VP: 0, Color: RED) (19.4%)
+2025-02-17 05:45:25,264 [INFO]   Action 13: Buy l1_BLUE_7 (Level: 1, VP: 0, Color: BLUE) (64.8%)
+2025-02-17 05:45:25,264 [INFO] ------------------------------
+2025-02-17 05:45:25,264 [INFO] Total probability: 100.0%
+2025-02-17 05:45:26,262 [INFO] Selected: Action 13
+2025-02-17 05:45:26,262 [INFO] 
+==================================================
+2025-02-17 05:45:26,262 [INFO] Step 28
+2025-02-17 05:45:26,262 [INFO] ------------------------------
+2025-02-17 05:45:26,262 [INFO] player1 bought card l1_BLUE_7:
+2025-02-17 05:45:26,262 [INFO]   Level: 1
+2025-02-17 05:45:26,263 [INFO]   VP: 0
+2025-02-17 05:45:26,263 [INFO]   Gem Color: BLUE
+2025-02-17 05:45:26,263 [INFO]   Original Price: BLACK: 3
+2025-02-17 05:45:26,263 [INFO]   Actual Price: 
+2025-02-17 05:45:26,263 [INFO] VP: 14
+2025-02-17 05:45:26,263 [INFO] Get noble7 card.
+2025-02-17 05:45:26,263 [INFO] Action: 13
+2025-02-17 05:45:26,267 [INFO] ------------------------------
+2025-02-17 05:45:26,267 [INFO] Available actions:
+2025-02-17 05:45:26,267 [INFO]   Action 0: Get coins: WHITE, BLUE, GREEN (0.0%)
+2025-02-17 05:45:26,267 [INFO]   Action 1: Get coins: WHITE, BLUE, RED (0.0%)
+2025-02-17 05:45:26,267 [INFO]   Action 2: Get coins: WHITE, BLUE, BLACK (0.0%)
+2025-02-17 05:45:26,267 [INFO]   Action 3: Get coins: WHITE, GREEN, RED (0.0%)
+2025-02-17 05:45:26,267 [INFO]   Action 4: Get coins: WHITE, GREEN, BLACK (0.0%)
+2025-02-17 05:45:26,267 [INFO]   Action 5: Get coins: WHITE, RED, BLACK (0.0%)
+2025-02-17 05:45:26,267 [INFO]   Action 6: Get coins: BLUE, GREEN, RED (0.0%)
+2025-02-17 05:45:26,268 [INFO]   Action 7: Get coins: BLUE, GREEN, BLACK (0.0%)
+2025-02-17 05:45:26,268 [INFO]   Action 8: Get coins: BLUE, RED, BLACK (0.0%)
+2025-02-17 05:45:26,268 [INFO]   Action 9: Get coins: GREEN, RED, BLACK (0.0%)
+2025-02-17 05:45:26,268 [INFO]   Action 10: Buy l1_GREEN_6 (Level: 1, VP: 0, Color: GREEN) (0.0%)
+2025-02-17 05:45:26,268 [INFO]   Action 12: Buy l1_RED_7 (Level: 1, VP: 0, Color: RED) (0.0%)
+2025-02-17 05:45:26,268 [INFO]   Action 13: Buy l1_BLACK_1 (Level: 1, VP: 0, Color: BLACK) (0.0%)
+2025-02-17 05:45:26,268 [INFO]   Action 17: Buy l2_GREEN_2 (Level: 2, VP: 1, Color: GREEN) (100.0%)
+2025-02-17 05:45:26,268 [INFO] ------------------------------
+2025-02-17 05:45:26,268 [INFO] Total probability: 100.0%
+2025-02-17 05:45:27,264 [INFO] Selected: Action 17
+2025-02-17 05:45:27,264 [INFO] 
+==================================================
+2025-02-17 05:45:27,264 [INFO] Step 29
+2025-02-17 05:45:27,264 [INFO] ------------------------------
+2025-02-17 05:45:27,264 [INFO] player1 bought card l2_GREEN_2:
+2025-02-17 05:45:27,264 [INFO]   Level: 2
+2025-02-17 05:45:27,265 [INFO]   VP: 1
+2025-02-17 05:45:27,265 [INFO]   Gem Color: GREEN
+2025-02-17 05:45:27,265 [INFO]   Original Price: WHITE: 2, BLUE: 3, BLACK: 2
+2025-02-17 05:45:27,265 [INFO]   Actual Price: 
+2025-02-17 05:45:27,265 [INFO] VP: 18
+2025-02-17 05:45:27,265 [INFO] Action: 17
+2025-02-17 05:45:27,265 [INFO] ------------------------------
+2025-02-17 05:45:27,265 [INFO] Game finished! Victory achieved!
+2025-02-17 05:45:27,266 [INFO] ==================================================
+
+2025-02-17 05:45:27,269 [INFO] ------------------------------
+2025-02-17 05:45:27,269 [INFO] Available actions:
+2025-02-17 05:45:27,269 [INFO]   Action 0: Get coins: WHITE, BLUE, GREEN (0.0%)
+2025-02-17 05:45:27,269 [INFO]   Action 1: Get coins: WHITE, BLUE, RED (0.0%)
+2025-02-17 05:45:27,269 [INFO]   Action 2: Get coins: WHITE, BLUE, BLACK (0.0%)
+2025-02-17 05:45:27,269 [INFO]   Action 3: Get coins: WHITE, GREEN, RED (0.0%)
+2025-02-17 05:45:27,269 [INFO]   Action 4: Get coins: WHITE, GREEN, BLACK (0.0%)
+2025-02-17 05:45:27,270 [INFO]   Action 5: Get coins: WHITE, RED, BLACK (0.0%)
+2025-02-17 05:45:27,270 [INFO]   Action 6: Get coins: BLUE, GREEN, RED (0.0%)
+2025-02-17 05:45:27,270 [INFO]   Action 7: Get coins: BLUE, GREEN, BLACK (0.0%)
+2025-02-17 05:45:27,270 [INFO]   Action 8: Get coins: BLUE, RED, BLACK (0.0%)
+2025-02-17 05:45:27,270 [INFO]   Action 9: Get coins: GREEN, RED, BLACK (0.0%)
+2025-02-17 05:45:27,270 [INFO]   Action 10: Buy l1_GREEN_6 (Level: 1, VP: 0, Color: GREEN) (17.2%)
+2025-02-17 05:45:27,270 [INFO]   Action 12: Buy l1_RED_7 (Level: 1, VP: 0, Color: RED) (20.7%)
+2025-02-17 05:45:27,270 [INFO]   Action 13: Buy l1_BLACK_1 (Level: 1, VP: 0, Color: BLACK) (62.1%)
+2025-02-17 05:45:27,270 [INFO] ------------------------------
+2025-02-17 05:45:27,270 [INFO] Total probability: 100.0%
+2025-02-17 05:45:27,270 [INFO] Game Won! Starting new episode...
+2025-02-17 05:45:27,271 [INFO] Initial game status
+2025-02-17 05:45:27,271 [INFO] Initial game status
+2025-02-17 05:45:27,271 [INFO] [board]
+2025-02-17 05:45:27,271 [INFO] Noble cards: 
+2025-02-17 05:45:27,271 [INFO] [noble6, noble7, noble3]
+2025-02-17 05:45:27,271 [INFO] Coin status: 
+2025-02-17 05:45:27,271 [INFO] {'WHITE': 4, 'BLUE': 4, 'GREEN': 4, 'RED': 4, 'BLACK': 4, 'GOLD': 5}
+2025-02-17 05:45:27,271 [INFO] Table level1: 
+2025-02-17 05:45:27,271 [INFO] [l1_BLUE_6, l1_BLACK_4, l1_GREEN_5, l1_RED_7]
+2025-02-17 05:45:27,271 [INFO] The remain number of Level1: 36
+2025-02-17 05:45:27,271 [INFO] Table level2: 
+2025-02-17 05:45:27,271 [INFO] [l2_GREEN_1, l2_WHITE_2, l2_RED_2, l2_BLACK_6]
+2025-02-17 05:45:27,271 [INFO] The remain number of Level2: 26
+2025-02-17 05:45:27,272 [INFO] Table level3: 
+2025-02-17 05:45:27,272 [INFO] [l3_RED_1, l3_GREEN_3, l3_GREEN_4, l3_WHITE_4]
+2025-02-17 05:45:27,272 [INFO] The remain number of Level3: 16
+2025-02-17 05:45:27,272 [INFO] 
+2025-02-17 05:45:27,272 [INFO] [player1]
+2025-02-17 05:45:27,272 [INFO] Development cards: 
+2025-02-17 05:45:27,272 [INFO] []
+2025-02-17 05:45:27,272 [INFO] []
+2025-02-17 05:45:27,272 [INFO] []
+2025-02-17 05:45:27,272 [INFO] Noble cards: 
+2025-02-17 05:45:27,272 [INFO] []
+2025-02-17 05:45:27,272 [INFO] Coin status: 
+2025-02-17 05:45:27,272 [INFO] {'WHITE': 0, 'BLUE': 0, 'GREEN': 0, 'RED': 0, 'BLACK': 0, 'GOLD': 0}
+2025-02-17 05:45:27,272 [INFO] Victory point: 0
+2025-02-17 05:45:27,272 [INFO] 
+2025-02-17 05:45:27,273 [INFO] Initial game status
+2025-02-17 05:45:27,273 [INFO] Initial game status
+2025-02-17 05:45:27,273 [INFO] [board]
+2025-02-17 05:45:27,273 [INFO] Noble cards: 
+2025-02-17 05:45:27,273 [INFO] [noble1, noble10, noble4]
+2025-02-17 05:45:27,273 [INFO] Coin status: 
+2025-02-17 05:45:27,273 [INFO] {'WHITE': 4, 'BLUE': 4, 'GREEN': 4, 'RED': 4, 'BLACK': 4, 'GOLD': 5}
+2025-02-17 05:45:27,273 [INFO] Table level1: 
+2025-02-17 05:45:27,273 [INFO] [l1_GREEN_7, l1_GREEN_8, l1_GREEN_1, l1_WHITE_4]
+2025-02-17 05:45:27,273 [INFO] The remain number of Level1: 36
+2025-02-17 05:45:27,274 [INFO] Table level2: 
+2025-02-17 05:45:27,274 [INFO] [l2_BLACK_4, l2_RED_3, l2_RED_5, l2_BLACK_2]
+2025-02-17 05:45:27,274 [INFO] The remain number of Level2: 26
+2025-02-17 05:45:27,274 [INFO] Table level3: 
+2025-02-17 05:45:27,274 [INFO] [l3_BLUE_4, l3_GREEN_1, l3_GREEN_2, l3_BLACK_1]
+2025-02-17 05:45:27,274 [INFO] The remain number of Level3: 16
+2025-02-17 05:45:27,274 [INFO] 
+2025-02-17 05:45:27,274 [INFO] [player1]
+2025-02-17 05:45:27,274 [INFO] Development cards: 
+2025-02-17 05:45:27,274 [INFO] []
+2025-02-17 05:45:27,274 [INFO] []
+2025-02-17 05:45:27,274 [INFO] []
+2025-02-17 05:45:27,274 [INFO] Noble cards: 
+2025-02-17 05:45:27,274 [INFO] []
+2025-02-17 05:45:27,274 [INFO] Coin status: 
+2025-02-17 05:45:27,274 [INFO] {'WHITE': 0, 'BLUE': 0, 'GREEN': 0, 'RED': 0, 'BLACK': 0, 'GOLD': 0}
+2025-02-17 05:45:27,274 [INFO] Victory point: 0
+2025-02-17 05:45:27,274 [INFO] 
+2025-02-17 05:45:27,278 [INFO] ------------------------------
+2025-02-17 05:45:27,278 [INFO] Available actions:
+2025-02-17 05:45:27,278 [INFO]   Action 0: Get coins: WHITE, BLUE, GREEN (10.2%)
+2025-02-17 05:45:27,278 [INFO]   Action 1: Get coins: WHITE, BLUE, RED (9.7%)
+2025-02-17 05:45:27,278 [INFO]   Action 2: Get coins: WHITE, BLUE, BLACK (10.8%)
+2025-02-17 05:45:27,278 [INFO]   Action 3: Get coins: WHITE, GREEN, RED (10.6%)
+2025-02-17 05:45:27,278 [INFO]   Action 4: Get coins: WHITE, GREEN, BLACK (9.7%)
+2025-02-17 05:45:27,279 [INFO]   Action 5: Get coins: WHITE, RED, BLACK (11.6%)
+2025-02-17 05:45:27,279 [INFO]   Action 6: Get coins: BLUE, GREEN, RED (8.9%)
+2025-02-17 05:45:27,279 [INFO]   Action 7: Get coins: BLUE, GREEN, BLACK (9.5%)
+2025-02-17 05:45:27,279 [INFO]   Action 8: Get coins: BLUE, RED, BLACK (9.6%)
+2025-02-17 05:45:27,279 [INFO]   Action 9: Get coins: GREEN, RED, BLACK (9.5%)
+2025-02-17 05:45:27,279 [INFO] ------------------------------
+2025-02-17 05:45:27,279 [INFO] Total probability: 100.0%
+2025-02-17 05:45:36,209 [INFO] Selected: Action 5
+2025-02-17 05:45:36,210 [INFO] 
+==================================================
+2025-02-17 05:45:36,210 [INFO] Step 1
+2025-02-17 05:45:36,210 [INFO] ------------------------------
+2025-02-17 05:45:36,210 [INFO] player1 get a WHITE coin.
+2025-02-17 05:45:36,210 [INFO] player1 get a RED coin.
+2025-02-17 05:45:36,210 [INFO] player1 get a BLACK coin.
+2025-02-17 05:45:36,210 [INFO] Collected coins: WHITE, RED, BLACK
+2025-02-17 05:45:36,211 [INFO] Action: 5
+2025-02-17 05:45:36,214 [INFO] ------------------------------
+2025-02-17 05:45:36,214 [INFO] Available actions:
+2025-02-17 05:45:36,214 [INFO]   Action 0: Get coins: WHITE, BLUE, GREEN (10.2%)
+2025-02-17 05:45:36,214 [INFO]   Action 1: Get coins: WHITE, BLUE, RED (9.7%)
+2025-02-17 05:45:36,214 [INFO]   Action 2: Get coins: WHITE, BLUE, BLACK (10.8%)
+2025-02-17 05:45:36,214 [INFO]   Action 3: Get coins: WHITE, GREEN, RED (10.6%)
+2025-02-17 05:45:36,215 [INFO]   Action 4: Get coins: WHITE, GREEN, BLACK (9.7%)
+2025-02-17 05:45:36,215 [INFO]   Action 5: Get coins: WHITE, RED, BLACK (11.6%)
+2025-02-17 05:45:36,215 [INFO]   Action 6: Get coins: BLUE, GREEN, RED (8.8%)
+2025-02-17 05:45:36,215 [INFO]   Action 7: Get coins: BLUE, GREEN, BLACK (9.5%)
+2025-02-17 05:45:36,215 [INFO]   Action 8: Get coins: BLUE, RED, BLACK (9.6%)
+2025-02-17 05:45:36,215 [INFO]   Action 9: Get coins: GREEN, RED, BLACK (9.5%)
+2025-02-17 05:45:36,215 [INFO] ------------------------------
+2025-02-17 05:45:36,215 [INFO] Total probability: 100.0%
+2025-02-17 05:45:37,212 [INFO] Selected: Action 0
+2025-02-17 05:45:37,212 [INFO] 
+==================================================
+2025-02-17 05:45:37,212 [INFO] Step 2
+2025-02-17 05:45:37,212 [INFO] ------------------------------
+2025-02-17 05:45:37,213 [INFO] player1 get a WHITE coin.
+2025-02-17 05:45:37,213 [INFO] player1 get a BLUE coin.
+2025-02-17 05:45:37,213 [INFO] player1 get a GREEN coin.
+2025-02-17 05:45:37,213 [INFO] Collected coins: WHITE, BLUE, GREEN
+2025-02-17 05:45:37,213 [INFO] Action: 0
+2025-02-17 05:45:37,217 [INFO] ------------------------------
+2025-02-17 05:45:37,217 [INFO] Available actions:
+2025-02-17 05:45:37,217 [INFO]   Action 0: Get coins: WHITE, BLUE, GREEN (0.0%)
+2025-02-17 05:45:37,217 [INFO]   Action 1: Get coins: WHITE, BLUE, RED (0.0%)
+2025-02-17 05:45:37,217 [INFO]   Action 2: Get coins: WHITE, BLUE, BLACK (0.0%)
+2025-02-17 05:45:37,217 [INFO]   Action 3: Get coins: WHITE, GREEN, RED (0.0%)
+2025-02-17 05:45:37,217 [INFO]   Action 4: Get coins: WHITE, GREEN, BLACK (0.0%)
+2025-02-17 05:45:37,217 [INFO]   Action 5: Get coins: WHITE, RED, BLACK (0.0%)
+2025-02-17 05:45:37,217 [INFO]   Action 6: Get coins: BLUE, GREEN, RED (0.0%)
+2025-02-17 05:45:37,217 [INFO]   Action 7: Get coins: BLUE, GREEN, BLACK (0.0%)
+2025-02-17 05:45:37,217 [INFO]   Action 8: Get coins: BLUE, RED, BLACK (0.0%)
+2025-02-17 05:45:37,217 [INFO]   Action 9: Get coins: GREEN, RED, BLACK (0.0%)
+2025-02-17 05:45:37,217 [INFO]   Action 12: Buy l1_GREEN_5 (Level: 1, VP: 0, Color: GREEN) (100.0%)
+2025-02-17 05:45:37,217 [INFO] ------------------------------
+2025-02-17 05:45:37,217 [INFO] Total probability: 100.0%
+2025-02-17 05:45:38,227 [INFO] Selected: Action 12
+2025-02-17 05:45:38,227 [INFO] 
+==================================================
+2025-02-17 05:45:38,228 [INFO] Step 3
+2025-02-17 05:45:38,228 [INFO] ------------------------------
+2025-02-17 05:45:38,228 [INFO] player1 bought card l1_GREEN_5:
+2025-02-17 05:45:38,228 [INFO]   Level: 1
+2025-02-17 05:45:38,228 [INFO]   VP: 0
+2025-02-17 05:45:38,228 [INFO]   Gem Color: GREEN
+2025-02-17 05:45:38,228 [INFO]   Original Price: WHITE: 2, BLUE: 1
+2025-02-17 05:45:38,228 [INFO]   Actual Price: WHITE: 2, BLUE: 1
+2025-02-17 05:45:38,228 [INFO] VP: 0
+2025-02-17 05:45:38,229 [INFO] Action: 12
+2025-02-17 05:45:38,232 [INFO] ------------------------------
+2025-02-17 05:45:38,232 [INFO] Available actions:
+2025-02-17 05:45:38,232 [INFO]   Action 0: Get coins: WHITE, BLUE, GREEN (10.2%)
+2025-02-17 05:45:38,232 [INFO]   Action 1: Get coins: WHITE, BLUE, RED (9.6%)
+2025-02-17 05:45:38,232 [INFO]   Action 2: Get coins: WHITE, BLUE, BLACK (10.9%)
+2025-02-17 05:45:38,233 [INFO]   Action 3: Get coins: WHITE, GREEN, RED (10.6%)
+2025-02-17 05:45:38,233 [INFO]   Action 4: Get coins: WHITE, GREEN, BLACK (9.7%)
+2025-02-17 05:45:38,233 [INFO]   Action 5: Get coins: WHITE, RED, BLACK (11.7%)
+2025-02-17 05:45:38,233 [INFO]   Action 6: Get coins: BLUE, GREEN, RED (8.8%)
+2025-02-17 05:45:38,233 [INFO]   Action 7: Get coins: BLUE, GREEN, BLACK (9.4%)
+2025-02-17 05:45:38,233 [INFO]   Action 8: Get coins: BLUE, RED, BLACK (9.6%)
+2025-02-17 05:45:38,233 [INFO]   Action 9: Get coins: GREEN, RED, BLACK (9.5%)
+2025-02-17 05:45:38,233 [INFO] ------------------------------
+2025-02-17 05:45:38,233 [INFO] Total probability: 100.0%
+2025-02-17 05:45:39,231 [INFO] Selected: Action 8
+2025-02-17 05:45:39,231 [INFO] 
+==================================================
+2025-02-17 05:45:39,231 [INFO] Step 4
+2025-02-17 05:45:39,231 [INFO] ------------------------------
+2025-02-17 05:45:39,231 [INFO] player1 get a BLUE coin.
+2025-02-17 05:45:39,231 [INFO] player1 get a RED coin.
+2025-02-17 05:45:39,232 [INFO] player1 get a BLACK coin.
+2025-02-17 05:45:39,232 [INFO] Collected coins: BLUE, RED, BLACK
+2025-02-17 05:45:39,232 [INFO] Action: 8
+2025-02-17 05:45:39,235 [INFO] ------------------------------
+2025-02-17 05:45:39,236 [INFO] Available actions:
+2025-02-17 05:45:39,236 [INFO]   Action 0: Get coins: WHITE, BLUE, GREEN (0.0%)
+2025-02-17 05:45:39,236 [INFO]   Action 1: Get coins: WHITE, BLUE, RED (0.0%)
+2025-02-17 05:45:39,236 [INFO]   Action 2: Get coins: WHITE, BLUE, BLACK (0.0%)
+2025-02-17 05:45:39,236 [INFO]   Action 3: Get coins: WHITE, GREEN, RED (0.0%)
+2025-02-17 05:45:39,236 [INFO]   Action 4: Get coins: WHITE, GREEN, BLACK (0.0%)
+2025-02-17 05:45:39,236 [INFO]   Action 5: Get coins: WHITE, RED, BLACK (0.0%)
+2025-02-17 05:45:39,236 [INFO]   Action 6: Get coins: BLUE, GREEN, RED (0.0%)
+2025-02-17 05:45:39,236 [INFO]   Action 7: Get coins: BLUE, GREEN, BLACK (0.0%)
+2025-02-17 05:45:39,236 [INFO]   Action 8: Get coins: BLUE, RED, BLACK (0.0%)
+2025-02-17 05:45:39,236 [INFO]   Action 9: Get coins: GREEN, RED, BLACK (0.0%)
+2025-02-17 05:45:39,236 [INFO]   Action 10: Buy l1_BLUE_6 (Level: 1, VP: 0, Color: BLUE) (100.0%)
+2025-02-17 05:45:39,236 [INFO] ------------------------------
+2025-02-17 05:45:39,236 [INFO] Total probability: 100.0%
+2025-02-17 05:45:40,234 [INFO] Selected: Action 10
+2025-02-17 05:45:40,234 [INFO] 
+==================================================
+2025-02-17 05:45:40,234 [INFO] Step 5
+2025-02-17 05:45:40,234 [INFO] ------------------------------
+2025-02-17 05:45:40,234 [INFO] player1 bought card l1_BLUE_6:
+2025-02-17 05:45:40,234 [INFO]   Level: 1
+2025-02-17 05:45:40,234 [INFO]   VP: 0
+2025-02-17 05:45:40,234 [INFO]   Gem Color: BLUE
+2025-02-17 05:45:40,234 [INFO]   Original Price: GREEN: 2, BLACK: 2
+2025-02-17 05:45:40,234 [INFO]   Actual Price: GREEN: 1, BLACK: 2
+2025-02-17 05:45:40,235 [INFO] VP: 0
+2025-02-17 05:45:40,235 [INFO] Action: 10
+2025-02-17 05:45:40,238 [INFO] ------------------------------
+2025-02-17 05:45:40,239 [INFO] Available actions:
+2025-02-17 05:45:40,239 [INFO]   Action 0: Get coins: WHITE, BLUE, GREEN (10.2%)
+2025-02-17 05:45:40,239 [INFO]   Action 1: Get coins: WHITE, BLUE, RED (9.5%)
+2025-02-17 05:45:40,239 [INFO]   Action 2: Get coins: WHITE, BLUE, BLACK (10.9%)
+2025-02-17 05:45:40,239 [INFO]   Action 3: Get coins: WHITE, GREEN, RED (10.6%)
+2025-02-17 05:45:40,239 [INFO]   Action 4: Get coins: WHITE, GREEN, BLACK (9.8%)
+2025-02-17 05:45:40,239 [INFO]   Action 5: Get coins: WHITE, RED, BLACK (11.7%)
+2025-02-17 05:45:40,239 [INFO]   Action 6: Get coins: BLUE, GREEN, RED (8.8%)
+2025-02-17 05:45:40,239 [INFO]   Action 7: Get coins: BLUE, GREEN, BLACK (9.3%)
+2025-02-17 05:45:40,239 [INFO]   Action 8: Get coins: BLUE, RED, BLACK (9.6%)
+2025-02-17 05:45:40,239 [INFO]   Action 9: Get coins: GREEN, RED, BLACK (9.4%)
+2025-02-17 05:45:40,239 [INFO] ------------------------------
+2025-02-17 05:45:40,239 [INFO] Total probability: 100.0%
+2025-02-17 05:45:41,238 [INFO] Selected: Action 3
+2025-02-17 05:45:41,238 [INFO] 
+==================================================
+2025-02-17 05:45:41,238 [INFO] Step 6
+2025-02-17 05:45:41,238 [INFO] ------------------------------
+2025-02-17 05:45:41,239 [INFO] player1 get a WHITE coin.
+2025-02-17 05:45:41,239 [INFO] player1 get a GREEN coin.
+2025-02-17 05:45:41,239 [INFO] player1 get a RED coin.
+2025-02-17 05:45:41,239 [INFO] Collected coins: WHITE, GREEN, RED
+2025-02-17 05:45:41,239 [INFO] Action: 3
+2025-02-17 05:45:41,243 [INFO] ------------------------------
+2025-02-17 05:45:41,243 [INFO] Available actions:
+2025-02-17 05:45:41,243 [INFO]   Action 0: Get coins: WHITE, BLUE, GREEN (0.0%)
+2025-02-17 05:45:41,243 [INFO]   Action 1: Get coins: WHITE, BLUE, RED (0.0%)
+2025-02-17 05:45:41,243 [INFO]   Action 2: Get coins: WHITE, BLUE, BLACK (0.0%)
+2025-02-17 05:45:41,243 [INFO]   Action 3: Get coins: WHITE, GREEN, RED (0.0%)
+2025-02-17 05:45:41,243 [INFO]   Action 4: Get coins: WHITE, GREEN, BLACK (0.0%)
+2025-02-17 05:45:41,243 [INFO]   Action 5: Get coins: WHITE, RED, BLACK (0.0%)
+2025-02-17 05:45:41,243 [INFO]   Action 6: Get coins: BLUE, GREEN, RED (0.0%)
+2025-02-17 05:45:41,243 [INFO]   Action 7: Get coins: BLUE, GREEN, BLACK (0.0%)
+2025-02-17 05:45:41,243 [INFO]   Action 8: Get coins: BLUE, RED, BLACK (0.0%)
+2025-02-17 05:45:41,243 [INFO]   Action 9: Get coins: GREEN, RED, BLACK (0.0%)
+2025-02-17 05:45:41,243 [INFO]   Action 13: Buy l1_BLACK_1 (Level: 1, VP: 0, Color: BLACK) (100.0%)
+2025-02-17 05:45:41,243 [INFO] ------------------------------
+2025-02-17 05:45:41,243 [INFO] Total probability: 100.0%
+2025-02-17 05:45:42,242 [INFO] Selected: Action 13
+2025-02-17 05:45:42,242 [INFO] 
+==================================================
+2025-02-17 05:45:42,242 [INFO] Step 7
+2025-02-17 05:45:42,242 [INFO] ------------------------------
+2025-02-17 05:45:42,242 [INFO] player1 bought card l1_BLACK_1:
+2025-02-17 05:45:42,243 [INFO]   Level: 1
+2025-02-17 05:45:42,243 [INFO]   VP: 0
+2025-02-17 05:45:42,243 [INFO]   Gem Color: BLACK
+2025-02-17 05:45:42,243 [INFO]   Original Price: WHITE: 1, BLUE: 1, GREEN: 1, RED: 1
+2025-02-17 05:45:42,243 [INFO]   Actual Price: WHITE: 1, RED: 1
+2025-02-17 05:45:42,243 [INFO] VP: 0
+2025-02-17 05:45:42,243 [INFO] Action: 13
+2025-02-17 05:45:42,247 [INFO] ------------------------------
+2025-02-17 05:45:42,247 [INFO] Available actions:
+2025-02-17 05:45:42,247 [INFO]   Action 0: Get coins: WHITE, BLUE, GREEN (0.0%)
+2025-02-17 05:45:42,247 [INFO]   Action 1: Get coins: WHITE, BLUE, RED (0.0%)
+2025-02-17 05:45:42,247 [INFO]   Action 2: Get coins: WHITE, BLUE, BLACK (0.0%)
+2025-02-17 05:45:42,247 [INFO]   Action 3: Get coins: WHITE, GREEN, RED (0.0%)
+2025-02-17 05:45:42,247 [INFO]   Action 4: Get coins: WHITE, GREEN, BLACK (0.0%)
+2025-02-17 05:45:42,247 [INFO]   Action 5: Get coins: WHITE, RED, BLACK (0.0%)
+2025-02-17 05:45:42,247 [INFO]   Action 6: Get coins: BLUE, GREEN, RED (0.0%)
+2025-02-17 05:45:42,247 [INFO]   Action 7: Get coins: BLUE, GREEN, BLACK (0.0%)
+2025-02-17 05:45:42,247 [INFO]   Action 8: Get coins: BLUE, RED, BLACK (0.0%)
+2025-02-17 05:45:42,247 [INFO]   Action 9: Get coins: GREEN, RED, BLACK (0.0%)
+2025-02-17 05:45:42,247 [INFO]   Action 13: Buy l1_WHITE_5 (Level: 1, VP: 0, Color: WHITE) (100.0%)
+2025-02-17 05:45:42,247 [INFO] ------------------------------
+2025-02-17 05:45:42,248 [INFO] Total probability: 100.0%
+2025-02-17 05:45:43,245 [INFO] Selected: Action 13
+2025-02-17 05:45:43,245 [INFO] 
+==================================================
+2025-02-17 05:45:43,245 [INFO] Step 8
+2025-02-17 05:45:43,245 [INFO] ------------------------------
+2025-02-17 05:45:43,245 [INFO] player1 bought card l1_WHITE_5:
+2025-02-17 05:45:43,246 [INFO]   Level: 1
+2025-02-17 05:45:43,246 [INFO]   VP: 0
+2025-02-17 05:45:43,246 [INFO]   Gem Color: WHITE
+2025-02-17 05:45:43,246 [INFO]   Original Price: RED: 2, BLACK: 1
+2025-02-17 05:45:43,246 [INFO]   Actual Price: RED: 2
+2025-02-17 05:45:43,246 [INFO] VP: 0
+2025-02-17 05:45:43,246 [INFO] Action: 13
+2025-02-17 05:45:43,250 [INFO] ------------------------------
+2025-02-17 05:45:43,250 [INFO] Available actions:
+2025-02-17 05:45:43,250 [INFO]   Action 0: Get coins: WHITE, BLUE, GREEN (0.0%)
+2025-02-17 05:45:43,250 [INFO]   Action 1: Get coins: WHITE, BLUE, RED (0.0%)
+2025-02-17 05:45:43,250 [INFO]   Action 2: Get coins: WHITE, BLUE, BLACK (0.0%)
+2025-02-17 05:45:43,250 [INFO]   Action 3: Get coins: WHITE, GREEN, RED (0.0%)
+2025-02-17 05:45:43,250 [INFO]   Action 4: Get coins: WHITE, GREEN, BLACK (0.0%)
+2025-02-17 05:45:43,250 [INFO]   Action 5: Get coins: WHITE, RED, BLACK (0.0%)
+2025-02-17 05:45:43,250 [INFO]   Action 6: Get coins: BLUE, GREEN, RED (0.0%)
+2025-02-17 05:45:43,250 [INFO]   Action 7: Get coins: BLUE, GREEN, BLACK (0.0%)
+2025-02-17 05:45:43,250 [INFO]   Action 8: Get coins: BLUE, RED, BLACK (0.0%)
+2025-02-17 05:45:43,251 [INFO]   Action 9: Get coins: GREEN, RED, BLACK (0.0%)
+2025-02-17 05:45:43,251 [INFO]   Action 12: Buy l1_RED_1 (Level: 1, VP: 0, Color: RED) (100.0%)
+2025-02-17 05:45:43,251 [INFO] ------------------------------
+2025-02-17 05:45:43,251 [INFO] Total probability: 100.0%
+2025-02-17 05:45:44,245 [INFO] Selected: Action 12
+2025-02-17 05:45:44,245 [INFO] 
+==================================================
+2025-02-17 05:45:44,245 [INFO] Step 9
+2025-02-17 05:45:44,245 [INFO] ------------------------------
+2025-02-17 05:45:44,246 [INFO] player1 bought card l1_RED_1:
+2025-02-17 05:45:44,246 [INFO]   Level: 1
+2025-02-17 05:45:44,246 [INFO]   VP: 0
+2025-02-17 05:45:44,246 [INFO]   Gem Color: RED
+2025-02-17 05:45:44,246 [INFO]   Original Price: WHITE: 1, BLUE: 1, GREEN: 1, BLACK: 1
+2025-02-17 05:45:44,246 [INFO]   Actual Price: 
+2025-02-17 05:45:44,246 [INFO] VP: 0
+2025-02-17 05:45:44,247 [INFO] Action: 12
+2025-02-17 05:45:44,250 [INFO] ------------------------------
+2025-02-17 05:45:44,250 [INFO] Available actions:
+2025-02-17 05:45:44,250 [INFO]   Action 0: Get coins: WHITE, BLUE, GREEN (10.1%)
+2025-02-17 05:45:44,250 [INFO]   Action 1: Get coins: WHITE, BLUE, RED (9.4%)
+2025-02-17 05:45:44,250 [INFO]   Action 2: Get coins: WHITE, BLUE, BLACK (11.0%)
+2025-02-17 05:45:44,250 [INFO]   Action 3: Get coins: WHITE, GREEN, RED (10.7%)
+2025-02-17 05:45:44,250 [INFO]   Action 4: Get coins: WHITE, GREEN, BLACK (10.0%)
+2025-02-17 05:45:44,250 [INFO]   Action 5: Get coins: WHITE, RED, BLACK (11.8%)
+2025-02-17 05:45:44,251 [INFO]   Action 6: Get coins: BLUE, GREEN, RED (8.7%)
+2025-02-17 05:45:44,251 [INFO]   Action 7: Get coins: BLUE, GREEN, BLACK (9.2%)
+2025-02-17 05:45:44,251 [INFO]   Action 8: Get coins: BLUE, RED, BLACK (9.7%)
+2025-02-17 05:45:44,251 [INFO]   Action 9: Get coins: GREEN, RED, BLACK (9.4%)
+2025-02-17 05:45:44,251 [INFO] ------------------------------
+2025-02-17 05:45:44,251 [INFO] Total probability: 100.0%
+2025-02-17 05:45:45,248 [INFO] Selected: Action 9
+2025-02-17 05:45:45,248 [INFO] 
+==================================================
+2025-02-17 05:45:45,248 [INFO] Step 10
+2025-02-17 05:45:45,248 [INFO] ------------------------------
+2025-02-17 05:45:45,249 [INFO] player1 get a GREEN coin.
+2025-02-17 05:45:45,249 [INFO] player1 get a RED coin.
+2025-02-17 05:45:45,249 [INFO] player1 get a BLACK coin.
+2025-02-17 05:45:45,249 [INFO] Collected coins: GREEN, RED, BLACK
+2025-02-17 05:45:45,249 [INFO] Action: 9
+2025-02-17 05:45:45,253 [INFO] ------------------------------
+2025-02-17 05:45:45,253 [INFO] Available actions:
+2025-02-17 05:45:45,254 [INFO]   Action 0: Get coins: WHITE, BLUE, GREEN (0.0%)
+2025-02-17 05:45:45,254 [INFO]   Action 1: Get coins: WHITE, BLUE, RED (0.0%)
+2025-02-17 05:45:45,254 [INFO]   Action 2: Get coins: WHITE, BLUE, BLACK (0.0%)
+2025-02-17 05:45:45,254 [INFO]   Action 3: Get coins: WHITE, GREEN, RED (0.0%)
+2025-02-17 05:45:45,254 [INFO]   Action 4: Get coins: WHITE, GREEN, BLACK (0.0%)
+2025-02-17 05:45:45,254 [INFO]   Action 5: Get coins: WHITE, RED, BLACK (0.0%)
+2025-02-17 05:45:45,254 [INFO]   Action 6: Get coins: BLUE, GREEN, RED (0.0%)
+2025-02-17 05:45:45,254 [INFO]   Action 7: Get coins: BLUE, GREEN, BLACK (0.0%)
+2025-02-17 05:45:45,254 [INFO]   Action 8: Get coins: BLUE, RED, BLACK (0.0%)
+2025-02-17 05:45:45,254 [INFO]   Action 9: Get coins: GREEN, RED, BLACK (0.0%)
+2025-02-17 05:45:45,254 [INFO]   Action 12: Buy l1_GREEN_2 (Level: 1, VP: 0, Color: GREEN) (100.0%)
+2025-02-17 05:45:45,254 [INFO] ------------------------------
+2025-02-17 05:45:45,254 [INFO] Total probability: 100.0%
+2025-02-17 05:45:46,250 [INFO] Selected: Action 12
+2025-02-17 05:45:46,250 [INFO] 
+==================================================
+2025-02-17 05:45:46,250 [INFO] Step 11
+2025-02-17 05:45:46,250 [INFO] ------------------------------
+2025-02-17 05:45:46,250 [INFO] player1 bought card l1_GREEN_2:
+2025-02-17 05:45:46,250 [INFO]   Level: 1
+2025-02-17 05:45:46,250 [INFO]   VP: 0
+2025-02-17 05:45:46,250 [INFO]   Gem Color: GREEN
+2025-02-17 05:45:46,250 [INFO]   Original Price: WHITE: 1, BLUE: 1, RED: 1, BLACK: 2
+2025-02-17 05:45:46,250 [INFO]   Actual Price: BLACK: 1
+2025-02-17 05:45:46,250 [INFO] VP: 0
+2025-02-17 05:45:46,251 [INFO] Action: 12
+2025-02-17 05:45:46,255 [INFO] ------------------------------
+2025-02-17 05:45:46,255 [INFO] Available actions:
+2025-02-17 05:45:46,255 [INFO]   Action 0: Get coins: WHITE, BLUE, GREEN (0.0%)
+2025-02-17 05:45:46,256 [INFO]   Action 1: Get coins: WHITE, BLUE, RED (0.0%)
+2025-02-17 05:45:46,256 [INFO]   Action 2: Get coins: WHITE, BLUE, BLACK (0.0%)
+2025-02-17 05:45:46,256 [INFO]   Action 3: Get coins: WHITE, GREEN, RED (0.0%)
+2025-02-17 05:45:46,256 [INFO]   Action 4: Get coins: WHITE, GREEN, BLACK (0.0%)
+2025-02-17 05:45:46,256 [INFO]   Action 5: Get coins: WHITE, RED, BLACK (0.0%)
+2025-02-17 05:45:46,256 [INFO]   Action 6: Get coins: BLUE, GREEN, RED (0.0%)
+2025-02-17 05:45:46,256 [INFO]   Action 7: Get coins: BLUE, GREEN, BLACK (0.0%)
+2025-02-17 05:45:46,256 [INFO]   Action 8: Get coins: BLUE, RED, BLACK (0.0%)
+2025-02-17 05:45:46,256 [INFO]   Action 9: Get coins: GREEN, RED, BLACK (0.0%)
+2025-02-17 05:45:46,256 [INFO]   Action 13: Buy l1_GREEN_6 (Level: 1, VP: 0, Color: GREEN) (100.0%)
+2025-02-17 05:45:46,256 [INFO] ------------------------------
+2025-02-17 05:45:46,256 [INFO] Total probability: 100.0%
+2025-02-17 05:45:47,254 [INFO] Selected: Action 13
+2025-02-17 05:45:47,254 [INFO] 
+==================================================
+2025-02-17 05:45:47,255 [INFO] Step 12
+2025-02-17 05:45:47,255 [INFO] ------------------------------
+2025-02-17 05:45:47,255 [INFO] player1 bought card l1_GREEN_6:
+2025-02-17 05:45:47,255 [INFO]   Level: 1
+2025-02-17 05:45:47,255 [INFO]   VP: 0
+2025-02-17 05:45:47,255 [INFO]   Gem Color: GREEN
+2025-02-17 05:45:47,255 [INFO]   Original Price: BLUE: 2, RED: 2
+2025-02-17 05:45:47,255 [INFO]   Actual Price: BLUE: 1, RED: 1
+2025-02-17 05:45:47,255 [INFO] VP: 0
+2025-02-17 05:45:47,256 [INFO] Action: 13
+2025-02-17 05:45:47,259 [INFO] ------------------------------
+2025-02-17 05:45:47,259 [INFO] Available actions:
+2025-02-17 05:45:47,259 [INFO]   Action 0: Get coins: WHITE, BLUE, GREEN (0.0%)
+2025-02-17 05:45:47,260 [INFO]   Action 1: Get coins: WHITE, BLUE, RED (0.0%)
+2025-02-17 05:45:47,260 [INFO]   Action 2: Get coins: WHITE, BLUE, BLACK (0.0%)
+2025-02-17 05:45:47,260 [INFO]   Action 3: Get coins: WHITE, GREEN, RED (0.0%)
+2025-02-17 05:45:47,260 [INFO]   Action 4: Get coins: WHITE, GREEN, BLACK (0.0%)
+2025-02-17 05:45:47,260 [INFO]   Action 5: Get coins: WHITE, RED, BLACK (0.0%)
+2025-02-17 05:45:47,260 [INFO]   Action 6: Get coins: BLUE, GREEN, RED (0.0%)
+2025-02-17 05:45:47,260 [INFO]   Action 7: Get coins: BLUE, GREEN, BLACK (0.0%)
+2025-02-17 05:45:47,260 [INFO]   Action 8: Get coins: BLUE, RED, BLACK (0.0%)
+2025-02-17 05:45:47,260 [INFO]   Action 9: Get coins: GREEN, RED, BLACK (0.0%)
+2025-02-17 05:45:47,260 [INFO]   Action 13: Buy l1_BLUE_4 (Level: 1, VP: 0, Color: BLUE) (100.0%)
+2025-02-17 05:45:47,260 [INFO] ------------------------------
+2025-02-17 05:45:47,260 [INFO] Total probability: 100.0%
+2025-02-17 05:45:48,257 [INFO] Selected: Action 13
+2025-02-17 05:45:48,258 [INFO] 
+==================================================
+2025-02-17 05:45:48,258 [INFO] Step 13
+2025-02-17 05:45:48,258 [INFO] ------------------------------
+2025-02-17 05:45:48,258 [INFO] player1 bought card l1_BLUE_4:
+2025-02-17 05:45:48,258 [INFO]   Level: 1
+2025-02-17 05:45:48,258 [INFO]   VP: 0
+2025-02-17 05:45:48,258 [INFO]   Gem Color: BLUE
+2025-02-17 05:45:48,259 [INFO]   Original Price: BLUE: 1, GREEN: 3, RED: 1
+2025-02-17 05:45:48,259 [INFO]   Actual Price: 
+2025-02-17 05:45:48,259 [INFO] VP: 0
+2025-02-17 05:45:48,259 [INFO] Action: 13
+2025-02-17 05:45:48,263 [INFO] ------------------------------
+2025-02-17 05:45:48,263 [INFO] Available actions:
+2025-02-17 05:45:48,263 [INFO]   Action 0: Get coins: WHITE, BLUE, GREEN (0.0%)
+2025-02-17 05:45:48,263 [INFO]   Action 1: Get coins: WHITE, BLUE, RED (0.0%)
+2025-02-17 05:45:48,263 [INFO]   Action 2: Get coins: WHITE, BLUE, BLACK (0.0%)
+2025-02-17 05:45:48,263 [INFO]   Action 3: Get coins: WHITE, GREEN, RED (0.0%)
+2025-02-17 05:45:48,263 [INFO]   Action 4: Get coins: WHITE, GREEN, BLACK (0.0%)
+2025-02-17 05:45:48,263 [INFO]   Action 5: Get coins: WHITE, RED, BLACK (0.0%)
+2025-02-17 05:45:48,263 [INFO]   Action 6: Get coins: BLUE, GREEN, RED (0.0%)
+2025-02-17 05:45:48,263 [INFO]   Action 7: Get coins: BLUE, GREEN, BLACK (0.0%)
+2025-02-17 05:45:48,263 [INFO]   Action 8: Get coins: BLUE, RED, BLACK (0.0%)
+2025-02-17 05:45:48,263 [INFO]   Action 9: Get coins: GREEN, RED, BLACK (0.0%)
+2025-02-17 05:45:48,264 [INFO]   Action 13: Buy l1_RED_5 (Level: 1, VP: 0, Color: RED) (100.0%)
+2025-02-17 05:45:48,264 [INFO] ------------------------------
+2025-02-17 05:45:48,264 [INFO] Total probability: 100.0%
+2025-02-17 05:45:49,262 [INFO] Selected: Action 13
+2025-02-17 05:45:49,262 [INFO] 
+==================================================
+2025-02-17 05:45:49,262 [INFO] Step 14
+2025-02-17 05:45:49,262 [INFO] ------------------------------
+2025-02-17 05:45:49,263 [INFO] player1 bought card l1_RED_5:
+2025-02-17 05:45:49,263 [INFO]   Level: 1
+2025-02-17 05:45:49,263 [INFO]   VP: 0
+2025-02-17 05:45:49,263 [INFO]   Gem Color: RED
+2025-02-17 05:45:49,263 [INFO]   Original Price: BLUE: 2, GREEN: 1
+2025-02-17 05:45:49,263 [INFO]   Actual Price: 
+2025-02-17 05:45:49,263 [INFO] VP: 0
+2025-02-17 05:45:49,264 [INFO] Action: 13
+2025-02-17 05:45:49,267 [INFO] ------------------------------
+2025-02-17 05:45:49,267 [INFO] Available actions:
+2025-02-17 05:45:49,267 [INFO]   Action 0: Get coins: WHITE, BLUE, GREEN (10.0%)
+2025-02-17 05:45:49,267 [INFO]   Action 1: Get coins: WHITE, BLUE, RED (9.2%)
+2025-02-17 05:45:49,267 [INFO]   Action 2: Get coins: WHITE, BLUE, BLACK (11.1%)
+2025-02-17 05:45:49,268 [INFO]   Action 3: Get coins: WHITE, GREEN, RED (10.7%)
+2025-02-17 05:45:49,268 [INFO]   Action 4: Get coins: WHITE, GREEN, BLACK (10.1%)
+2025-02-17 05:45:49,268 [INFO]   Action 5: Get coins: WHITE, RED, BLACK (11.9%)
+2025-02-17 05:45:49,268 [INFO]   Action 6: Get coins: BLUE, GREEN, RED (8.7%)
+2025-02-17 05:45:49,268 [INFO]   Action 7: Get coins: BLUE, GREEN, BLACK (9.1%)
+2025-02-17 05:45:49,268 [INFO]   Action 8: Get coins: BLUE, RED, BLACK (9.8%)
+2025-02-17 05:45:49,268 [INFO]   Action 9: Get coins: GREEN, RED, BLACK (9.3%)
+2025-02-17 05:45:49,268 [INFO] ------------------------------
+2025-02-17 05:45:49,268 [INFO] Total probability: 100.0%
+2025-02-17 05:45:50,263 [INFO] Selected: Action 0
+2025-02-17 05:45:50,263 [INFO] 
+==================================================
+2025-02-17 05:45:50,263 [INFO] Step 15
+2025-02-17 05:45:50,263 [INFO] ------------------------------
+2025-02-17 05:45:50,264 [INFO] player1 get a WHITE coin.
+2025-02-17 05:45:50,264 [INFO] player1 get a BLUE coin.
+2025-02-17 05:45:50,264 [INFO] player1 get a GREEN coin.
+2025-02-17 05:45:50,264 [INFO] Collected coins: WHITE, BLUE, GREEN
+2025-02-17 05:45:50,264 [INFO] Action: 0
+2025-02-17 05:45:50,268 [INFO] ------------------------------
+2025-02-17 05:45:50,268 [INFO] Available actions:
+2025-02-17 05:45:50,268 [INFO]   Action 0: Get coins: WHITE, BLUE, GREEN (10.0%)
+2025-02-17 05:45:50,268 [INFO]   Action 1: Get coins: WHITE, BLUE, RED (9.2%)
+2025-02-17 05:45:50,268 [INFO]   Action 2: Get coins: WHITE, BLUE, BLACK (11.1%)
+2025-02-17 05:45:50,269 [INFO]   Action 3: Get coins: WHITE, GREEN, RED (10.7%)
+2025-02-17 05:45:50,269 [INFO]   Action 4: Get coins: WHITE, GREEN, BLACK (10.1%)
+2025-02-17 05:45:50,269 [INFO]   Action 5: Get coins: WHITE, RED, BLACK (11.9%)
+2025-02-17 05:45:50,269 [INFO]   Action 6: Get coins: BLUE, GREEN, RED (8.7%)
+2025-02-17 05:45:50,269 [INFO]   Action 7: Get coins: BLUE, GREEN, BLACK (9.1%)
+2025-02-17 05:45:50,269 [INFO]   Action 8: Get coins: BLUE, RED, BLACK (9.8%)
+2025-02-17 05:45:50,269 [INFO]   Action 9: Get coins: GREEN, RED, BLACK (9.3%)
+2025-02-17 05:45:50,269 [INFO] ------------------------------
+2025-02-17 05:45:50,269 [INFO] Total probability: 100.0%
+2025-02-17 05:45:51,269 [INFO] Selected: Action 1
+2025-02-17 05:45:51,270 [INFO] 
+==================================================
+2025-02-17 05:45:51,270 [INFO] Step 16
+2025-02-17 05:45:51,270 [INFO] ------------------------------
+2025-02-17 05:45:51,270 [INFO] player1 get a WHITE coin.
+2025-02-17 05:45:51,270 [INFO] player1 get a BLUE coin.
+2025-02-17 05:45:51,270 [INFO] player1 get a RED coin.
+2025-02-17 05:45:51,270 [INFO] Collected coins: WHITE, BLUE, RED
+2025-02-17 05:45:51,271 [INFO] Action: 1
+2025-02-17 05:45:51,274 [INFO] ------------------------------
+2025-02-17 05:45:51,275 [INFO] Available actions:
+2025-02-17 05:45:51,275 [INFO]   Action 0: Get coins: WHITE, BLUE, GREEN (0.0%)
+2025-02-17 05:45:51,275 [INFO]   Action 1: Get coins: WHITE, BLUE, RED (0.0%)
+2025-02-17 05:45:51,275 [INFO]   Action 2: Get coins: WHITE, BLUE, BLACK (0.0%)
+2025-02-17 05:45:51,275 [INFO]   Action 3: Get coins: WHITE, GREEN, RED (0.0%)
+2025-02-17 05:45:51,275 [INFO]   Action 4: Get coins: WHITE, GREEN, BLACK (0.0%)
+2025-02-17 05:45:51,275 [INFO]   Action 5: Get coins: WHITE, RED, BLACK (0.0%)
+2025-02-17 05:45:51,275 [INFO]   Action 6: Get coins: BLUE, GREEN, RED (0.0%)
+2025-02-17 05:45:51,275 [INFO]   Action 7: Get coins: BLUE, GREEN, BLACK (0.0%)
+2025-02-17 05:45:51,275 [INFO]   Action 8: Get coins: BLUE, RED, BLACK (0.0%)
+2025-02-17 05:45:51,275 [INFO]   Action 9: Get coins: GREEN, RED, BLACK (0.0%)
+2025-02-17 05:45:51,276 [INFO]   Action 10: Buy l1_BLACK_4 (Level: 1, VP: 0, Color: BLACK) (4.8%)
+2025-02-17 05:45:51,276 [INFO]   Action 11: Buy l1_RED_7 (Level: 1, VP: 0, Color: RED) (4.7%)
+2025-02-17 05:45:51,276 [INFO]   Action 12: Buy l1_BLACK_8 (Level: 1, VP: 1, Color: BLACK) (5.5%)
+2025-02-17 05:45:51,276 [INFO]   Action 13: Buy l1_WHITE_4 (Level: 1, VP: 0, Color: WHITE) (12.6%)
+2025-02-17 05:45:51,276 [INFO]   Action 14: Buy l2_GREEN_1 (Level: 2, VP: 1, Color: GREEN) (37.1%)
+2025-02-17 05:45:51,276 [INFO]   Action 15: Buy l2_WHITE_2 (Level: 2, VP: 1, Color: WHITE) (35.2%)
+2025-02-17 05:45:51,276 [INFO] ------------------------------
+2025-02-17 05:45:51,276 [INFO] Total probability: 100.0%
+2025-02-17 05:45:52,274 [INFO] Selected: Action 12
+2025-02-17 05:45:52,274 [INFO] 
+==================================================
+2025-02-17 05:45:52,274 [INFO] Step 17
+2025-02-17 05:45:52,275 [INFO] ------------------------------
+2025-02-17 05:45:52,275 [INFO] player1 bought card l1_BLACK_8:
+2025-02-17 05:45:52,275 [INFO]   Level: 1
+2025-02-17 05:45:52,275 [INFO]   VP: 1
+2025-02-17 05:45:52,275 [INFO]   Gem Color: BLACK
+2025-02-17 05:45:52,275 [INFO]   Original Price: BLUE: 4
+2025-02-17 05:45:52,275 [INFO]   Actual Price: BLUE: 2
+2025-02-17 05:45:52,275 [INFO] VP: 1
+2025-02-17 05:45:52,276 [INFO] Action: 12
+2025-02-17 05:45:52,279 [INFO] ------------------------------
+2025-02-17 05:45:52,280 [INFO] Available actions:
+2025-02-17 05:45:52,280 [INFO]   Action 0: Get coins: WHITE, BLUE, GREEN (0.0%)
+2025-02-17 05:45:52,280 [INFO]   Action 1: Get coins: WHITE, BLUE, RED (0.0%)
+2025-02-17 05:45:52,280 [INFO]   Action 2: Get coins: WHITE, BLUE, BLACK (0.0%)
+2025-02-17 05:45:52,280 [INFO]   Action 3: Get coins: WHITE, GREEN, RED (0.0%)
+2025-02-17 05:45:52,280 [INFO]   Action 4: Get coins: WHITE, GREEN, BLACK (0.0%)
+2025-02-17 05:45:52,280 [INFO]   Action 5: Get coins: WHITE, RED, BLACK (0.0%)
+2025-02-17 05:45:52,280 [INFO]   Action 6: Get coins: BLUE, GREEN, RED (0.0%)
+2025-02-17 05:45:52,280 [INFO]   Action 7: Get coins: BLUE, GREEN, BLACK (0.0%)
+2025-02-17 05:45:52,280 [INFO]   Action 8: Get coins: BLUE, RED, BLACK (0.0%)
+2025-02-17 05:45:52,280 [INFO]   Action 9: Get coins: GREEN, RED, BLACK (0.0%)
+2025-02-17 05:45:52,281 [INFO]   Action 10: Buy l1_BLACK_4 (Level: 1, VP: 0, Color: BLACK) (5.3%)
+2025-02-17 05:45:52,281 [INFO]   Action 11: Buy l1_RED_7 (Level: 1, VP: 0, Color: RED) (5.2%)
+2025-02-17 05:45:52,281 [INFO]   Action 12: Buy l1_WHITE_4 (Level: 1, VP: 0, Color: WHITE) (6.1%)
+2025-02-17 05:45:52,281 [INFO]   Action 13: Buy l1_BLACK_2 (Level: 1, VP: 0, Color: BLACK) (14.3%)
+2025-02-17 05:45:52,281 [INFO]   Action 14: Buy l2_GREEN_1 (Level: 2, VP: 1, Color: GREEN) (69.2%)
+2025-02-17 05:45:52,281 [INFO] ------------------------------
+2025-02-17 05:45:52,281 [INFO] Total probability: 100.0%
+2025-02-17 05:45:53,279 [INFO] Selected: Action 14
+2025-02-17 05:45:53,280 [INFO] 
+==================================================
+2025-02-17 05:45:53,280 [INFO] Step 18
+2025-02-17 05:45:53,280 [INFO] ------------------------------
+2025-02-17 05:45:53,280 [INFO] player1 bought card l2_GREEN_1:
+2025-02-17 05:45:53,280 [INFO]   Level: 2
+2025-02-17 05:45:53,280 [INFO]   VP: 1
+2025-02-17 05:45:53,280 [INFO]   Gem Color: GREEN
+2025-02-17 05:45:53,280 [INFO]   Original Price: WHITE: 3, GREEN: 2, RED: 3
+2025-02-17 05:45:53,280 [INFO]   Actual Price: WHITE: 2, RED: 1
+2025-02-17 05:45:53,281 [INFO] VP: 2
+2025-02-17 05:45:53,281 [INFO] Action: 14
+2025-02-17 05:45:53,284 [INFO] ------------------------------
+2025-02-17 05:45:53,284 [INFO] Available actions:
+2025-02-17 05:45:53,285 [INFO]   Action 0: Get coins: WHITE, BLUE, GREEN (0.0%)
+2025-02-17 05:45:53,285 [INFO]   Action 1: Get coins: WHITE, BLUE, RED (0.0%)
+2025-02-17 05:45:53,285 [INFO]   Action 2: Get coins: WHITE, BLUE, BLACK (0.0%)
+2025-02-17 05:45:53,285 [INFO]   Action 3: Get coins: WHITE, GREEN, RED (0.0%)
+2025-02-17 05:45:53,285 [INFO]   Action 4: Get coins: WHITE, GREEN, BLACK (0.0%)
+2025-02-17 05:45:53,285 [INFO]   Action 5: Get coins: WHITE, RED, BLACK (0.0%)
+2025-02-17 05:45:53,285 [INFO]   Action 6: Get coins: BLUE, GREEN, RED (0.0%)
+2025-02-17 05:45:53,285 [INFO]   Action 7: Get coins: BLUE, GREEN, BLACK (0.0%)
+2025-02-17 05:45:53,285 [INFO]   Action 8: Get coins: BLUE, RED, BLACK (0.0%)
+2025-02-17 05:45:53,285 [INFO]   Action 9: Get coins: GREEN, RED, BLACK (0.0%)
+2025-02-17 05:45:53,285 [INFO]   Action 13: Buy l1_BLACK_2 (Level: 1, VP: 0, Color: BLACK) (100.0%)
+2025-02-17 05:45:53,286 [INFO] ------------------------------
+2025-02-17 05:45:53,286 [INFO] Total probability: 100.0%
+2025-02-17 05:45:54,281 [INFO] Selected: Action 13
+2025-02-17 05:45:54,282 [INFO] 
+==================================================
+2025-02-17 05:45:54,282 [INFO] Step 19
+2025-02-17 05:45:54,282 [INFO] ------------------------------
+2025-02-17 05:45:54,282 [INFO] player1 bought card l1_BLACK_2:
+2025-02-17 05:45:54,282 [INFO]   Level: 1
+2025-02-17 05:45:54,282 [INFO]   VP: 0
+2025-02-17 05:45:54,282 [INFO]   Gem Color: BLACK
+2025-02-17 05:45:54,282 [INFO]   Original Price: WHITE: 1, BLUE: 2, GREEN: 1, RED: 1
+2025-02-17 05:45:54,282 [INFO]   Actual Price: 
+2025-02-17 05:45:54,282 [INFO] VP: 2
+2025-02-17 05:45:54,283 [INFO] Action: 13
+2025-02-17 05:45:54,286 [INFO] ------------------------------
+2025-02-17 05:45:54,286 [INFO] Available actions:
+2025-02-17 05:45:54,287 [INFO]   Action 0: Get coins: WHITE, BLUE, GREEN (0.0%)
+2025-02-17 05:45:54,287 [INFO]   Action 1: Get coins: WHITE, BLUE, RED (0.0%)
+2025-02-17 05:45:54,287 [INFO]   Action 2: Get coins: WHITE, BLUE, BLACK (0.0%)
+2025-02-17 05:45:54,287 [INFO]   Action 3: Get coins: WHITE, GREEN, RED (0.0%)
+2025-02-17 05:45:54,287 [INFO]   Action 4: Get coins: WHITE, GREEN, BLACK (0.0%)
+2025-02-17 05:45:54,287 [INFO]   Action 5: Get coins: WHITE, RED, BLACK (0.0%)
+2025-02-17 05:45:54,287 [INFO]   Action 6: Get coins: BLUE, GREEN, RED (0.0%)
+2025-02-17 05:45:54,287 [INFO]   Action 7: Get coins: BLUE, GREEN, BLACK (0.0%)
+2025-02-17 05:45:54,287 [INFO]   Action 8: Get coins: BLUE, RED, BLACK (0.0%)
+2025-02-17 05:45:54,287 [INFO]   Action 9: Get coins: GREEN, RED, BLACK (0.0%)
+2025-02-17 05:45:54,288 [INFO]   Action 13: Buy l1_BLUE_1 (Level: 1, VP: 0, Color: BLUE) (100.0%)
+2025-02-17 05:45:54,288 [INFO] ------------------------------
+2025-02-17 05:45:54,288 [INFO] Total probability: 100.0%
+2025-02-17 05:45:55,287 [INFO] Selected: Action 13
+2025-02-17 05:45:55,288 [INFO] 
+==================================================
+2025-02-17 05:45:55,288 [INFO] Step 20
+2025-02-17 05:45:55,288 [INFO] ------------------------------
+2025-02-17 05:45:55,288 [INFO] player1 bought card l1_BLUE_1:
+2025-02-17 05:45:55,288 [INFO]   Level: 1
+2025-02-17 05:45:55,288 [INFO]   VP: 0
+2025-02-17 05:45:55,288 [INFO]   Gem Color: BLUE
+2025-02-17 05:45:55,288 [INFO]   Original Price: WHITE: 1, GREEN: 1, RED: 1, BLACK: 1
+2025-02-17 05:45:55,288 [INFO]   Actual Price: 
+2025-02-17 05:45:55,288 [INFO] VP: 2
+2025-02-17 05:45:55,289 [INFO] Action: 13
+2025-02-17 05:45:55,292 [INFO] ------------------------------
+2025-02-17 05:45:55,293 [INFO] Available actions:
+2025-02-17 05:45:55,293 [INFO]   Action 0: Get coins: WHITE, BLUE, GREEN (0.0%)
+2025-02-17 05:45:55,293 [INFO]   Action 1: Get coins: WHITE, BLUE, RED (0.0%)
+2025-02-17 05:45:55,293 [INFO]   Action 2: Get coins: WHITE, BLUE, BLACK (0.0%)
+2025-02-17 05:45:55,293 [INFO]   Action 3: Get coins: WHITE, GREEN, RED (0.0%)
+2025-02-17 05:45:55,293 [INFO]   Action 4: Get coins: WHITE, GREEN, BLACK (0.0%)
+2025-02-17 05:45:55,293 [INFO]   Action 5: Get coins: WHITE, RED, BLACK (0.0%)
+2025-02-17 05:45:55,293 [INFO]   Action 6: Get coins: BLUE, GREEN, RED (0.0%)
+2025-02-17 05:45:55,293 [INFO]   Action 7: Get coins: BLUE, GREEN, BLACK (0.0%)
+2025-02-17 05:45:55,293 [INFO]   Action 8: Get coins: BLUE, RED, BLACK (0.0%)
+2025-02-17 05:45:55,293 [INFO]   Action 9: Get coins: GREEN, RED, BLACK (0.0%)
+2025-02-17 05:45:55,294 [INFO]   Action 13: Buy l1_BLACK_5 (Level: 1, VP: 0, Color: BLACK) (5.1%)
+2025-02-17 05:45:55,294 [INFO]   Action 15: Buy l2_RED_2 (Level: 2, VP: 1, Color: RED) (94.9%)
+2025-02-17 05:45:55,294 [INFO] ------------------------------
+2025-02-17 05:45:55,294 [INFO] Total probability: 100.0%
+2025-02-17 05:45:56,290 [INFO] Selected: Action 15
+2025-02-17 05:45:56,291 [INFO] 
+==================================================
+2025-02-17 05:45:56,291 [INFO] Step 21
+2025-02-17 05:45:56,291 [INFO] ------------------------------
+2025-02-17 05:45:56,291 [INFO] player1 bought card l2_RED_2:
+2025-02-17 05:45:56,291 [INFO]   Level: 2
+2025-02-17 05:45:56,291 [INFO]   VP: 1
+2025-02-17 05:45:56,291 [INFO]   Gem Color: RED
+2025-02-17 05:45:56,291 [INFO]   Original Price: BLUE: 3, RED: 2, BLACK: 3
+2025-02-17 05:45:56,291 [INFO]   Actual Price: 
+2025-02-17 05:45:56,292 [INFO] VP: 3
+2025-02-17 05:45:56,292 [INFO] Get noble6 card.
+2025-02-17 05:45:56,292 [INFO] Action: 15
+2025-02-17 05:45:56,295 [INFO] ------------------------------
+2025-02-17 05:45:56,295 [INFO] Available actions:
+2025-02-17 05:45:56,296 [INFO]   Action 0: Get coins: WHITE, BLUE, GREEN (0.0%)
+2025-02-17 05:45:56,296 [INFO]   Action 1: Get coins: WHITE, BLUE, RED (0.0%)
+2025-02-17 05:45:56,296 [INFO]   Action 2: Get coins: WHITE, BLUE, BLACK (0.0%)
+2025-02-17 05:45:56,296 [INFO]   Action 3: Get coins: WHITE, GREEN, RED (0.0%)
+2025-02-17 05:45:56,296 [INFO]   Action 4: Get coins: WHITE, GREEN, BLACK (0.0%)
+2025-02-17 05:45:56,296 [INFO]   Action 5: Get coins: WHITE, RED, BLACK (0.0%)
+2025-02-17 05:45:56,296 [INFO]   Action 6: Get coins: BLUE, GREEN, RED (0.0%)
+2025-02-17 05:45:56,296 [INFO]   Action 7: Get coins: BLUE, GREEN, BLACK (0.0%)
+2025-02-17 05:45:56,296 [INFO]   Action 8: Get coins: BLUE, RED, BLACK (0.0%)
+2025-02-17 05:45:56,296 [INFO]   Action 9: Get coins: GREEN, RED, BLACK (0.0%)
+2025-02-17 05:45:56,296 [INFO]   Action 10: Buy l1_BLACK_4 (Level: 1, VP: 0, Color: BLACK) (24.6%)
+2025-02-17 05:45:56,296 [INFO]   Action 13: Buy l1_BLACK_5 (Level: 1, VP: 0, Color: BLACK) (75.4%)
+2025-02-17 05:45:56,297 [INFO] ------------------------------
+2025-02-17 05:45:56,297 [INFO] Total probability: 100.0%
+2025-02-17 05:45:57,295 [INFO] Selected: Action 10
+2025-02-17 05:45:57,295 [INFO] 
+==================================================
+2025-02-17 05:45:57,295 [INFO] Step 22
+2025-02-17 05:45:57,295 [INFO] ------------------------------
+2025-02-17 05:45:57,295 [INFO] player1 bought card l1_BLACK_4:
+2025-02-17 05:45:57,296 [INFO]   Level: 1
+2025-02-17 05:45:57,296 [INFO]   VP: 0
+2025-02-17 05:45:57,296 [INFO]   Gem Color: BLACK
+2025-02-17 05:45:57,296 [INFO]   Original Price: GREEN: 1, RED: 3, BLACK: 1
+2025-02-17 05:45:57,296 [INFO]   Actual Price: 
+2025-02-17 05:45:57,296 [INFO] VP: 6
+2025-02-17 05:45:57,297 [INFO] Action: 10
+2025-02-17 05:45:57,300 [INFO] ------------------------------
+2025-02-17 05:45:57,300 [INFO] Available actions:
+2025-02-17 05:45:57,300 [INFO]   Action 0: Get coins: WHITE, BLUE, GREEN (0.0%)
+2025-02-17 05:45:57,300 [INFO]   Action 1: Get coins: WHITE, BLUE, RED (0.0%)
+2025-02-17 05:45:57,300 [INFO]   Action 2: Get coins: WHITE, BLUE, BLACK (0.0%)
+2025-02-17 05:45:57,300 [INFO]   Action 3: Get coins: WHITE, GREEN, RED (0.0%)
+2025-02-17 05:45:57,300 [INFO]   Action 4: Get coins: WHITE, GREEN, BLACK (0.0%)
+2025-02-17 05:45:57,300 [INFO]   Action 5: Get coins: WHITE, RED, BLACK (0.0%)
+2025-02-17 05:45:57,301 [INFO]   Action 6: Get coins: BLUE, GREEN, RED (0.0%)
+2025-02-17 05:45:57,301 [INFO]   Action 7: Get coins: BLUE, GREEN, BLACK (0.0%)
+2025-02-17 05:45:57,301 [INFO]   Action 8: Get coins: BLUE, RED, BLACK (0.0%)
+2025-02-17 05:45:57,301 [INFO]   Action 9: Get coins: GREEN, RED, BLACK (0.0%)
+2025-02-17 05:45:57,301 [INFO]   Action 12: Buy l1_BLACK_5 (Level: 1, VP: 0, Color: BLACK) (100.0%)
+2025-02-17 05:45:57,301 [INFO] ------------------------------
+2025-02-17 05:45:57,301 [INFO] Total probability: 100.0%
+2025-02-17 05:45:58,298 [INFO] Selected: Action 12
+2025-02-17 05:45:58,299 [INFO] 
+==================================================
+2025-02-17 05:45:58,299 [INFO] Step 23
+2025-02-17 05:45:58,299 [INFO] ------------------------------
+2025-02-17 05:45:58,299 [INFO] player1 bought card l1_BLACK_5:
+2025-02-17 05:45:58,299 [INFO]   Level: 1
+2025-02-17 05:45:58,299 [INFO]   VP: 0
+2025-02-17 05:45:58,299 [INFO]   Gem Color: BLACK
+2025-02-17 05:45:58,299 [INFO]   Original Price: GREEN: 2, RED: 1
+2025-02-17 05:45:58,299 [INFO]   Actual Price: 
+2025-02-17 05:45:58,300 [INFO] VP: 6
+2025-02-17 05:45:58,300 [INFO] Action: 12
+2025-02-17 05:45:58,304 [INFO] ------------------------------
+2025-02-17 05:45:58,304 [INFO] Available actions:
+2025-02-17 05:45:58,304 [INFO]   Action 0: Get coins: WHITE, BLUE, GREEN (9.9%)
+2025-02-17 05:45:58,304 [INFO]   Action 1: Get coins: WHITE, BLUE, RED (9.0%)
+2025-02-17 05:45:58,304 [INFO]   Action 2: Get coins: WHITE, BLUE, BLACK (11.3%)
+2025-02-17 05:45:58,304 [INFO]   Action 3: Get coins: WHITE, GREEN, RED (10.7%)
+2025-02-17 05:45:58,304 [INFO]   Action 4: Get coins: WHITE, GREEN, BLACK (10.4%)
+2025-02-17 05:45:58,305 [INFO]   Action 5: Get coins: WHITE, RED, BLACK (12.0%)
+2025-02-17 05:45:58,305 [INFO]   Action 6: Get coins: BLUE, GREEN, RED (8.6%)
+2025-02-17 05:45:58,305 [INFO]   Action 7: Get coins: BLUE, GREEN, BLACK (8.9%)
+2025-02-17 05:45:58,305 [INFO]   Action 8: Get coins: BLUE, RED, BLACK (10.0%)
+2025-02-17 05:45:58,305 [INFO]   Action 9: Get coins: GREEN, RED, BLACK (9.3%)
+2025-02-17 05:45:58,305 [INFO] ------------------------------
+2025-02-17 05:45:58,305 [INFO] Total probability: 100.0%
+2025-02-17 05:45:59,306 [INFO] Selected: Action 2
+2025-02-17 05:45:59,306 [INFO] 
+==================================================
+2025-02-17 05:45:59,307 [INFO] Step 24
+2025-02-17 05:45:59,307 [INFO] ------------------------------
+2025-02-17 05:45:59,307 [INFO] player1 get a WHITE coin.
+2025-02-17 05:45:59,307 [INFO] player1 get a BLUE coin.
+2025-02-17 05:45:59,307 [INFO] player1 get a BLACK coin.
+2025-02-17 05:45:59,307 [INFO] Collected coins: WHITE, BLUE, BLACK
+2025-02-17 05:45:59,308 [INFO] Action: 2
+2025-02-17 05:45:59,311 [INFO] ------------------------------
+2025-02-17 05:45:59,311 [INFO] Available actions:
+2025-02-17 05:45:59,311 [INFO]   Action 0: Get coins: WHITE, BLUE, GREEN (0.0%)
+2025-02-17 05:45:59,311 [INFO]   Action 1: Get coins: WHITE, BLUE, RED (0.0%)
+2025-02-17 05:45:59,311 [INFO]   Action 2: Get coins: WHITE, BLUE, BLACK (0.0%)
+2025-02-17 05:45:59,311 [INFO]   Action 3: Get coins: WHITE, GREEN, RED (0.0%)
+2025-02-17 05:45:59,312 [INFO]   Action 4: Get coins: WHITE, GREEN, BLACK (0.0%)
+2025-02-17 05:45:59,312 [INFO]   Action 5: Get coins: WHITE, RED, BLACK (0.0%)
+2025-02-17 05:45:59,312 [INFO]   Action 6: Get coins: BLUE, GREEN, RED (0.0%)
+2025-02-17 05:45:59,312 [INFO]   Action 7: Get coins: BLUE, GREEN, BLACK (0.0%)
+2025-02-17 05:45:59,312 [INFO]   Action 8: Get coins: BLUE, RED, BLACK (0.0%)
+2025-02-17 05:45:59,312 [INFO]   Action 9: Get coins: GREEN, RED, BLACK (0.0%)
+2025-02-17 05:45:59,312 [INFO]   Action 12: Buy l1_BLACK_6 (Level: 1, VP: 0, Color: BLACK) (0.2%)
+2025-02-17 05:45:59,312 [INFO]   Action 13: Buy l1_RED_6 (Level: 1, VP: 0, Color: RED) (0.4%)
+2025-02-17 05:45:59,312 [INFO]   Action 14: Buy l2_WHITE_2 (Level: 2, VP: 1, Color: WHITE) (51.4%)
+2025-02-17 05:45:59,312 [INFO]   Action 15: Buy l2_BLACK_6 (Level: 2, VP: 3, Color: BLACK) (48.0%)
+2025-02-17 05:45:59,312 [INFO] ------------------------------
+2025-02-17 05:45:59,312 [INFO] Total probability: 100.0%
+2025-02-17 05:46:00,309 [INFO] Selected: Action 14
+2025-02-17 05:46:00,310 [INFO] 
+==================================================
+2025-02-17 05:46:00,310 [INFO] Step 25
+2025-02-17 05:46:00,310 [INFO] ------------------------------
+2025-02-17 05:46:00,310 [INFO] player1 bought card l2_WHITE_2:
+2025-02-17 05:46:00,310 [INFO]   Level: 2
+2025-02-17 05:46:00,310 [INFO]   VP: 1
+2025-02-17 05:46:00,310 [INFO]   Gem Color: WHITE
+2025-02-17 05:46:00,310 [INFO]   Original Price: WHITE: 2, BLUE: 3, RED: 3
+2025-02-17 05:46:00,310 [INFO]   Actual Price: WHITE: 1
+2025-02-17 05:46:00,311 [INFO] VP: 7
+2025-02-17 05:46:00,311 [INFO] Action: 14
+2025-02-17 05:46:00,316 [INFO] ------------------------------
+2025-02-17 05:46:00,316 [INFO] Available actions:
+2025-02-17 05:46:00,316 [INFO]   Action 0: Get coins: WHITE, BLUE, GREEN (0.0%)
+2025-02-17 05:46:00,316 [INFO]   Action 1: Get coins: WHITE, BLUE, RED (0.0%)
+2025-02-17 05:46:00,316 [INFO]   Action 2: Get coins: WHITE, BLUE, BLACK (0.0%)
+2025-02-17 05:46:00,316 [INFO]   Action 3: Get coins: WHITE, GREEN, RED (0.0%)
+2025-02-17 05:46:00,316 [INFO]   Action 4: Get coins: WHITE, GREEN, BLACK (0.0%)
+2025-02-17 05:46:00,316 [INFO]   Action 5: Get coins: WHITE, RED, BLACK (0.0%)
+2025-02-17 05:46:00,317 [INFO]   Action 6: Get coins: BLUE, GREEN, RED (0.0%)
+2025-02-17 05:46:00,317 [INFO]   Action 7: Get coins: BLUE, GREEN, BLACK (0.0%)
+2025-02-17 05:46:00,317 [INFO]   Action 8: Get coins: BLUE, RED, BLACK (0.0%)
+2025-02-17 05:46:00,317 [INFO]   Action 9: Get coins: GREEN, RED, BLACK (0.0%)
+2025-02-17 05:46:00,317 [INFO]   Action 12: Buy l1_BLACK_6 (Level: 1, VP: 0, Color: BLACK) (0.2%)
+2025-02-17 05:46:00,317 [INFO]   Action 13: Buy l1_RED_6 (Level: 1, VP: 0, Color: RED) (0.5%)
+2025-02-17 05:46:00,317 [INFO]   Action 14: Buy l2_BLACK_6 (Level: 2, VP: 3, Color: BLACK) (99.3%)
+2025-02-17 05:46:00,317 [INFO] ------------------------------
+2025-02-17 05:46:00,317 [INFO] Total probability: 100.0%
+2025-02-17 05:46:01,312 [INFO] Selected: Action 14
+2025-02-17 05:46:01,312 [INFO] 
+==================================================
+2025-02-17 05:46:01,312 [INFO] Step 26
+2025-02-17 05:46:01,312 [INFO] ------------------------------
+2025-02-17 05:46:01,313 [INFO] player1 bought card l2_BLACK_6:
+2025-02-17 05:46:01,313 [INFO]   Level: 2
+2025-02-17 05:46:01,313 [INFO]   VP: 3
+2025-02-17 05:46:01,313 [INFO]   Gem Color: BLACK
+2025-02-17 05:46:01,313 [INFO]   Original Price: BLACK: 6
+2025-02-17 05:46:01,313 [INFO]   Actual Price: BLACK: 1
+2025-02-17 05:46:01,313 [INFO] VP: 10
+2025-02-17 05:46:01,314 [INFO] Action: 14
+2025-02-17 05:46:01,317 [INFO] ------------------------------
+2025-02-17 05:46:01,317 [INFO] Available actions:
+2025-02-17 05:46:01,317 [INFO]   Action 0: Get coins: WHITE, BLUE, GREEN (0.0%)
+2025-02-17 05:46:01,317 [INFO]   Action 1: Get coins: WHITE, BLUE, RED (0.0%)
+2025-02-17 05:46:01,317 [INFO]   Action 2: Get coins: WHITE, BLUE, BLACK (0.0%)
+2025-02-17 05:46:01,317 [INFO]   Action 3: Get coins: WHITE, GREEN, RED (0.0%)
+2025-02-17 05:46:01,318 [INFO]   Action 4: Get coins: WHITE, GREEN, BLACK (0.0%)
+2025-02-17 05:46:01,318 [INFO]   Action 5: Get coins: WHITE, RED, BLACK (0.0%)
+2025-02-17 05:46:01,318 [INFO]   Action 6: Get coins: BLUE, GREEN, RED (0.0%)
+2025-02-17 05:46:01,318 [INFO]   Action 7: Get coins: BLUE, GREEN, BLACK (0.0%)
+2025-02-17 05:46:01,318 [INFO]   Action 8: Get coins: BLUE, RED, BLACK (0.0%)
+2025-02-17 05:46:01,318 [INFO]   Action 9: Get coins: GREEN, RED, BLACK (0.0%)
+2025-02-17 05:46:01,318 [INFO]   Action 12: Buy l1_BLACK_6 (Level: 1, VP: 0, Color: BLACK) (24.5%)
+2025-02-17 05:46:01,318 [INFO]   Action 13: Buy l1_RED_6 (Level: 1, VP: 0, Color: RED) (75.5%)
+2025-02-17 05:46:01,318 [INFO] ------------------------------
+2025-02-17 05:46:01,318 [INFO] Total probability: 100.0%
+2025-02-17 05:46:02,315 [INFO] Selected: Action 13
+2025-02-17 05:46:02,316 [INFO] 
+==================================================
+2025-02-17 05:46:02,316 [INFO] Step 27
+2025-02-17 05:46:02,316 [INFO] ------------------------------
+2025-02-17 05:46:02,316 [INFO] player1 bought card l1_RED_6:
+2025-02-17 05:46:02,316 [INFO]   Level: 1
+2025-02-17 05:46:02,316 [INFO]   VP: 0
+2025-02-17 05:46:02,316 [INFO]   Gem Color: RED
+2025-02-17 05:46:02,316 [INFO]   Original Price: WHITE: 2, RED: 2
+2025-02-17 05:46:02,316 [INFO]   Actual Price: 
+2025-02-17 05:46:02,316 [INFO] VP: 10
+2025-02-17 05:46:02,317 [INFO] Action: 13
+2025-02-17 05:46:02,321 [INFO] ------------------------------
+2025-02-17 05:46:02,321 [INFO] Available actions:
+2025-02-17 05:46:02,321 [INFO]   Action 0: Get coins: WHITE, BLUE, GREEN (0.0%)
+2025-02-17 05:46:02,321 [INFO]   Action 1: Get coins: WHITE, BLUE, RED (0.0%)
+2025-02-17 05:46:02,321 [INFO]   Action 2: Get coins: WHITE, BLUE, BLACK (0.0%)
+2025-02-17 05:46:02,321 [INFO]   Action 3: Get coins: WHITE, GREEN, RED (0.0%)
+2025-02-17 05:46:02,321 [INFO]   Action 4: Get coins: WHITE, GREEN, BLACK (0.0%)
+2025-02-17 05:46:02,321 [INFO]   Action 5: Get coins: WHITE, RED, BLACK (0.0%)
+2025-02-17 05:46:02,321 [INFO]   Action 6: Get coins: BLUE, GREEN, RED (0.0%)
+2025-02-17 05:46:02,321 [INFO]   Action 7: Get coins: BLUE, GREEN, BLACK (0.0%)
+2025-02-17 05:46:02,321 [INFO]   Action 8: Get coins: BLUE, RED, BLACK (0.0%)
+2025-02-17 05:46:02,321 [INFO]   Action 9: Get coins: GREEN, RED, BLACK (0.0%)
+2025-02-17 05:46:02,321 [INFO]   Action 12: Buy l1_BLACK_6 (Level: 1, VP: 0, Color: BLACK) (24.3%)
+2025-02-17 05:46:02,321 [INFO]   Action 13: Buy l1_GREEN_7 (Level: 1, VP: 0, Color: GREEN) (75.7%)
+2025-02-17 05:46:02,321 [INFO] ------------------------------
+2025-02-17 05:46:02,321 [INFO] Total probability: 100.0%
+2025-02-17 05:46:03,318 [INFO] Selected: Action 13
+2025-02-17 05:46:03,318 [INFO] 
+==================================================
+2025-02-17 05:46:03,318 [INFO] Step 28
+2025-02-17 05:46:03,318 [INFO] ------------------------------
+2025-02-17 05:46:03,319 [INFO] player1 bought card l1_GREEN_7:
+2025-02-17 05:46:03,319 [INFO]   Level: 1
+2025-02-17 05:46:03,319 [INFO]   VP: 0
+2025-02-17 05:46:03,319 [INFO]   Gem Color: GREEN
+2025-02-17 05:46:03,319 [INFO]   Original Price: RED: 3
+2025-02-17 05:46:03,319 [INFO]   Actual Price: 
+2025-02-17 05:46:03,319 [INFO] VP: 10
+2025-02-17 05:46:03,319 [INFO] Action: 13
+2025-02-17 05:46:03,323 [INFO] ------------------------------
+2025-02-17 05:46:03,323 [INFO] Available actions:
+2025-02-17 05:46:03,323 [INFO]   Action 0: Get coins: WHITE, BLUE, GREEN (0.0%)
+2025-02-17 05:46:03,323 [INFO]   Action 1: Get coins: WHITE, BLUE, RED (0.0%)
+2025-02-17 05:46:03,323 [INFO]   Action 2: Get coins: WHITE, BLUE, BLACK (0.0%)
+2025-02-17 05:46:03,323 [INFO]   Action 3: Get coins: WHITE, GREEN, RED (0.0%)
+2025-02-17 05:46:03,323 [INFO]   Action 4: Get coins: WHITE, GREEN, BLACK (0.0%)
+2025-02-17 05:46:03,323 [INFO]   Action 5: Get coins: WHITE, RED, BLACK (0.0%)
+2025-02-17 05:46:03,324 [INFO]   Action 6: Get coins: BLUE, GREEN, RED (0.0%)
+2025-02-17 05:46:03,324 [INFO]   Action 7: Get coins: BLUE, GREEN, BLACK (0.0%)
+2025-02-17 05:46:03,324 [INFO]   Action 8: Get coins: BLUE, RED, BLACK (0.0%)
+2025-02-17 05:46:03,324 [INFO]   Action 9: Get coins: GREEN, RED, BLACK (0.0%)
+2025-02-17 05:46:03,324 [INFO]   Action 12: Buy l1_BLACK_6 (Level: 1, VP: 0, Color: BLACK) (24.5%)
+2025-02-17 05:46:03,324 [INFO]   Action 13: Buy l1_BLUE_3 (Level: 1, VP: 0, Color: BLUE) (75.5%)
+2025-02-17 05:46:03,324 [INFO] ------------------------------
+2025-02-17 05:46:03,324 [INFO] Total probability: 100.0%
+2025-02-17 05:46:04,322 [INFO] Selected: Action 12
+2025-02-17 05:46:04,322 [INFO] 
+==================================================
+2025-02-17 05:46:04,322 [INFO] Step 29
+2025-02-17 05:46:04,322 [INFO] ------------------------------
+2025-02-17 05:46:04,323 [INFO] player1 bought card l1_BLACK_6:
+2025-02-17 05:46:04,323 [INFO]   Level: 1
+2025-02-17 05:46:04,323 [INFO]   VP: 0
+2025-02-17 05:46:04,323 [INFO]   Gem Color: BLACK
+2025-02-17 05:46:04,323 [INFO]   Original Price: WHITE: 2, GREEN: 2
+2025-02-17 05:46:04,323 [INFO]   Actual Price: 
+2025-02-17 05:46:04,323 [INFO] VP: 10
+2025-02-17 05:46:04,323 [INFO] Action: 12
+2025-02-17 05:46:04,327 [INFO] ------------------------------
+2025-02-17 05:46:04,327 [INFO] Available actions:
+2025-02-17 05:46:04,327 [INFO]   Action 0: Get coins: WHITE, BLUE, GREEN (0.0%)
+2025-02-17 05:46:04,327 [INFO]   Action 1: Get coins: WHITE, BLUE, RED (0.0%)
+2025-02-17 05:46:04,327 [INFO]   Action 2: Get coins: WHITE, BLUE, BLACK (0.0%)
+2025-02-17 05:46:04,327 [INFO]   Action 3: Get coins: WHITE, GREEN, RED (0.0%)
+2025-02-17 05:46:04,327 [INFO]   Action 4: Get coins: WHITE, GREEN, BLACK (0.0%)
+2025-02-17 05:46:04,327 [INFO]   Action 5: Get coins: WHITE, RED, BLACK (0.0%)
+2025-02-17 05:46:04,327 [INFO]   Action 6: Get coins: BLUE, GREEN, RED (0.0%)
+2025-02-17 05:46:04,327 [INFO]   Action 7: Get coins: BLUE, GREEN, BLACK (0.0%)
+2025-02-17 05:46:04,327 [INFO]   Action 8: Get coins: BLUE, RED, BLACK (0.0%)
+2025-02-17 05:46:04,327 [INFO]   Action 9: Get coins: GREEN, RED, BLACK (0.0%)
+2025-02-17 05:46:04,327 [INFO]   Action 12: Buy l1_BLUE_3 (Level: 1, VP: 0, Color: BLUE) (24.5%)
+2025-02-17 05:46:04,328 [INFO]   Action 13: Buy l1_GREEN_4 (Level: 1, VP: 0, Color: GREEN) (75.5%)
+2025-02-17 05:46:04,328 [INFO] ------------------------------
+2025-02-17 05:46:04,328 [INFO] Total probability: 100.0%
+2025-02-17 05:46:05,325 [INFO] Selected: Action 13
+2025-02-17 05:46:05,326 [INFO] 
+==================================================
+2025-02-17 05:46:05,326 [INFO] Step 30
+2025-02-17 05:46:05,326 [INFO] ------------------------------
+2025-02-17 05:46:05,326 [INFO] player1 bought card l1_GREEN_4:
+2025-02-17 05:46:05,326 [INFO]   Level: 1
+2025-02-17 05:46:05,326 [INFO]   VP: 0
+2025-02-17 05:46:05,326 [INFO]   Gem Color: GREEN
+2025-02-17 05:46:05,326 [INFO]   Original Price: WHITE: 1, BLUE: 3, GREEN: 1
+2025-02-17 05:46:05,326 [INFO]   Actual Price: 
+2025-02-17 05:46:05,326 [INFO] VP: 10
+2025-02-17 05:46:05,327 [INFO] Action: 13
+2025-02-17 05:46:05,330 [INFO] ------------------------------
+2025-02-17 05:46:05,330 [INFO] Available actions:
+2025-02-17 05:46:05,331 [INFO]   Action 0: Get coins: WHITE, BLUE, GREEN (0.0%)
+2025-02-17 05:46:05,331 [INFO]   Action 1: Get coins: WHITE, BLUE, RED (0.0%)
+2025-02-17 05:46:05,331 [INFO]   Action 2: Get coins: WHITE, BLUE, BLACK (0.0%)
+2025-02-17 05:46:05,331 [INFO]   Action 3: Get coins: WHITE, GREEN, RED (0.0%)
+2025-02-17 05:46:05,331 [INFO]   Action 4: Get coins: WHITE, GREEN, BLACK (0.0%)
+2025-02-17 05:46:05,331 [INFO]   Action 5: Get coins: WHITE, RED, BLACK (0.0%)
+2025-02-17 05:46:05,331 [INFO]   Action 6: Get coins: BLUE, GREEN, RED (0.0%)
+2025-02-17 05:46:05,331 [INFO]   Action 7: Get coins: BLUE, GREEN, BLACK (0.0%)
+2025-02-17 05:46:05,331 [INFO]   Action 8: Get coins: BLUE, RED, BLACK (0.0%)
+2025-02-17 05:46:05,331 [INFO]   Action 9: Get coins: GREEN, RED, BLACK (0.0%)
+2025-02-17 05:46:05,331 [INFO]   Action 12: Buy l1_BLUE_3 (Level: 1, VP: 0, Color: BLUE) (24.3%)
+2025-02-17 05:46:05,331 [INFO]   Action 13: Buy l1_BLUE_8 (Level: 1, VP: 1, Color: BLUE) (75.7%)
+2025-02-17 05:46:05,331 [INFO] ------------------------------
+2025-02-17 05:46:05,331 [INFO] Total probability: 100.0%
+2025-02-17 05:46:06,328 [INFO] Selected: Action 13
+2025-02-17 05:46:06,328 [INFO] 
+==================================================
+2025-02-17 05:46:06,328 [INFO] Step 31
+2025-02-17 05:46:06,328 [INFO] ------------------------------
+2025-02-17 05:46:06,329 [INFO] player1 bought card l1_BLUE_8:
+2025-02-17 05:46:06,329 [INFO]   Level: 1
+2025-02-17 05:46:06,329 [INFO]   VP: 1
+2025-02-17 05:46:06,329 [INFO]   Gem Color: BLUE
+2025-02-17 05:46:06,329 [INFO]   Original Price: RED: 4
+2025-02-17 05:46:06,329 [INFO]   Actual Price: 
+2025-02-17 05:46:06,329 [INFO] VP: 11
+2025-02-17 05:46:06,329 [INFO] Action: 13
+2025-02-17 05:46:06,333 [INFO] ------------------------------
+2025-02-17 05:46:06,333 [INFO] Available actions:
+2025-02-17 05:46:06,333 [INFO]   Action 0: Get coins: WHITE, BLUE, GREEN (0.0%)
+2025-02-17 05:46:06,333 [INFO]   Action 1: Get coins: WHITE, BLUE, RED (0.0%)
+2025-02-17 05:46:06,333 [INFO]   Action 2: Get coins: WHITE, BLUE, BLACK (0.0%)
+2025-02-17 05:46:06,333 [INFO]   Action 3: Get coins: WHITE, GREEN, RED (0.0%)
+2025-02-17 05:46:06,333 [INFO]   Action 4: Get coins: WHITE, GREEN, BLACK (0.0%)
+2025-02-17 05:46:06,333 [INFO]   Action 5: Get coins: WHITE, RED, BLACK (0.0%)
+2025-02-17 05:46:06,333 [INFO]   Action 6: Get coins: BLUE, GREEN, RED (0.0%)
+2025-02-17 05:46:06,334 [INFO]   Action 7: Get coins: BLUE, GREEN, BLACK (0.0%)
+2025-02-17 05:46:06,334 [INFO]   Action 8: Get coins: BLUE, RED, BLACK (0.0%)
+2025-02-17 05:46:06,334 [INFO]   Action 9: Get coins: GREEN, RED, BLACK (0.0%)
+2025-02-17 05:46:06,334 [INFO]   Action 12: Buy l1_BLUE_3 (Level: 1, VP: 0, Color: BLUE) (0.1%)
+2025-02-17 05:46:06,334 [INFO]   Action 13: Buy l1_BLUE_5 (Level: 1, VP: 0, Color: BLUE) (0.2%)
+2025-02-17 05:46:06,334 [INFO]   Action 16: Buy l2_GREEN_4 (Level: 2, VP: 2, Color: GREEN) (99.8%)
+2025-02-17 05:46:06,334 [INFO] ------------------------------
+2025-02-17 05:46:06,334 [INFO] Total probability: 100.0%
+2025-02-17 05:46:07,330 [INFO] Selected: Action 16
+2025-02-17 05:46:07,331 [INFO] 
+==================================================
+2025-02-17 05:46:07,331 [INFO] Step 32
+2025-02-17 05:46:07,331 [INFO] ------------------------------
+2025-02-17 05:46:07,331 [INFO] player1 bought card l2_GREEN_4:
+2025-02-17 05:46:07,331 [INFO]   Level: 2
+2025-02-17 05:46:07,331 [INFO]   VP: 2
+2025-02-17 05:46:07,331 [INFO]   Gem Color: GREEN
+2025-02-17 05:46:07,331 [INFO]   Original Price: BLUE: 5, GREEN: 3
+2025-02-17 05:46:07,331 [INFO]   Actual Price: BLUE: 1
+2025-02-17 05:46:07,331 [INFO] VP: 13
+2025-02-17 05:46:07,332 [INFO] Action: 16
+2025-02-17 05:46:07,335 [INFO] ------------------------------
+2025-02-17 05:46:07,335 [INFO] Available actions:
+2025-02-17 05:46:07,336 [INFO]   Action 0: Get coins: WHITE, BLUE, GREEN (0.0%)
+2025-02-17 05:46:07,336 [INFO]   Action 1: Get coins: WHITE, BLUE, RED (0.0%)
+2025-02-17 05:46:07,336 [INFO]   Action 2: Get coins: WHITE, BLUE, BLACK (0.0%)
+2025-02-17 05:46:07,336 [INFO]   Action 3: Get coins: WHITE, GREEN, RED (0.0%)
+2025-02-17 05:46:07,336 [INFO]   Action 4: Get coins: WHITE, GREEN, BLACK (0.0%)
+2025-02-17 05:46:07,336 [INFO]   Action 5: Get coins: WHITE, RED, BLACK (0.0%)
+2025-02-17 05:46:07,336 [INFO]   Action 6: Get coins: BLUE, GREEN, RED (0.0%)
+2025-02-17 05:46:07,336 [INFO]   Action 7: Get coins: BLUE, GREEN, BLACK (0.0%)
+2025-02-17 05:46:07,336 [INFO]   Action 8: Get coins: BLUE, RED, BLACK (0.0%)
+2025-02-17 05:46:07,336 [INFO]   Action 9: Get coins: GREEN, RED, BLACK (0.0%)
+2025-02-17 05:46:07,336 [INFO]   Action 12: Buy l1_BLUE_3 (Level: 1, VP: 0, Color: BLUE) (0.0%)
+2025-02-17 05:46:07,336 [INFO]   Action 13: Buy l1_BLUE_5 (Level: 1, VP: 0, Color: BLUE) (0.1%)
+2025-02-17 05:46:07,336 [INFO]   Action 17: Buy l2_BLUE_4 (Level: 2, VP: 2, Color: BLUE) (99.9%)
+2025-02-17 05:46:07,336 [INFO] ------------------------------
+2025-02-17 05:46:07,336 [INFO] Total probability: 100.0%
+2025-02-17 05:46:08,331 [INFO] Selected: Action 17
+2025-02-17 05:46:08,331 [INFO] 
+==================================================
+2025-02-17 05:46:08,331 [INFO] Step 33
+2025-02-17 05:46:08,331 [INFO] ------------------------------
+2025-02-17 05:46:08,332 [INFO] player1 bought card l2_BLUE_4:
+2025-02-17 05:46:08,332 [INFO]   Level: 2
+2025-02-17 05:46:08,332 [INFO]   VP: 2
+2025-02-17 05:46:08,332 [INFO]   Gem Color: BLUE
+2025-02-17 05:46:08,332 [INFO]   Original Price: WHITE: 2, RED: 1, BLACK: 4
+2025-02-17 05:46:08,332 [INFO]   Actual Price: 
+2025-02-17 05:46:08,332 [INFO] VP: 15
+2025-02-17 05:46:08,333 [INFO] Action: 17
+2025-02-17 05:46:08,333 [INFO] ------------------------------
+2025-02-17 05:46:08,333 [INFO] Game finished! Victory achieved!
+2025-02-17 05:46:08,333 [INFO] ==================================================
+
+2025-02-17 05:46:08,336 [INFO] ------------------------------
+2025-02-17 05:46:08,337 [INFO] Available actions:
+2025-02-17 05:46:08,337 [INFO]   Action 0: Get coins: WHITE, BLUE, GREEN (0.0%)
+2025-02-17 05:46:08,337 [INFO]   Action 1: Get coins: WHITE, BLUE, RED (0.0%)
+2025-02-17 05:46:08,337 [INFO]   Action 2: Get coins: WHITE, BLUE, BLACK (0.0%)
+2025-02-17 05:46:08,337 [INFO]   Action 3: Get coins: WHITE, GREEN, RED (0.0%)
+2025-02-17 05:46:08,337 [INFO]   Action 4: Get coins: WHITE, GREEN, BLACK (0.0%)
+2025-02-17 05:46:08,337 [INFO]   Action 5: Get coins: WHITE, RED, BLACK (0.0%)
+2025-02-17 05:46:08,337 [INFO]   Action 6: Get coins: BLUE, GREEN, RED (0.0%)
+2025-02-17 05:46:08,337 [INFO]   Action 7: Get coins: BLUE, GREEN, BLACK (0.0%)
+2025-02-17 05:46:08,337 [INFO]   Action 8: Get coins: BLUE, RED, BLACK (0.0%)
+2025-02-17 05:46:08,337 [INFO]   Action 9: Get coins: GREEN, RED, BLACK (0.0%)
+2025-02-17 05:46:08,337 [INFO]   Action 12: Buy l1_BLUE_3 (Level: 1, VP: 0, Color: BLUE) (0.0%)
+2025-02-17 05:46:08,337 [INFO]   Action 13: Buy l1_BLUE_5 (Level: 1, VP: 0, Color: BLUE) (0.1%)
+2025-02-17 05:46:08,337 [INFO]   Action 17: Buy l2_BLUE_5 (Level: 2, VP: 2, Color: BLUE) (99.9%)
+2025-02-17 05:46:08,337 [INFO] ------------------------------
+2025-02-17 05:46:08,337 [INFO] Total probability: 100.0%
+2025-02-17 05:46:08,337 [INFO] Game Won! Starting new episode...
+2025-02-17 05:46:08,338 [INFO] Initial game status
+2025-02-17 05:46:08,338 [INFO] Initial game status
+2025-02-17 05:46:08,338 [INFO] [board]
+2025-02-17 05:46:08,338 [INFO] Noble cards: 
+2025-02-17 05:46:08,338 [INFO] [noble10, noble7, noble9]
+2025-02-17 05:46:08,338 [INFO] Coin status: 
+2025-02-17 05:46:08,338 [INFO] {'WHITE': 4, 'BLUE': 4, 'GREEN': 4, 'RED': 4, 'BLACK': 4, 'GOLD': 5}
+2025-02-17 05:46:08,338 [INFO] Table level1: 
+2025-02-17 05:46:08,339 [INFO] [l1_WHITE_4, l1_WHITE_6, l1_GREEN_3, l1_BLUE_1]
+2025-02-17 05:46:08,339 [INFO] The remain number of Level1: 36
+2025-02-17 05:46:08,339 [INFO] Table level2: 
+2025-02-17 05:46:08,339 [INFO] [l2_BLUE_5, l2_BLUE_3, l2_WHITE_5, l2_BLACK_3]
+2025-02-17 05:46:08,339 [INFO] The remain number of Level2: 26
+2025-02-17 05:46:08,339 [INFO] Table level3: 
+2025-02-17 05:46:08,339 [INFO] [l3_RED_1, l3_BLACK_4, l3_BLUE_3, l3_BLACK_1]
+2025-02-17 05:46:08,339 [INFO] The remain number of Level3: 16
+2025-02-17 05:46:08,339 [INFO] 
+2025-02-17 05:46:08,339 [INFO] [player1]
+2025-02-17 05:46:08,339 [INFO] Development cards: 
+2025-02-17 05:46:08,339 [INFO] []
+2025-02-17 05:46:08,339 [INFO] []
+2025-02-17 05:46:08,339 [INFO] []
+2025-02-17 05:46:08,339 [INFO] Noble cards: 
+2025-02-17 05:46:08,339 [INFO] []
+2025-02-17 05:46:08,339 [INFO] Coin status: 
+2025-02-17 05:46:08,339 [INFO] {'WHITE': 0, 'BLUE': 0, 'GREEN': 0, 'RED': 0, 'BLACK': 0, 'GOLD': 0}
+2025-02-17 05:46:08,339 [INFO] Victory point: 0
+2025-02-17 05:46:08,339 [INFO] 
+2025-02-17 05:46:08,341 [INFO] Initial game status
+2025-02-17 05:46:08,341 [INFO] Initial game status
+2025-02-17 05:46:08,341 [INFO] [board]
+2025-02-17 05:46:08,341 [INFO] Noble cards: 
+2025-02-17 05:46:08,341 [INFO] [noble1, noble5, noble9]
+2025-02-17 05:46:08,341 [INFO] Coin status: 
+2025-02-17 05:46:08,341 [INFO] {'WHITE': 4, 'BLUE': 4, 'GREEN': 4, 'RED': 4, 'BLACK': 4, 'GOLD': 5}
+2025-02-17 05:46:08,341 [INFO] Table level1: 
+2025-02-17 05:46:08,341 [INFO] [l1_BLACK_7, l1_RED_7, l1_WHITE_1, l1_GREEN_5]
+2025-02-17 05:46:08,342 [INFO] The remain number of Level1: 36
+2025-02-17 05:46:08,342 [INFO] Table level2: 
+2025-02-17 05:46:08,342 [INFO] [l2_GREEN_4, l2_WHITE_3, l2_BLUE_3, l2_BLUE_5]
+2025-02-17 05:46:08,342 [INFO] The remain number of Level2: 26
+2025-02-17 05:46:08,342 [INFO] Table level3: 
+2025-02-17 05:46:08,342 [INFO] [l3_BLUE_1, l3_RED_3, l3_BLACK_2, l3_BLUE_2]
+2025-02-17 05:46:08,342 [INFO] The remain number of Level3: 16
+2025-02-17 05:46:08,342 [INFO] 
+2025-02-17 05:46:08,342 [INFO] [player1]
+2025-02-17 05:46:08,342 [INFO] Development cards: 
+2025-02-17 05:46:08,342 [INFO] []
+2025-02-17 05:46:08,342 [INFO] []
+2025-02-17 05:46:08,342 [INFO] []
+2025-02-17 05:46:08,342 [INFO] Noble cards: 
+2025-02-17 05:46:08,342 [INFO] []
+2025-02-17 05:46:08,342 [INFO] Coin status: 
+2025-02-17 05:46:08,342 [INFO] {'WHITE': 0, 'BLUE': 0, 'GREEN': 0, 'RED': 0, 'BLACK': 0, 'GOLD': 0}
+2025-02-17 05:46:08,342 [INFO] Victory point: 0
+2025-02-17 05:46:08,342 [INFO] 
+2025-02-17 05:46:08,346 [INFO] ------------------------------
+2025-02-17 05:46:08,346 [INFO] Available actions:
+2025-02-17 05:46:08,346 [INFO]   Action 0: Get coins: WHITE, BLUE, GREEN (10.2%)
+2025-02-17 05:46:08,346 [INFO]   Action 1: Get coins: WHITE, BLUE, RED (9.7%)
+2025-02-17 05:46:08,346 [INFO]   Action 2: Get coins: WHITE, BLUE, BLACK (10.8%)
+2025-02-17 05:46:08,346 [INFO]   Action 3: Get coins: WHITE, GREEN, RED (10.6%)
+2025-02-17 05:46:08,346 [INFO]   Action 4: Get coins: WHITE, GREEN, BLACK (9.7%)
+2025-02-17 05:46:08,346 [INFO]   Action 5: Get coins: WHITE, RED, BLACK (11.5%)
+2025-02-17 05:46:08,346 [INFO]   Action 6: Get coins: BLUE, GREEN, RED (8.8%)
+2025-02-17 05:46:08,346 [INFO]   Action 7: Get coins: BLUE, GREEN, BLACK (9.5%)
+2025-02-17 05:46:08,346 [INFO]   Action 8: Get coins: BLUE, RED, BLACK (9.6%)
+2025-02-17 05:46:08,346 [INFO]   Action 9: Get coins: GREEN, RED, BLACK (9.5%)
+2025-02-17 05:46:08,346 [INFO] ------------------------------
+2025-02-17 05:46:08,346 [INFO] Total probability: 100.0%
+2025-02-17 05:46:11,591 [INFO] GUI test session ended

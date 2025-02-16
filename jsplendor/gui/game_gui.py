@@ -2,11 +2,12 @@ import pygame
 import os
 import numpy as np
 from jsplendor.env import JsplendorEnv
-from jsplendor.utils import TestLogger, Element
+from jsplendor.utils import TestLogger, Element, ActionLogger
 from stable_baselines3 import PPO
 from jsplendor.env.observation import get_observation
 import torch
 from jsplendor.game.utils import get_coin_comb
+from jsplendor.utils.logger import ActionLogger
 
 class SplendorGUI:
     def __init__(self, game):
@@ -259,8 +260,7 @@ class SplendorGUI:
                 
                 if event.type == pygame.MOUSEBUTTONDOWN:
                     if self.ai_button_rect.collidepoint(event.pos):
-                        # Show probabilities before taking action
-                        self.get_action_probabilities()
+                        # No need to show probabilities here
                         self.take_ai_action()
                         game_state_changed = True
                     elif self.auto_play_rect.collidepoint(event.pos):
@@ -275,8 +275,7 @@ class SplendorGUI:
                         game_state_changed = True
             
             if self.is_auto_playing and current_time - self.last_action_time >= self.turn_delay:
-                # Show probabilities before taking action
-                self.get_action_probabilities()
+                # No need to show probabilities here
                 done = self.take_ai_action()
                 self.last_action_time = current_time
                 game_state_changed = True
@@ -417,35 +416,15 @@ class AIGameGUI(SplendorGUI):
             action_probs = torch.softmax(logits, dim=-1)
             action_probs = action_probs.squeeze(0).cpu().numpy()
             
-            # Log probabilities
-            if self.verbose:
-                valid_actions = np.where(self.env.get_action_mask())[0]
-                self.logger.info("-" * 30)
-                self.logger.info("Available actions:")
-                for valid_action in valid_actions:
-                    prob = action_probs[valid_action] * 100
-                    if prob > 0.1:  # Only show significant probabilities
-                        if valid_action < 10:
-                            # Get coin combination for this action using the imported function
-                            coin_ids = get_coin_comb(valid_action)
-                            coins = [Element(ids).name for ids in coin_ids]
-                            desc = f"Get coins: {', '.join(coins)}"
-                        else:
-                            card_pos = valid_action - 10
-                            card = self.env.game.board.flatten_table_cards[card_pos]
-                            if card:
-                                desc = f"Buy {card.name} (Level: {card.level}, VP: {card.victory_point}, Color: {card.gem_color})"
-                            else:
-                                desc = "Buy card (empty slot)"
-                        self.logger.info(f"  Action {valid_action}: {desc} ({prob:.1f}%)")
+            # Use common logger
+            ActionLogger.log_action_probabilities(self.logger, self.env, action_probs, self.verbose)
 
     def take_ai_action(self):
-        # Get action from model
+        # Get action from model (no probability display here)
         action, _state = self.model.predict(self.obs, deterministic=False)
         
-        # Log only the selected action
-        if self.verbose:
-            self.logger.info(f"Selected: Action {action}")
+        # Use common logger
+        ActionLogger.log_selected_action(self.logger, action, self.verbose)
         
         # Take step in environment
         self.obs, reward, done, _, info = self.env.step(action)
@@ -453,7 +432,7 @@ class AIGameGUI(SplendorGUI):
         # Store reward in game object for display
         self.game.last_reward = reward
         
-        # Sync game state with environment (this will also show new probabilities)
+        # Sync game state with environment (this will show probabilities)
         self.sync_game_state()
         
         if done:
