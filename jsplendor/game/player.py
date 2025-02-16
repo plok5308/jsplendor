@@ -65,11 +65,19 @@ class Player(GameComponent):
 
     def get_coins(self, board, x):
         candidated_ids = get_coin_comb(x)
+        collected_coins = []  # Track which coins were collected
+        
         for ids in candidated_ids:
             color = Element(ids).name
             if self.is_possible_to_get_coin(board, color):
                 self.get_a_coin(board, color)
-    
+                collected_coins.append(color)
+        
+        # Log the collected coins
+        if collected_coins and self.verbose:
+            coins_msg = "Collected coins: " + ", ".join(collected_coins)
+            self.logger.info(coins_msg)
+
     def is_possible_to_get_coin(self, board, color):
         if board.coins[color] > 0:
             return True
@@ -107,9 +115,6 @@ class Player(GameComponent):
 
     def drop_unnecessary_coin(self, board):
         price_sum = np.zeros(5, dtype=int)
-        if self.verbose:
-            self.logger.info(f'{self.name} has over coins.')
-            self.logger.info(str(self.coins))
 
         table_cards = board.table_level1
         for card in table_cards:
@@ -123,6 +128,8 @@ class Player(GameComponent):
             color = Element(idx).name
             if self.has_a_coin(color):
                 self.drop_a_coin(board, color)
+                if self.verbose:
+                    self.logger.info(f'Dropped {color} coin (over 10 limit)')
                 break
 
     def drop_a_coin(self, board, color):
@@ -161,6 +168,20 @@ class Player(GameComponent):
             price = card.price
             price = adjust_price(price, self.sum_development_card_gem)
             
+            # Log the card purchase with detailed information
+            if self.verbose:
+                price_info = []
+                for color, amount in zip(['WHITE', 'BLUE', 'GREEN', 'RED', 'BLACK'], price):
+                    if amount > 0:
+                        price_info.append(f"{color}: {amount}")
+                price_str = ", ".join(price_info)
+                
+                self.logger.info(f'{self.name} bought card {card.name}:')
+                self.logger.info(f'  Level: {card.level}')
+                self.logger.info(f'  VP: {card.victory_point}')
+                self.logger.info(f'  Gem Color: {card.gem_color}')
+                self.logger.info(f'  Price: {price_str}')
+            
             for key in self.coins.keys():
                 if key=="GOLD":
                     pass
@@ -174,8 +195,7 @@ class Player(GameComponent):
             self._update_score()
             
             if self.verbose:
-                self.logger.info(f'{self.name} get a {card} card.')
-                self.logger.info(f'VP: {self.sum_victory_point}.')
+                self.logger.info(f'VP: {self.sum_victory_point}')
             get_card = True
 
         else:

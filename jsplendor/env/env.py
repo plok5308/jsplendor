@@ -67,6 +67,11 @@ class JsplendorEnv(gym.Env):
         return mask
 
     def step(self, action):
+        if self.verbose:
+            self.logger.info("\n" + "="*50)
+            self.logger.info(f"Step {self.game.step + 1}")
+            self.logger.info("-"*30)
+        
         terminated = False
         truncated = False
 
@@ -94,9 +99,14 @@ class JsplendorEnv(gym.Env):
         }
 
         if self.verbose:
-            self.logger.info(f"Step {step_}: Action {action}, Reward {reward:.2f}")
-            if is_noble_visit:
-                self.logger.info("Noble visited!")
+            self.logger.info(f"Action: {action}")
+            if terminated:
+                self.logger.info("-"*30)
+                if self.game.player1.sum_victory_point >= self.target_vp:
+                    self.logger.info("Game finished! Victory achieved!")
+                else:
+                    self.logger.info("Game terminated (max steps reached)")
+                self.logger.info("="*50 + "\n")
         
         return obs, reward, terminated, truncated, info
 

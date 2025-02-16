@@ -155,70 +155,6 @@ class SplendorGUI:
         inner_rect = pygame.Rect(x - size//2 + 2, y - size//2 + 2, size - 4, size - 4)
         pygame.draw.rect(target_surface, self.COLORS[color], inner_rect)
 
-    def handle_scroll(self, event, mouse_pos):
-        if not hasattr(self, 'log_messages'):
-            return
-
-        log_rect = pygame.Rect(
-            self.WINDOW_WIDTH - 350,
-            self.WINDOW_HEIGHT - 400,
-            300,
-            280
-        )
-        scroll_rect = self.get_scroll_bar_rect()
-
-        if event.type == pygame.MOUSEBUTTONDOWN:
-            # Check if click is on scrollbar
-            if scroll_rect.collidepoint(mouse_pos):
-                self.scroll_dragging = True
-        elif event.type == pygame.MOUSEBUTTONUP:
-            self.scroll_dragging = False
-        elif event.type == pygame.MOUSEMOTION and self.scroll_dragging:
-            # Update scroll position based on mouse movement
-            _, mouse_y = mouse_pos
-            scroll_area_height = log_rect.height - 40  # Subtract header height
-            max_scroll = max(0, len(self.log_messages) - self.visible_lines)
-            
-            # Calculate relative position
-            relative_y = (mouse_y - (log_rect.y + 40)) / (scroll_area_height - self.scroll_bar_width)
-            self.scroll_y = int(max_scroll * relative_y)
-            self.scroll_y = max(0, min(self.scroll_y, max_scroll))
-
-    def get_scroll_bar_rect(self):
-        if not hasattr(self, 'log_messages'):
-            return None
-
-        log_rect = pygame.Rect(
-            self.WINDOW_WIDTH - 350,
-            self.WINDOW_HEIGHT - 400,
-            300,
-            280
-        )
-        
-        # Calculate scrollbar dimensions
-        scroll_area_height = log_rect.height - 40  # Subtract header height
-        total_lines = len(self.log_messages)
-        
-        if total_lines <= self.visible_lines:
-            scroll_height = scroll_area_height
-        else:
-            scroll_height = (self.visible_lines / total_lines) * scroll_area_height
-            scroll_height = max(20, scroll_height)  # Minimum scrollbar height
-        
-        # Calculate scrollbar position
-        max_scroll = max(0, total_lines - self.visible_lines)
-        if max_scroll == 0:
-            scroll_pos = 0
-        else:
-            scroll_pos = (self.scroll_y / max_scroll) * (scroll_area_height - scroll_height)
-        
-        return pygame.Rect(
-            log_rect.right - self.scroll_bar_width - 5,  # 5px padding from right
-            log_rect.y + 40 + scroll_pos,  # Start below header
-            self.scroll_bar_width,
-            scroll_height
-        )
-
     def draw(self, surface=None):
         target_surface = surface if surface is not None else self.screen
         
@@ -296,50 +232,14 @@ class SplendorGUI:
         target_surface.blit(player_coins_text, (coins_x, PLAYER_CARDS_Y - 25))
         self.draw_coins(self.game.player1.coins, coins_x, PLAYER_CARDS_Y + 20, target_surface)
 
-        # Draw AI button if it exists
+        # Draw AI button if it exists (move this before pygame.display.flip())
         if hasattr(self, 'ai_button_rect'):
-            pygame.draw.rect(target_surface, (100, 100, 255), self.ai_button_rect)
+            # Make button more visible with a brighter color
+            pygame.draw.rect(target_surface, (100, 150, 255), self.ai_button_rect)  # Lighter blue
+            pygame.draw.rect(target_surface, (50, 100, 200), self.ai_button_rect, 2)  # Border
             text_surface = self.font.render("AI Action", True, (0, 0, 0))
             text_rect = text_surface.get_rect(center=self.ai_button_rect.center)
             target_surface.blit(text_surface, text_rect)
-
-        # Draw log if it exists
-        if hasattr(self, 'log_messages'):
-            log_rect = pygame.Rect(
-                self.WINDOW_WIDTH - 350,  # Position on right side
-                self.WINDOW_HEIGHT - 400,  # Position above button
-                300,  # Width
-                280   # Height
-            )
-            # Draw log background
-            pygame.draw.rect(target_surface, (200, 200, 200), log_rect)
-            pygame.draw.rect(target_surface, (100, 100, 100), log_rect, 2)  # Add border
-            
-            # Draw "Game Log" header
-            header_surface = self.font.render("Game Log", True, (0, 0, 0))
-            target_surface.blit(header_surface, (log_rect.x + 10, log_rect.y + 10))
-            
-            # Create a clip area for the messages
-            message_area = pygame.Rect(
-                log_rect.x + 10,
-                log_rect.y + 40,
-                log_rect.width - self.scroll_bar_width - 15,  # Leave space for scrollbar
-                log_rect.height - 50
-            )
-            
-            # Draw visible messages
-            visible_messages = self.log_messages[self.scroll_y:self.scroll_y + self.visible_lines]
-            for i, message in enumerate(visible_messages):
-                text_surface = self.font.render(message, True, (0, 0, 0))
-                y_pos = message_area.y + i * self.line_height
-                if message_area.y <= y_pos <= message_area.bottom:
-                    target_surface.blit(text_surface, (message_area.x, y_pos))
-            
-            # Draw scrollbar
-            scroll_rect = self.get_scroll_bar_rect()
-            if scroll_rect:
-                pygame.draw.rect(target_surface, (150, 150, 150), scroll_rect)
-                pygame.draw.rect(target_surface, (100, 100, 100), scroll_rect, 1)
 
         pygame.display.flip()
 
@@ -349,9 +249,6 @@ class SplendorGUI:
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
                     running = False
-                elif event.type == pygame.MOUSEBUTTONDOWN:
-                    # Handle mouse clicks here
-                    self.handle_scroll(event, event.pos)
 
             self.draw()
 
