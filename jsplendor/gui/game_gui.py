@@ -1,5 +1,10 @@
 import pygame
 import os
+import numpy as np
+from jsplendor.env import JsplendorEnv
+from jsplendor.utils import TestLogger
+from stable_baselines3 import PPO
+from jsplendor.env.observation import get_observation
 
 class SplendorGUI:
     def __init__(self, game):
@@ -8,7 +13,7 @@ class SplendorGUI:
         
         # Window settings
         self.WINDOW_WIDTH = 1600
-        self.WINDOW_HEIGHT = 1000
+        self.WINDOW_HEIGHT = 1200
         self.screen = pygame.display.set_mode((self.WINDOW_WIDTH, self.WINDOW_HEIGHT))
         pygame.display.set_caption("JSplendor")
 
@@ -36,8 +41,8 @@ class SplendorGUI:
         }
 
         # Card dimensions
-        self.CARD_WIDTH = 120
-        self.CARD_HEIGHT = 160
+        self.CARD_WIDTH = 150  # Back to original
+        self.CARD_HEIGHT = 200  # Back to original
         self.CARD_MARGIN = 20
 
         # Add card background colors for each level
@@ -88,9 +93,9 @@ class SplendorGUI:
         pygame.draw.rect(target_surface, bg_color, (x, y, self.CARD_WIDTH, self.CARD_HEIGHT))
         pygame.draw.rect(target_surface, self.BLACK, (x, y, self.CARD_WIDTH, self.CARD_HEIGHT), 2)
 
-        # Draw card level
-        level_text = self.font.render(f"Level {card.level}", True, self.BLACK)
-        target_surface.blit(level_text, (x + 5, y + 5))
+        # Draw card name
+        name_text = self.font.render(card.name, True, self.BLACK)
+        target_surface.blit(name_text, (x + 5, y + 5))
 
         # Draw victory points
         vp_text = self.font.render(f"VP: {card.victory_point}", True, self.BLACK)
@@ -130,6 +135,7 @@ class SplendorGUI:
         if noble:
             # Draw noble card background
             pygame.draw.rect(target_surface, (255, 223, 196), (x, y, 120, 120))
+            pygame.draw.rect(target_surface, self.BLACK, (x, y, 120, 120), 2)
             
             # Draw victory points
             noble_text = self.font.render(f"Noble: {noble.victory_point}VP", True, self.BLACK)
@@ -161,24 +167,26 @@ class SplendorGUI:
         # Fill background
         target_surface.fill((200, 200, 200))
 
-        # Draw step counter and victory points at top center
+        # Draw step counter, victory points, and noble count at top center
         step_text = self.font.render(f"Step: {self.game.step}", True, self.BLACK)
         vp_text = self.font.render(f"Victory Points: {self.game.player1.sum_victory_point}", True, self.BLACK)
+        noble_text = self.font.render(f"Nobles: {len(self.game.player1.noble_cards)}", True, self.BLACK)
         
-        # Position step counter slightly to the left of center
-        step_rect = step_text.get_rect(center=(self.WINDOW_WIDTH // 2 - 100, 30))
-        # Position victory points slightly to the right of center
-        vp_rect = vp_text.get_rect(center=(self.WINDOW_WIDTH // 2 + 100, 30))
+        # Position step counter, VP, and noble count with spacing
+        step_rect = step_text.get_rect(center=(self.WINDOW_WIDTH // 2 - 200, 30))
+        vp_rect = vp_text.get_rect(center=(self.WINDOW_WIDTH // 2, 30))
+        noble_rect = noble_text.get_rect(center=(self.WINDOW_WIDTH // 2 + 200, 30))
         
         target_surface.blit(step_text, step_rect)
         target_surface.blit(vp_text, vp_rect)
+        target_surface.blit(noble_text, noble_rect)
 
         # Fixed y-positions for different sections
         NOBLE_Y = 80
         LEVEL3_Y = 250
-        LEVEL2_Y = 460
-        LEVEL1_Y = 670
-        PLAYER_CARDS_Y = 880
+        LEVEL2_Y = 500
+        LEVEL1_Y = 750
+        PLAYER_CARDS_Y = 1000
         
         # Board coins position on right side
         BOARD_COINS_Y = 300
@@ -232,15 +240,6 @@ class SplendorGUI:
         target_surface.blit(player_coins_text, (coins_x, PLAYER_CARDS_Y - 25))
         self.draw_coins(self.game.player1.coins, coins_x, PLAYER_CARDS_Y + 20, target_surface)
 
-        # Draw AI button if it exists (move this before pygame.display.flip())
-        if hasattr(self, 'ai_button_rect'):
-            # Make button more visible with a brighter color
-            pygame.draw.rect(target_surface, (100, 150, 255), self.ai_button_rect)  # Lighter blue
-            pygame.draw.rect(target_surface, (50, 100, 200), self.ai_button_rect, 2)  # Border
-            text_surface = self.font.render("AI Action", True, (0, 0, 0))
-            text_rect = text_surface.get_rect(center=self.ai_button_rect.center)
-            target_surface.blit(text_surface, text_rect)
-
         pygame.display.flip()
 
     def run(self):
@@ -252,4 +251,203 @@ class SplendorGUI:
 
             self.draw()
 
-        pygame.quit() 
+        pygame.quit()
+
+class AIGameGUI(SplendorGUI):
+    def __init__(self, game, env, model, logger):
+        super().__init__(game)
+        
+        # Store environment and model
+        self.env = env
+        self.model = model
+        self.logger = logger
+        
+        # Initialize observation without resetting the env
+        self.obs = get_observation(self.env.game)
+        action_mask = self.env.get_action_mask()
+        self.obs = np.concatenate([self.obs, action_mask])
+        
+        # Create AI action button
+        self.ai_button_rect = pygame.Rect(
+            self.WINDOW_WIDTH - 280,  # Moved left to make room for auto-play button
+            self.WINDOW_HEIGHT - 100,
+            120,
+            40
+        )
+        
+        # Create auto-play button
+        self.auto_play_rect = pygame.Rect(
+            self.WINDOW_WIDTH - 150,
+            self.WINDOW_HEIGHT - 100,
+            120,
+            40
+        )
+        
+        # Auto-play settings
+        self.is_auto_playing = False
+        self.turn_delay = 1000  # Default 1 second delay (in milliseconds)
+        self.last_action_time = pygame.time.get_ticks()
+        
+        # Create speed control buttons with delay display in between
+        button_size = 40
+        spacing = 40
+        total_width = button_size * 2 + spacing
+        base_x = self.WINDOW_WIDTH - 410
+        
+        self.speed_down_rect = pygame.Rect(
+            base_x,
+            self.WINDOW_HEIGHT - 100,
+            button_size,
+            button_size
+        )
+        
+        self.speed_up_rect = pygame.Rect(
+            base_x + button_size + spacing,
+            self.WINDOW_HEIGHT - 100,
+            button_size,
+            button_size
+        )
+        
+        # Sync initial state
+        self.sync_game_state()
+
+    def sync_game_state(self):
+        # Sync board state
+        self.game.board.coins = self.env.game.board.coins.copy()
+        self.game.board.noble_cards = self.env.game.board.noble_cards.copy()
+        
+        # Sync table cards
+        self.game.board.table_level1 = self.env.game.board.table_level1.copy()
+        self.game.board.table_level2 = self.env.game.board.table_level2.copy()
+        self.game.board.table_level3 = self.env.game.board.table_level3.copy()
+        
+        # Sync deck cards
+        self.game.board.level1_cards = self.env.game.board.level1_cards.copy()
+        self.game.board.level2_cards = self.env.game.board.level2_cards.copy()
+        self.game.board.level3_cards = self.env.game.board.level3_cards.copy()
+        
+        # Update flattened table cards
+        self.game.board._flatten_table_cards()
+        
+        # Sync player state
+        self.game.player1.coins = self.env.game.player1.coins.copy()
+        self.game.player1.development_cards = self.env.game.player1.development_cards.copy()
+        self.game.player1.noble_cards = self.env.game.player1.noble_cards.copy()
+        
+        # Update player's score and gem counts
+        self.game.player1._update_score()
+        
+        # Sync game step
+        self.game.step = self.env.game.step
+
+    def draw(self, surface=None):
+        super().draw(surface)
+        target_surface = surface if surface is not None else self.screen
+        
+        # Draw AI action button
+        pygame.draw.rect(target_surface, (100, 150, 255), self.ai_button_rect)
+        pygame.draw.rect(target_surface, (50, 100, 200), self.ai_button_rect, 2)
+        text_surface = self.font.render("AI Action", True, (0, 0, 0))
+        text_rect = text_surface.get_rect(center=self.ai_button_rect.center)
+        target_surface.blit(text_surface, text_rect)
+        
+        # Draw auto-play button with different color when active
+        button_color = (150, 255, 150) if self.is_auto_playing else (100, 150, 255)
+        pygame.draw.rect(target_surface, button_color, self.auto_play_rect)
+        pygame.draw.rect(target_surface, (50, 100, 200), self.auto_play_rect, 2)
+        text_surface = self.font.render("Auto Play", True, (0, 0, 0))
+        text_rect = text_surface.get_rect(center=self.auto_play_rect.center)
+        target_surface.blit(text_surface, text_rect)
+        
+        # Draw speed control buttons and delay display
+        # Draw "-" button
+        pygame.draw.rect(target_surface, (100, 150, 255), self.speed_down_rect)
+        pygame.draw.rect(target_surface, (50, 100, 200), self.speed_down_rect, 2)
+        text_surface = self.font.render("-", True, (0, 0, 0))
+        text_rect = text_surface.get_rect(center=self.speed_down_rect.center)
+        target_surface.blit(text_surface, text_rect)
+        
+        # Draw "+" button
+        pygame.draw.rect(target_surface, (100, 150, 255), self.speed_up_rect)
+        pygame.draw.rect(target_surface, (50, 100, 200), self.speed_up_rect, 2)
+        text_surface = self.font.render("+", True, (0, 0, 0))
+        text_rect = text_surface.get_rect(center=self.speed_up_rect.center)
+        target_surface.blit(text_surface, text_rect)
+        
+        # Draw delay value centered between buttons
+        delay_text = self.font.render(f"{self.turn_delay/1000:.1f}s", True, (0, 0, 0))
+        center_x = (self.speed_down_rect.centerx + self.speed_up_rect.centerx) // 2
+        delay_rect = delay_text.get_rect(center=(center_x, self.speed_down_rect.centery))
+        # Draw background for delay text
+        padding = 5
+        bg_rect = delay_rect.inflate(padding * 2, padding * 2)
+        pygame.draw.rect(target_surface, (220, 220, 220), bg_rect)
+        pygame.draw.rect(target_surface, (50, 100, 200), bg_rect, 1)
+        target_surface.blit(delay_text, delay_rect)
+
+    def take_ai_action(self):
+        # Get action from model
+        action, _state = self.model.predict(self.obs, deterministic=False)
+        
+        # Take step in environment
+        self.obs, reward, done, _, info = self.env.step(action)
+        
+        # Store reward in game object for display
+        self.game.last_reward = reward
+        
+        # Sync game state with environment
+        self.sync_game_state()
+        
+        if done:
+            self.is_auto_playing = False  # Stop auto-play when episode ends
+            if self.env.game.player1.sum_victory_point >= self.env.target_vp:
+                self.logger.info("Game Won! Starting new episode...")
+            else:
+                self.logger.info("Episode ended (max steps reached)")
+            self.obs, _ = self.env.reset()
+            self.game.reset()
+            self.sync_game_state()
+            self.game.last_reward = 0.0
+        
+        return done
+
+    def run(self):
+        running = True
+        clock = pygame.time.Clock()
+        game_state_changed = True
+        
+        while running:
+            time_delta = clock.tick(60)/1000.0
+            current_time = pygame.time.get_ticks()
+            
+            for event in pygame.event.get():
+                if event.type == pygame.QUIT:
+                    running = False
+                
+                if event.type == pygame.MOUSEBUTTONDOWN:
+                    if self.ai_button_rect.collidepoint(event.pos):
+                        self.take_ai_action()
+                        game_state_changed = True
+                    elif self.auto_play_rect.collidepoint(event.pos):
+                        self.is_auto_playing = not self.is_auto_playing
+                        self.last_action_time = current_time
+                        game_state_changed = True
+                    elif self.speed_up_rect.collidepoint(event.pos):
+                        self.turn_delay = max(100, self.turn_delay - 100)  # Minimum 0.1s
+                        game_state_changed = True
+                    elif self.speed_down_rect.collidepoint(event.pos):
+                        self.turn_delay = min(5000, self.turn_delay + 100)  # Maximum 5s
+                        game_state_changed = True
+            
+            # Take AI action if auto-play is enabled and enough time has passed
+            if self.is_auto_playing and current_time - self.last_action_time >= self.turn_delay:
+                done = self.take_ai_action()
+                self.last_action_time = current_time
+                game_state_changed = True
+            
+            if game_state_changed:
+                self.screen.fill((200, 200, 200))
+                self.draw()
+                game_state_changed = False
+            
+            pygame.display.flip() 

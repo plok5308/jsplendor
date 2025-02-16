@@ -165,29 +165,39 @@ class Player(GameComponent):
 
         if self.is_possible_to_buy(board, card_position):
             card = board.flatten_table_cards[card_position]
-            price = card.price
-            price = adjust_price(price, self.sum_development_card_gem)
+            original_price = card.price
+            adjusted_price = adjust_price(original_price.copy(), self.sum_development_card_gem)
             
             # Log the card purchase with detailed information
             if self.verbose:
-                price_info = []
-                for color, amount in zip(['WHITE', 'BLUE', 'GREEN', 'RED', 'BLACK'], price):
+                # Show original price
+                orig_price_info = []
+                for color, amount in zip(['WHITE', 'BLUE', 'GREEN', 'RED', 'BLACK'], original_price):
                     if amount > 0:
-                        price_info.append(f"{color}: {amount}")
-                price_str = ", ".join(price_info)
+                        orig_price_info.append(f"{color}: {amount}")
+                orig_price_str = ", ".join(orig_price_info)
+                
+                # Show adjusted price
+                adj_price_info = []
+                for color, amount in zip(['WHITE', 'BLUE', 'GREEN', 'RED', 'BLACK'], adjusted_price):
+                    if amount > 0:
+                        adj_price_info.append(f"{color}: {amount}")
+                adj_price_str = ", ".join(adj_price_info)
                 
                 self.logger.info(f'{self.name} bought card {card.name}:')
                 self.logger.info(f'  Level: {card.level}')
                 self.logger.info(f'  VP: {card.victory_point}')
                 self.logger.info(f'  Gem Color: {card.gem_color}')
-                self.logger.info(f'  Price: {price_str}')
+                self.logger.info(f'  Original Price: {orig_price_str}')
+                self.logger.info(f'  Actual Price: {adj_price_str}')
             
+            # Use adjusted price for the actual purchase
             for key in self.coins.keys():
                 if key=="GOLD":
                     pass
                 else:
-                    self.coins[key] -= int(price[Element[key].value])
-                    board.coins[key] += int(price[Element[key].value])
+                    self.coins[key] -= int(adjusted_price[Element[key].value])
+                    board.coins[key] += int(adjusted_price[Element[key].value])
 
             self.development_cards.append(card)
             board.update_table_development_card(card)
