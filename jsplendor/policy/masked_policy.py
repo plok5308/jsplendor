@@ -4,9 +4,12 @@ from stable_baselines3.common.preprocessing import preprocess_obs
 import numpy as np
 
 class MaskedActorCriticPolicy(ActorCriticPolicy):
-    def __init__(self, *args, min_prob=1e-3, **kwargs):
+    def __init__(self, *args, min_prob=1e-3, temperature=1.0, top_k=0, top_p=1.0, **kwargs):
         super().__init__(*args, **kwargs)
-        self.min_prob = min_prob  # Store minimum probability as class attribute
+        self.min_prob = min_prob
+        self.temperature = temperature
+        self.top_k = top_k
+        self.top_p = top_p
 
     def forward(self, obs, deterministic=False):
         """Forward pass in all the networks (actor and critic)"""
@@ -42,7 +45,7 @@ class MaskedActorCriticPolicy(ActorCriticPolicy):
         return actions, values, log_prob
 
     def _predict(self, observation, deterministic: bool = False):
-        """Override the prediction method to handle action masking during rollouts"""
+        """Override the prediction method to handle action masking and sampling methods"""
         # Convert numpy arrays to torch tensors
         if isinstance(observation, np.ndarray):
             observation = torch.as_tensor(observation).float()
@@ -63,26 +66,38 @@ class MaskedActorCriticPolicy(ActorCriticPolicy):
         latent_pi, _ = self.mlp_extractor(features)
         distribution = self._get_action_dist_from_latent(latent_pi)
 
+        # Apply temperature scaling
+        logits = distribution.distribution.logits / self.temperature
+
         # Apply action mask
-        distribution.distribution.logits = torch.where(
+        logits = torch.where(
             action_mask.bool(),
-            distribution.distribution.logits,
-            torch.tensor(-1e+8).to(distribution.distribution.logits.device)
+            logits,
+            torch.tensor(float('-inf')).to(logits.device)
         )
 
         if deterministic:
-            # For deterministic actions, get the action with highest probability among valid actions
-            logits = distribution.distribution.logits
-            masked_logits = torch.where(
-                action_mask.bool(),
-                logits,
-                torch.tensor(float('-inf')).to(logits.device)
-            )
-            action = torch.argmax(masked_logits, dim=1)
+            action = torch.argmax(logits, dim=1)
         else:
-            action = distribution.sample()
+            # Apply top-k filtering
+            if self.top_k > 0:
+                values, indices = torch.topk(logits, min(self.top_k, logits.shape[-1]))
+                logits[logits < values[..., [-1]]] = float('-inf')
 
-        # Return the action as a torch tensor
+            # Apply top-p (nucleus) filtering
+            if self.top_p < 1.0:
+                sorted_logits, sorted_indices = torch.sort(logits, descending=True)
+                cumulative_probs = torch.cumsum(torch.softmax(sorted_logits, dim=-1), dim=-1)
+                sorted_indices_to_remove = cumulative_probs > self.top_p
+                sorted_indices_to_remove[..., 1:] = sorted_indices_to_remove[..., :-1].clone()
+                sorted_indices_to_remove[..., 0] = 0
+                indices_to_remove = sorted_indices_to_remove.scatter(1, sorted_indices, sorted_indices_to_remove)
+                logits[indices_to_remove] = float('-inf')
+
+            # Sample from the filtered distribution
+            probs = torch.softmax(logits, dim=-1)
+            action = torch.multinomial(probs, num_samples=1).squeeze(-1)
+
         return action
 
     def evaluate_actions(self, obs, actions):

@@ -34,27 +34,21 @@ class JsplendorEnv(gym.Env):
         # parameters
         self.target_vp = 15
         self.max_step = 127
-        
+        self.bonus_step = 35
+        self.l1_penalty_step = 13
+
         # Penalties
         self.penalty = dict()
-        #self.penalty['invalid'] = 1.0  # Increased to discourage invalid moves more strongly
         self.penalty['step'] = 1
-        #self.penalty['over_coin'] = 0.5  # Added penalty for inefficient coin management
-        self.penalty['over_coin'] = 0  # Added penalty for inefficient coin management
-        self.penalty['step_over'] = 100  # Kept the same
+        self.penalty['step2'] = 2
+        self.penalty['over_coin'] = 1
+        self.penalty['step_over'] = 100
+        self.penalty['l1_card'] = 3
         
         # Rewards
         self.reward = dict()
-        #self.reward['get_card'] = 1.0  # Added reward for acquiring cards
-        #self.reward['noble_visit'] = 3.0  # New: reward for attracting nobles
-        #self.reward['reach_goal'] = 100.0  # Increased base reward
-        #self.reward['vp_progress'] = 2.0  # New: reward per victory point gained
-        
-        self.reward['get_card'] = 0  # Added reward for acquiring cards
-        self.reward['noble_visit'] = 0  # New: reward for attracting nobles
-        self.reward['reach_goal'] = 100  # 100->300
+        self.reward['reach_goal'] = 50
         self.reward['bonus'] = 10
-        self.reward['vp_progress'] = 0  # New: reward per victory point gained
 
         # Additional tracking
         self.previous_vp = 0  # New: track VP changes
@@ -78,8 +72,11 @@ class JsplendorEnv(gym.Env):
         reward, terminated, step_, is_noble_visit, action_result = self._run_action(action)
 
         if step_ >= self.max_step:
-            reward = -1 * self.penalty['step_over']
+            reward += -1 * self.penalty['step_over']
             terminated = True
+
+        if (action_result['buy_l1_card'] and (step_ >= self.l1_penalty_step)):
+            reward += -1 * self.penalty['l1_card']
         
         observation = get_observation(self.game)
         action_mask = self.get_action_mask()
@@ -99,7 +96,7 @@ class JsplendorEnv(gym.Env):
         }
 
         if self.verbose:
-            self.logger.info(f"Action: {action}")
+            # Only log step-related information, not probabilities
             if terminated:
                 self.logger.info("-"*30)
                 if self.game.player1.sum_victory_point >= self.target_vp:
@@ -119,17 +116,24 @@ class JsplendorEnv(gym.Env):
         step_ = action_result['step']
 
         reward = 0
-        reward -= self.penalty['step']
+        if step_ > self.bonus_step:
+            over_step = step_ - self.bonus_step
+            reward -= self.penalty['step2']
+        else:
+            reward -= self.penalty['step']
+
+        if action_result['over_coin_count'] > 0:
+            reward -= action_result['over_coin_count'] * self.penalty['over_coin']
 
         is_noble_visit = action_result['is_noble_visit']
 
-        # Calculate VP progress
-        vp_gained = action_result['victory_point'] - self.previous_vp
-        reward += vp_gained * self.reward['vp_progress']
-        self.previous_vp = action_result['victory_point']
-
         if action_result['victory_point'] >= self.target_vp:
-            reward = self.reward['reach_goal']
+            reward += self.reward['reach_goal']
+
+            if step_ < self.bonus_step:
+                bonus_scale = self.bonus_step - step_
+                reward += bonus_scale * self.reward['bonus']
+
             terminated = True
 
         return reward, terminated, step_, is_noble_visit, action_result
