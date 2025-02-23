@@ -5,38 +5,23 @@ from jsplendor.game import Game
 from jsplendor.utils import Element
 
 
+HIGH_VALUE = 63
+
 def get_observation_space():
-    # step
-    # spaces.Box(low=0, high=300, shape=(1,), dtype=np.int32)
-
-    #[player]
-    #coin observation
-    #spaces.Box(low=0, high=4, shape=(6,), dtype=np.uint8)
-    #development observation
-    #spaces.Box(low=0, high=20, space=(5,), dtype=np.uint8)
-    #victory point observation
-    #spaces.Box(low=0, high=30, spaces=(1,), dtype=np.uint8)
-
-    #[board]
-    #coin
-      #spaces.Box(low=0, high=5, shape=(10,), dtype=np.uint8)
-
-    #table cards observation (single)
-      #price - spaces.Box(low=0, high=7, spaces=(5,), dtype=np.uint8)
-      #victory point - spaces.Box(low=0, high=20, spaces=(1,), dtype=np.uint8)
-
-    #noble cards
-      #price - spaces.Box(low=0, high=4, spaces=(5,), dtype=np.uint8)
-      #victory point - spaces.Box(low=0, high=20, spaces=(1,), dtype=np.uint8)
-
-
-    # 1 + 1 + 6 + 5 + 1 + 6 + (6 * 12) + (6 * 3) = 110
-
-    observation_space = spaces.Box(low=0, high=31, shape=(110,), dtype=np.int32)
+    # Original space: 110
+    # New features:
+    # 1. Card price - player gems (12 cards * 5 gems = 60)
+    # 2. Level2&3 total price per gem (5 gems)
+    # Total: 110 + 60 + 5 = 175
+    observation_space = spaces.Box(
+        low=0,
+        high=HIGH_VALUE,
+        shape=(175,),  # Verify this matches actual observation size
+        dtype=np.int32
+    )
     return observation_space
 
 def get_observation(game: Game):
-    # Let's add some debug prints to check the values
     player1 = game.player1
     board = game.board
 
@@ -47,10 +32,17 @@ def get_observation(game: Game):
     obs3 = get_player_victory_point_obs(player1)
     obs4 = get_table_coin_obs(board)
     obs5 = get_table_cards_obs(board)
+    
+    # New features
+    obs6 = get_card_price_diff_obs(board, player1)
+    obs7 = get_high_level_price_sum_obs(board)
 
-    obs = np.concatenate([obs_start, obs0, obs1, obs2, obs3, obs4, obs5])
+    obs = np.concatenate([obs_start, obs0, obs1, obs2, obs3, obs4, obs5, obs6, obs7])
     obs = obs.astype(np.int32)
-
+    
+    # Add shape verification
+    assert obs.shape[0] == 175, f"Expected observation size 175, got {obs.shape[0]}"
+    
     return obs
 
 def get_start_obs():
@@ -60,8 +52,7 @@ def get_start_obs():
 
 def get_step_obs(game):
     x = np.zeros(1, dtype=np.int32)
-    # Keep original integer values (0-30)
-    x[0] = min(game.step, 30)
+    x[0] = min(game.step, HIGH_VALUE)
 
     return x
 
@@ -69,7 +60,6 @@ def get_coin_obs(player):
     coins = player.coins
     x = np.zeros(6, dtype=np.int32)
     for key, value in coins.items():
-        # Keep original integer values (0-4)
         x[Element[key].value] = value
 
     return x
@@ -78,14 +68,12 @@ def get_player_development_obs(player):
     cards = player.development_cards
     x = np.zeros(5, dtype=np.int32)
     for card in cards:
-        # Keep original integer values (0-20)
         x[Element[card.gem_color].value] += 1
 
     return x
 
 def get_player_victory_point_obs(player):
     x = np.zeros(1, dtype=np.int32)
-    # Keep original integer values (0-30)
     x[0] = player.sum_victory_point
 
     return x
@@ -123,9 +111,44 @@ def get_table_card_obs(card):
         # Keep original integer values
         x[0:5] = np.array(card.price)  # 0-7
         x[5] = card.victory_point      # 0-20
-        
-        # Add debug print for high values
-        if np.max(x) >= 32:
-            print(f"High value in card {card.name}: {np.max(x)}")
 
     return x
+
+def get_card_price_diff_obs(board, player):
+    """Calculate difference between card prices and player's gems"""
+    cards = board.flatten_table_cards
+    player_gems = np.zeros(5, dtype=np.int32)
+    
+    # Count player's development cards by color
+    for card in player.development_cards:
+        player_gems[Element[card.gem_color].value] += 1
+    
+    diffs = []
+    for card in cards:
+        if card is None:
+            diffs.extend([0] * 5)
+        else:
+            # For each gem type, calculate price - player's gems
+            card_price = np.array(card.price)
+            # Add offset of 10 to make all values positive
+            #diff = card_price - player_gems + 10  #temp
+            diff = card_price - player_gems
+
+            diff = np.clip(diff, 0, HIGH_VALUE)  # Clip values to valid range
+            diffs.extend(diff)
+    
+    return np.array(diffs, dtype=np.int32)
+
+def get_high_level_price_sum_obs(board):
+    """Sum of prices for level 2 and 3 cards per gem type"""
+    total_price = np.zeros(5, dtype=np.int32)
+    
+    # Sum prices for level 2 and 3 cards
+    for card in board.flatten_table_cards:
+        if card is not None and card.level in [2, 3]:
+            total_price += np.array(card.price)
+    
+    # Clip values to valid range
+    total_price = np.clip(total_price, 0, HIGH_VALUE)
+    
+    return total_price

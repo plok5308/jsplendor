@@ -47,6 +47,8 @@ class Player(GameComponent):
             if get_card:
                 noble_visit = self.check_and_get_nobles(board)
 
+        self._update_score() 
+
         return self.sum_victory_point, over_coin_count, get_card, noble_visit
 
     def get_all_possible_actions(self, board):
@@ -202,8 +204,6 @@ class Player(GameComponent):
             self.development_cards.append(card)
             board.update_table_development_card(card)
             
-            self._update_score()
-            
             if self.verbose:
                 self.logger.info(f'VP: {self.sum_victory_point}')
             get_card = True
@@ -225,6 +225,7 @@ class Player(GameComponent):
                     self.logger.info(f'Get {card} card.')
                 board.noble_cards.append(None)
                 had_noble_visit = True
+
         return had_noble_visit
 
     def update_noble_cards(self, board):

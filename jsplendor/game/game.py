@@ -82,6 +82,11 @@ class Game:
         action_result['is_noble_visit'] = False
         action_result['step'] = self.step
 
+        if action >=10 and action <=14:
+            action_result['buy_l1_card'] = True
+        else:
+            action_result['buy_l1_card'] = False
+
         actions_bool = self.player1.get_all_possible_actions(self.board)
 
         if actions_bool[action]:

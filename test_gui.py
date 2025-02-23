@@ -17,7 +17,7 @@ def main():
     env = JsplendorEnv(verbose_dict)
     
     # Load model
-    #exp = '250215_small_step_penalty'
+    #exp = '250222_new_feat'
     #model_path = f'logs/{exp}/best_model'
     #log_dir = f'logs/{exp}/'
     model_path = 'pretrained/best_model'

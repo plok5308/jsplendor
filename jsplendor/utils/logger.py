@@ -27,7 +27,7 @@ class StreamToLogger:
 
 class TestLogger:
     def __init__(self, log_dir, verbose=False):
-        self.verbose = verbose  # Add verbose flag
+        self.verbose = verbose
         self._setup_logger(log_dir)
         self.log_dir = log_dir
 
@@ -42,7 +42,7 @@ class TestLogger:
         self.log_file = log_file
 
         # Configure logging
-        self.logger = logging.getLogger('jsplendor')  # Use a single logger name
+        self.logger = logging.getLogger('jsplendor')
         self.logger.setLevel(logging.INFO)
         
         # Clear any existing handlers
@@ -54,7 +54,7 @@ class TestLogger:
         file_handler.setFormatter(file_formatter)
         self.logger.addHandler(file_handler)
 
-        # Console handler
+        # Always add console handler for statistics
         console_handler = logging.StreamHandler(sys.stdout)
         console_formatter = logging.Formatter('[%(levelname)s] %(message)s')
         console_handler.setFormatter(console_formatter)
@@ -67,8 +67,6 @@ class TestLogger:
         """Log an info message"""
         if self.logger:
             self.logger.info(message)
-            if self.verbose:  # Only print to console if verbose is True
-                print(message)
 
     @classmethod
     def get_logger(cls):
@@ -98,6 +96,7 @@ class TestLogger:
         fail_count = sum(1 for result in results if result == max_step - 1)
         success_rate = (game_n - fail_count) / game_n * 100
 
+        # Force print these statistics regardless of verbose setting
         self.logger.info("\n" + "="*50)
         self.logger.info("Final Test Results:")
         self.logger.info("-"*30)
@@ -112,14 +111,14 @@ class TestLogger:
         count_under_20 = sum(1 for x in results if x < 20)
         self.logger.info(f"Games completed under 20 steps: {count_under_20}")
         
-        # Count games for each step between 20-35
-        for step in range(20, 36):
+        # Count games for each step between 20-40
+        for step in range(20, 41):
             count = sum(1 for x in results if x == step)
             self.logger.info(f"Games completed in exactly {step} steps: {count}")
         
-        # Count games over 35 steps
-        count_over_35 = sum(1 for x in results if x > 35)
-        self.logger.info(f"Games completed in over 35 steps: {count_over_35}")
+        # Count games over 40 steps
+        count_over_40 = sum(1 for x in results if x > 40)
+        self.logger.info(f"Games completed in over 40 steps: {count_over_40}")
 
         self.logger.info(f"\nFull log saved to: {os.path.abspath(self.log_file)}")
         self.logger.info("="*50 + "\n")

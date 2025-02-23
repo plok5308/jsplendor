@@ -2,68 +2,88 @@
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
-Splendor AI Agent is trained by Jinseok Park.
+JSplendor is a Python implementation of the Splendor board game with an AI agent using PPO (Proximal Policy Optimization).
 
-## License
+## Features
 
-MIT License
+- Full Splendor game implementation with GUI interface
+- Advanced AI agent:
+  - PPO agent with transformer architecture for optimal decision making
+  - Action masking for valid moves only
+- Comprehensive logging and visualization
+- Multi-environment training support
 
-Copyright (c) 2024 Jinseok Park
+## Installation
 
-Permission is hereby granted, free of charge, to any person obtaining a copy
-of this software and associated documentation files (the "Software"), to deal
-in the Software without restriction, including without limitation the rights
-to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
-copies of the Software, and to permit persons to whom the Software is
-furnished to do so, subject to the following conditions:
-
-The above copyright notice and this permission notice shall be included in all
-copies or substantial portions of the Software.
-
-THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
-AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
-SOFTWARE.
-
-## Training
-
-Training parameters:
-- `--exp`: Experiment name for logging (default: '250213')
-- `--num_cpu`: Number of CPU cores to use for parallel environments (default: 8)
-- `--load_model`: Path to pre-trained model for continued training
-- `--n_steps`: Number of steps per update (default: 4096*4)
-- `--debug`: Run in debug mode with single environment
-
-Training logs and models will be saved in `logs/{experiment_name}/`.
-
-## Testing
-
-Test a trained model's performance:
 ```bash
-python test.py --num_games 100 --max_steps 127
+git clone https://github.com/yourusername/jsplendor.git
+cd jsplendor
+pip install -r requirements.txt
 ```
 
-Testing parameters:
-- `--num_games`: Number of games to test (default: 10)
-- `--max_steps`: Maximum steps per game (default: 127)
+## Quick Start
 
-Test results will be logged to `logs/{experiment_name}/test_{timestamp}.log`.
-
-## GUI Testing
-
-Visualize the trained agent's gameplay:
+### Training
 
 ```bash
+# Train a new PPO agent
+python train.py --exp experiment_name --num_cpu 8
+
+# Continue training from existing model
+python train.py --exp experiment_name --load_model pretrained/best_model
+```
+
+### Evaluation
+
+```bash
+# Test model performance
+python test.py --num_games 128 --verbose
+
+# Launch GUI interface
 python test_gui.py
 ```
 
-The GUI provides:
-- Visual representation of the game state
-- "AI Action" button to make the agent take actions
-- Log window showing actions, rewards, and game events
-- Real-time display of game progress
+## Project Structure
 
-The GUI uses the best model from the most recent experiment (default: '250213').
+```
+jsplendor/
+├── jsplendor/
+│   ├── env/              # Gym environment
+│   │   ├── env.py       # Main environment
+│   │   └── observation.py # State representation
+│   ├── game/            # Core game logic
+│   ├── gui/             # PyGame interface
+│   ├── models/          # Neural networks
+│   │   └── transformer.py # Transformer architecture
+│   ├── policy/          # AI policies
+│   │   └── masked_policy.py # PPO policy
+│   └── utils/           # Utilities and logging
+├── tests/               # Test files
+├── pretrained/          # Model weights
+├── train.py            # Training script
+├── test.py             # Evaluation script
+└── test_gui.py         # GUI testing
+```
+
+## Requirements
+
+- Python 3.8+
+- PyTorch
+- Stable-Baselines3
+- Gymnasium
+- PyGame
+- NumPy
+- tqdm
+- x-transformers
+
+## Logging
+
+The system provides comprehensive logging:
+- Action probabilities and selections
+- Game state transitions
+- Training metrics and evaluations
+- Final statistics and analysis
+
+Logs are stored in:
+- Training: `logs/{experiment_name}/`
+- Testing: `pretrained/logs/`
