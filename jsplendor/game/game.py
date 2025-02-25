@@ -82,7 +82,7 @@ class Game:
         action_result['is_noble_visit'] = False
         action_result['step'] = self.step
 
-        if action >=10 and action <=14:
+        if action >= 15 and action < 20:
             action_result['buy_l1_card'] = True
         else:
             action_result['buy_l1_card'] = False
@@ -104,6 +104,9 @@ class Game:
                     self.gui.add_log_message(f"Step {self.step}: Dropped {over_coin_count} coins")
                 if noble_visit:
                     self.gui.add_log_message(f"Step {self.step}: Attracted a noble")
+                if action >= 10 and action < 15:  # Log double coin collection
+                    color = Element(action - 15).name
+                    self.gui.add_log_message(f"Step {self.step}: Got two {color} coins")
         else:  # invalid action
             action_result['is_skip'] = True
             if self.gui:

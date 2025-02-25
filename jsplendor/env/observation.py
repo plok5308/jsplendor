@@ -8,15 +8,21 @@ from jsplendor.utils import Element
 HIGH_VALUE = 63
 
 def get_observation_space():
-    # Original space: 110
-    # New features:
-    # 1. Card price - player gems (12 cards * 5 gems = 60)
-    # 2. Level2&3 total price per gem (5 gems)
-    # Total: 110 + 60 + 5 = 175
+    # Calculate total observation size:
+    # obs_start: 1 (zeros)
+    # obs0: 1 (step)
+    # obs1: 6 (player coins)
+    # obs2: 5 (player development cards)
+    # obs3: 1 (player victory points)
+    # obs4: 6 (table coins)
+    # obs5: 15 cards * 6 values = 90 (table cards: 12 development + 3 noble)
+    # obs6: 12 cards * 5 values = 60 (card price differences)
+    # obs7: 5 (high level price sums)
+    # Total: 1 + 1 + 6 + 5 + 1 + 6 + 90 + 60 + 5 = 175
     observation_space = spaces.Box(
         low=0,
         high=HIGH_VALUE,
-        shape=(175,),  # Verify this matches actual observation size
+        shape=(175,),
         dtype=np.int32
     )
     return observation_space
@@ -40,20 +46,18 @@ def get_observation(game: Game):
     obs = np.concatenate([obs_start, obs0, obs1, obs2, obs3, obs4, obs5, obs6, obs7])
     obs = obs.astype(np.int32)
     
-    # Add shape verification
+    # Update assertion with correct size
     assert obs.shape[0] == 175, f"Expected observation size 175, got {obs.shape[0]}"
     
     return obs
 
 def get_start_obs():
-    x = np.zeros(1, dtype=np.int32)
-
+    x = np.ones(1, dtype=np.int32) * HIGH_VALUE  # cls token
     return x
 
 def get_step_obs(game):
     x = np.zeros(1, dtype=np.int32)
-    x[0] = min(game.step, HIGH_VALUE)
-
+    x[0] = min(game.step, HIGH_VALUE-1)
     return x
 
 def get_coin_obs(player):
@@ -134,7 +138,7 @@ def get_card_price_diff_obs(board, player):
             #diff = card_price - player_gems + 10  #temp
             diff = card_price - player_gems
 
-            diff = np.clip(diff, 0, HIGH_VALUE)  # Clip values to valid range
+            diff = np.clip(diff, 0, HIGH_VALUE-1)  # Clip values to valid range
             diffs.extend(diff)
     
     return np.array(diffs, dtype=np.int32)
@@ -149,6 +153,6 @@ def get_high_level_price_sum_obs(board):
             total_price += np.array(card.price)
     
     # Clip values to valid range
-    total_price = np.clip(total_price, 0, HIGH_VALUE)
+    total_price = np.clip(total_price, 0, HIGH_VALUE-1)
     
     return total_price

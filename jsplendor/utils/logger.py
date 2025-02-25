@@ -154,12 +154,15 @@ class ActionLogger:
         for i, valid_action in enumerate(valid_actions):
             prob = normalized_probs[i]
             
-            if valid_action < 10:
+            if valid_action < 10:  # Original coin collection actions (0-9)
                 coin_ids = get_coin_comb(valid_action)
                 coins = [Element(ids).name for ids in coin_ids]
                 desc = f"Get coins: {', '.join(coins)}"
-            else:
-                card_pos = valid_action - 10
+            elif valid_action < 15:  # Double coin actions (10-14)
+                color = Element(valid_action - 10).name
+                desc = f"Get two {color} coins"
+            else:  # Buy card actions (15-26)
+                card_pos = valid_action - 15
                 card = env.game.board.flatten_table_cards[card_pos]
                 if card:
                     desc = f"Buy {card.name} (Level: {card.level}, VP: {card.victory_point}, Color: {card.gem_color})"

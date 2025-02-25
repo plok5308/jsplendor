@@ -15,7 +15,7 @@ from jsplendor.coin import sum_coins
 class Player(GameComponent):
     def __init__(self, name, development_cards, noble_cards, coins, verbose=False, logger=None):
         super().__init__(name, development_cards, noble_cards, coins, verbose, logger)
-        self.n_coin_action = 10
+        self.n_coin_action = 15
         self.n_buy_action = 12
         self.num_actions = self.n_coin_action + self.n_buy_action
         self._update_score()
@@ -45,7 +45,7 @@ class Player(GameComponent):
         else:
             get_card = self.buy_development_card(board, action-self.n_coin_action)
             if get_card:
-                noble_visit = self.check_and_get_nobles(board)
+                noble_visit = self.check_and_get_a_noble(board)
 
         self._update_score() 
 
@@ -54,9 +54,16 @@ class Player(GameComponent):
     def get_all_possible_actions(self, board):
         actions = np.zeros(self.num_actions)
 
-        for i in range(self.n_coin_action):
+        # Original coin actions (0-9)
+        for i in range(self.n_coin_action - 5):
             actions[i] = 1
 
+        # Double coin actions (10-14)
+        for i in range(5):  # Loop through 0-4 for the 5 colors
+            if self.is_possible_to_get_two_coins(board, Element(i).name):
+                actions[i + 10] = 1  # Map to actions 10-14
+
+        # Buy card actions (15-26)
         for i in range(self.n_coin_action, self.num_actions):
             card_position = i - self.n_coin_action
             if self.is_possible_to_buy(board, card_position):
@@ -66,19 +73,33 @@ class Player(GameComponent):
         return actions
 
     def get_coins(self, board, x):
-        candidated_ids = get_coin_comb(x)
-        collected_coins = []  # Track which coins were collected
-        
-        for ids in candidated_ids:
-            color = Element(ids).name
-            if self.is_possible_to_get_coin(board, color):
-                self.get_a_coin(board, color)
-                collected_coins.append(color)
-        
-        # Log the collected coins
-        if collected_coins and self.verbose:
-            coins_msg = "Collected coins: " + ", ".join(collected_coins)
-            self.logger.info(coins_msg)
+        if x >= 10 and x < 15:  # get two different coins
+            color = Element(x - 10).name
+            if self.is_possible_to_get_two_coins(board, color):
+                board.coins[color] -= 2
+                self.coins[color] += 2
+                if self.verbose:
+                    self.logger.info(f'{self.name} got two {color} coins')
+        else:  # get three different coins
+            candidated_ids = get_coin_comb(x)
+            collected_coins = []  # Track which coins were collected
+            
+            for ids in candidated_ids:
+                color = Element(ids).name
+                if self.is_possible_to_get_coin(board, color):
+                    self.get_a_coin(board, color)
+                    collected_coins.append(color)
+            
+            # Log the collected coins
+            if collected_coins and self.verbose:
+                coins_msg = "Collected coins: " + ", ".join(collected_coins)
+                self.logger.info(coins_msg)
+
+    def is_possible_to_get_two_coins(self, board, color):
+        if board.coins[color] >= 4:
+            return True
+        else:
+            return False
 
     def is_possible_to_get_coin(self, board, color):
         if board.coins[color] > 0:
@@ -214,8 +235,8 @@ class Player(GameComponent):
 
         return get_card
 
-    def check_and_get_nobles(self, board):
-        """Check and acquire any available noble cards."""
+    def check_and_get_a_noble(self, board):
+        """Check and acquire a noble card."""
         had_noble_visit = False
         for card in board.noble_cards[:]:  # Use slice copy to avoid modifying during iteration
             if self.is_get_possible_noble_card(card):
@@ -225,13 +246,14 @@ class Player(GameComponent):
                     self.logger.info(f'Get {card} card.')
                 board.noble_cards.append(None)
                 had_noble_visit = True
+                break
 
         return had_noble_visit
 
-    def update_noble_cards(self, board):
-        """Deprecated - use check_and_get_nobles instead"""
-        noble_visit = self.check_and_get_nobles(board)
-        return noble_visit
+    #def update_noble_cards(self, board):
+    #    """Deprecated - use check_and_get_nobles instead"""
+    #    noble_visit = self.check_and_get_a_noble(board)
+    #    return noble_visit
 
     def is_get_possible_noble_card(self, card):
         if card is None:
