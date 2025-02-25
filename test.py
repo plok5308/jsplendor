@@ -10,6 +10,7 @@ from jsplendor.utils import get_verbose_dict, TestLogger
 from jsplendor.policy.masked_policy import MaskedActorCriticPolicy
 from jsplendor.models.transformer import TransformerFeatureExtractor
 from jsplendor.utils.logger import ActionLogger
+from jsplendor.agent.test_agent import TestAgent
 
 def main(args):
     np.random.seed(1)
@@ -26,12 +27,13 @@ def main(args):
     device = "cpu"
     
     env = JsplendorEnv(verbose_dict)
-    #exp = '250223_new_step'
-    #model_path = 'logs/{}/best_model'.format(exp)
-    #log_dir = 'logs/{}/'.format(exp)
 
-    model_path ='./pretrained/best_model'
-    log_dir = './pretrained/logs'
+    exp = '250225_double_coin'
+    model_path = 'logs/{}/best_model'.format(exp)
+    log_dir = 'logs/{}/'.format(exp)
+
+    #model_path ='./pretrained/best_model'
+    #log_dir = './pretrained/logs'
 
     # Setup logger with verbose=False to only show final stats
     logger = TestLogger(log_dir, verbose=False)  # Changed to False
@@ -39,13 +41,16 @@ def main(args):
 
     # Load pretrained model and force it to CPU
     logger.info("Loading pretrained model...")
-    model = PPO.load(model_path, env=env, device=device,
+    ppo_model = PPO.load(model_path, env=env, device=device,
                     custom_objects={
                         'temperature': args.temperature,
                         'top_k': args.top_k,
                         'top_p': args.top_p
                     })
     logger.info('Model loaded successfully on CPU.')
+
+    # Wrap PPO model with TestAgent
+    model = TestAgent(env, ppo_model)
 
     game_n = args.num_games
     max_step = args.max_steps

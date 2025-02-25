@@ -14,27 +14,24 @@ from jsplendor.policy.masked_policy import MaskedActorCriticPolicy
 from jsplendor.models.transformer import TransformerFeatureExtractor
 
 def make_env(rank: int, seed: int=0):
-    train_verbose_dict = get_verbose_dict()
-
     def _init():
-        env = JsplendorEnv(train_verbose_dict)
+        env = JsplendorEnv(get_verbose_dict())
         env.reset(seed=seed+rank)
         return env
 
     set_random_seed(seed)
     return _init
 
-def main(args):
-    eval_verbose_dict = get_verbose_dict()
-    eval_verbose_dict['player'] = False
-    
+def main(args):    
     if args.debug:
         train_env = JsplendorEnv(get_verbose_dict())
+        eval_env = JsplendorEnv(get_verbose_dict())
     else:
         train_env = SubprocVecEnv([make_env(i) for i in range(args.num_cpu)])
+        eval_env = SubprocVecEnv([make_env(i) for i in range(args.num_cpu)])  # Multiple environments for evaluation
+
 
     # Modify eval env to use multiple environments
-    eval_env = SubprocVecEnv([make_env(i) for i in range(args.num_cpu)])  # Multiple environments for evaluation
     eval_log_dir = 'logs/{}'.format(args.exp)
 
     train_steps = 1e+8 # 100M
@@ -116,8 +113,8 @@ if __name__ == "__main__":
     parser.add_argument('--debug', action='store_true', help='Run in debug mode with single environment')
     parser.add_argument('--num_cpu', type=int, default=8, help='Number of CPU cores to use')
     parser.add_argument('--load_model', type=str, help='Path to pretrained model to continue training')
-    parser.add_argument('--exp', type=str, default='250213', help='Experiment name for logging')
-    parser.add_argument('--n_steps', type=int, default=4096*4, help='Number of steps per update')
+    parser.add_argument('--exp', type=str, default='tmp', help='Experiment name for logging')
+    parser.add_argument('--n_steps', type=int, default=16384, help='Number of steps per update')
     parser.add_argument('--min_prob', type=float, default=0,
                        help='Minimum probability for valid actions')
     parser.add_argument('--ent_coef', type=float, default=0,
