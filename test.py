@@ -28,12 +28,12 @@ def main(args):
     
     env = JsplendorEnv(verbose_dict)
 
-    exp = '250225_double_coin'
-    model_path = 'logs/{}/best_model'.format(exp)
-    log_dir = 'logs/{}/'.format(exp)
+    #exp = '250225_double_coin'
+    #model_path = 'logs/{}/best_model'.format(exp)
+    #log_dir = 'logs/{}/'.format(exp)
 
-    #model_path ='./pretrained/best_model'
-    #log_dir = './pretrained/logs'
+    model_path ='./pretrained/best_model'
+    log_dir = './pretrained/logs'
 
     # Setup logger with verbose=False to only show final stats
     logger = TestLogger(log_dir, verbose=False)  # Changed to False
@@ -80,15 +80,15 @@ def main(args):
             obs, reward, done, _, info = env.step(action)
             
             if done:
-                results.append(i)
+                results.append(i + 1)  # Add 1 to include the final action
                 if args.verbose:  # Only log individual game results if verbose
-                    logger.log_game_result(exp_i, i, max_step)
+                    logger.log_game_result(exp_i, i + 1, max_step)
                 break
 
             if i == max_step - 1:
-                results.append(i)
+                results.append(i + 1)
                 if args.verbose:  # Only log individual game results if verbose
-                    logger.log_game_result(exp_i, i, max_step)
+                    logger.log_game_result(exp_i, i + 1, max_step)
 
     # Always show final statistics with verbose=True
     logger.verbose = True  # Temporarily enable verbose for final stats
