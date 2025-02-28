@@ -10,6 +10,7 @@ from jsplendor.utils import get_verbose_dict, TestLogger
 from jsplendor.policy.masked_policy import MaskedActorCriticPolicy
 from jsplendor.models.transformer import TransformerFeatureExtractor
 from jsplendor.utils.logger import ActionLogger
+from jsplendor.agent.test_agent import TestAgent
 
 def main(args):
     np.random.seed(1)
@@ -26,7 +27,8 @@ def main(args):
     device = "cpu"
     
     env = JsplendorEnv(verbose_dict)
-    #exp = '250223_new_step'
+
+    #exp = '250225_double_coin'
     #model_path = 'logs/{}/best_model'.format(exp)
     #log_dir = 'logs/{}/'.format(exp)
 
@@ -39,13 +41,16 @@ def main(args):
 
     # Load pretrained model and force it to CPU
     logger.info("Loading pretrained model...")
-    model = PPO.load(model_path, env=env, device=device,
+    ppo_model = PPO.load(model_path, env=env, device=device,
                     custom_objects={
                         'temperature': args.temperature,
                         'top_k': args.top_k,
                         'top_p': args.top_p
                     })
     logger.info('Model loaded successfully on CPU.')
+
+    # Wrap PPO model with TestAgent
+    model = TestAgent(env, ppo_model)
 
     game_n = args.num_games
     max_step = args.max_steps
@@ -75,15 +80,15 @@ def main(args):
             obs, reward, done, _, info = env.step(action)
             
             if done:
-                results.append(i)
+                results.append(i + 1)  # Add 1 to include the final action
                 if args.verbose:  # Only log individual game results if verbose
-                    logger.log_game_result(exp_i, i, max_step)
+                    logger.log_game_result(exp_i, i + 1, max_step)
                 break
 
             if i == max_step - 1:
-                results.append(i)
+                results.append(i + 1)
                 if args.verbose:  # Only log individual game results if verbose
-                    logger.log_game_result(exp_i, i, max_step)
+                    logger.log_game_result(exp_i, i + 1, max_step)
 
     # Always show final statistics with verbose=True
     logger.verbose = True  # Temporarily enable verbose for final stats

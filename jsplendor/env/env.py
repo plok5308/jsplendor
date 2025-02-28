@@ -3,7 +3,7 @@ import gymnasium as gym
 from gymnasium import spaces
 
 from jsplendor.game import Game
-from jsplendor.env.observation import get_observation_space, get_observation
+from jsplendor.env.observation import get_observation_space, get_observation, HIGH_VALUE
 from jsplendor.utils import get_verbose_dict
 from jsplendor.utils.logger import TestLogger
 
@@ -25,8 +25,8 @@ class JsplendorEnv(gym.Env):
         obs_space = get_observation_space()
         self.observation_space = spaces.Box(
             low=0,
-            high=255,
-            shape=(obs_space.shape[0] + action_n,),  # Combine obs and action mask shapes
+            high=HIGH_VALUE,
+            shape=(obs_space.shape[0] + action_n,),  # 175 + 27 = 202
             dtype=np.int32
         )
         self.skip_sum = 0
@@ -142,7 +142,7 @@ class JsplendorEnv(gym.Env):
         np.random.seed(seed)
         self.skip_sum = 0
         self.previous_vp = 0
-        self.game.reset()  # This resets the game, including noble cards
+        self.game.reset()
         
         observation = get_observation(self.game)
         action_mask = self.get_action_mask()
