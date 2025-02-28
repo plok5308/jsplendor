@@ -1,5 +1,11 @@
-from .common import *
+from .config import Element, get_verbose_dict
+from .base_logger import BaseLogger
 from .logger import TestLogger, ActionLogger
-from .element import Element
 
-__all__ = ['get_verbose_dict', 'TestLogger', 'ActionLogger', 'Element'] 
+__all__ = [
+    'Element', 
+    'TestLogger', 
+    'ActionLogger', 
+    'BaseLogger',
+    'get_verbose_dict'
+] 
