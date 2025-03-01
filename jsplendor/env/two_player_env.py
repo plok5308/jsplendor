@@ -144,6 +144,7 @@ class RandomStartTwoPlayerEnv(gym.Env):
             if opponent_vp is None:
                 if player_vp >= self.target_vp:
                     reward = 1
+                    terminated = True
                     info['winner'] = 'player'
             else:
                 if (player_vp >= self.target_vp or opponent_vp >= self.target_vp):
