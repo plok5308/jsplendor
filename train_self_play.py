@@ -152,12 +152,12 @@ def train_self_play(args):
         model = create_model(train_env, args)
 
     generation = 0
-    while generation * args.n_steps < args.total_timesteps:
+    while generation < args.total_generations:
         print(f"\nTraining generation {generation}")
         
         # Train model
         model.learn(
-            total_timesteps=args.n_steps,
+            total_timesteps=args.generation_timesteps,
             callback=eval_callback,
             progress_bar=not args.debug
         )
@@ -188,6 +188,7 @@ def train_self_play(args):
     # Save final model
     model.save(os.path.join(eval_log_dir, "final_model"))
     print('Training completed.')
+    print(f"Completed {generation} generations")
     
     return model
 
@@ -196,7 +197,8 @@ if __name__ == "__main__":
     parser.add_argument('--debug', action='store_true', help='Run in debug mode')
     parser.add_argument('--load_model', type=str, help='Path to pretrained model to continue training')
     parser.add_argument('--exp', type=str, default='self_play3', help='Experiment name for logging')
-    parser.add_argument('--total_timesteps', type=int, default=int(1e8), help='Total timesteps to train')
+    parser.add_argument('--total_generations', type=int, default=100, help='Total number of generations to train')
+    parser.add_argument('--generation_timesteps', type=int, default=65536, help='Timesteps to train per generation')
     parser.add_argument('--ent_coef', type=float, default=0, help='Entropy coefficient for exploration')
     parser.add_argument('--min_prob', type=float, default=0, help='Minimum probability for valid actions')
     parser.add_argument('--n_steps', type=int, default=16384, help='Number of steps per update')
