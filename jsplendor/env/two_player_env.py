@@ -65,13 +65,22 @@ class RandomStartTwoPlayerEnv(gym.Env):
         
         return final_obs
 
+    def _step_opponent(self, opponent_idx):
+        opponent_player = self.game.players[opponent_idx]
+
+        opponent_obs = self.get_observation(opponent_idx)
+        opponent_action = self.opponent_policy(opponent_obs)
+        opponent_vp, _, _, _ = opponent_player.do_action(self.game.board, opponent_action)
+        return opponent_vp
+
     def step(self, action):
         self.game.step += 1
 
         # Execute learning player's action
         player_idx = 0 if self.player_starts_first else 1
+        opponent_idx = 1 - player_idx
         current_player = self.game.players[player_idx]
-        opponent_player = self.game.players[1 - player_idx]
+        opponent_player = self.game.players[opponent_idx]
         
         # Get valid actions
         action_mask = self.get_action_mask(player_idx)
@@ -94,69 +103,60 @@ class RandomStartTwoPlayerEnv(gym.Env):
             observation = self.get_observation(player_idx)
             return observation, -1, True, False, {"outcome": "invalid_action"}
         
-        # Execute player's action
-        player_vp, _, _, _ = current_player.do_action(self.game.board, action)
-        
-        # Get and execute opponent's action
-        opponent_idx = 1 - player_idx
-        opponent_obs = self.get_observation(opponent_idx)
-        opponent_action = self.opponent_policy(opponent_obs)
-        
-        # Log opponent state
-        if self.verbose:
-            opp_action_mask = self.get_action_mask(opponent_idx)
-            self.logger.info("\nOpponent Action:")
-            self.logger.info(f"Selected action: {opponent_action}")
-            self.logger.info(f"Valid actions: {np.where(opp_action_mask)[0]}")
-            self.logger.info(f"Opponent coins: {opponent_player.coins}")
-            self.logger.info(f"Opponent VP: {opponent_player.sum_victory_point}")
-        
-        # Execute opponent's action
-        opponent_vp, _, _, _ = opponent_player.do_action(self.game.board, opponent_action)
-        
-        # Check game end
-        terminated, reward, info = self._check_game_end(
-            current_player.sum_victory_point,
-            opponent_player.sum_victory_point
-        )
-        
-        # Log end of turn
-        if self.verbose:
-            self.logger.info("\nTurn Result:")
-            self.logger.info(f"Step: {self.game.step}")
-            self.logger.info(f"Player VP: {current_player.sum_victory_point}")
-            self.logger.info(f"Opponent VP: {opponent_player.sum_victory_point}")
-            if terminated:
-                self.logger.info(f"Game ended: {info}")
-            self.logger.info("="*50)
+        if self.player_starts_first:
+            # Execute player's action
+            action_result = current_player.do_action(self.game.board, action)  # action result don't use.
+            opponent_vp = self._step_opponent(opponent_idx)
+
+            # Check game end
+            terminated, reward, info = self._check_game_end(
+                current_player.sum_victory_point,
+                opponent_player.sum_victory_point
+            )
+
+        else:  # Opponent goes first (opponent action current step already executed)
+            action_result = current_player.do_action(self.game.board, action)   # action result don't use.
+            # Check game end
+            terminated, reward, info = self._check_game_end(
+                current_player.sum_victory_point
+            )
+            opponent_vp = self._step_opponent(opponent_idx) # next step opponent action
         
         # Get next observation
         observation = self.get_observation(player_idx)
         return observation, reward, terminated, False, info
 
-    def _check_game_end(self, player_vp, opponent_vp):
+    def _check_game_end(self, player_vp, opponent_vp=None):
         terminated = False
         reward = 0
         info = {}
 
+        if opponent_vp is None:
+            assert not (self.player_starts_first), "Opponent VP must be provided if player goes first"
+
         if self.game.step >= self.max_step:
             terminated = True
-            reward = 0
-            info['winner'] = 'draw'
+            reward = -1
+            info['winner'] = 'not terminated'
             info['reward'] = reward
             return terminated, reward, info
         else:
-            if (player_vp >= self.target_vp or opponent_vp >= self.target_vp):
-                terminated = True
-                if player_vp > opponent_vp:
+            if opponent_vp is None:
+                if player_vp >= self.target_vp:
                     reward = 1
-                elif player_vp < opponent_vp:
-                    reward = -1
-                else:
-                    reward = -1
+                    info['winner'] = 'player'
+            else:
+                if (player_vp >= self.target_vp or opponent_vp >= self.target_vp):
+                    terminated = True
+                    if player_vp > opponent_vp:
+                        reward = 1
+                    elif player_vp < opponent_vp:
+                        reward = -1
+                    else:
+                        reward = 0
 
-            info['winner'] = 'player' if player_vp > opponent_vp else 'opponent'
-            info['reward'] = reward
+                    info['winner'] = 'player' if player_vp > opponent_vp else 'opponent'
+                    info['reward'] = reward
             
             return terminated, reward, info
 

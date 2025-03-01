@@ -4,25 +4,29 @@ import numpy as np
 import argparse
 from stable_baselines3 import PPO
 from stable_baselines3.common.monitor import Monitor
-
+from tqdm import tqdm
 from jsplendor.env.two_player_env import RandomStartTwoPlayerEnv
 from jsplendor.utils.config import get_verbose_dict
 from jsplendor.models.random_player import RandomPlayer
 
-def evaluate_agents(env, agent1=None, n_episodes=100):
-    """Run evaluation episodes between agent1 and environment's opponent"""
+def evaluate_agents(agent1, agent2, n_episodes=1):
+    env = Monitor(RandomStartTwoPlayerEnv(
+        opponent_policy=lambda x: agent2.predict(x)[0],
+        verbose_dict=verbose_dict
+    ))
+    
+    # Print agent descriptions
+    print("\nAgent 1:", "Model" if args.model1 else "Random")
+    print("Agent 2:", "Model" if args.model2 else "Random")
+    
     print("\nStarting evaluation...")
     episode_rewards = []
     episode_lengths = []
     agent1_wins = 0
     agent2_wins = 0
     draws = 0
-    
-    # Convert None to RandomPlayer
-    if agent1 is None:
-        agent1 = RandomPlayer()
-    
-    for episode in range(n_episodes):
+    not_terminated = 0
+    for episode in tqdm(range(n_episodes)):
         obs, info = env.reset()
         done = False
         total_reward = 0
@@ -30,6 +34,7 @@ def evaluate_agents(env, agent1=None, n_episodes=100):
         
         # Track who starts first this episode
         agent1_starts = info.get('starts_first', True)
+        #print(f"Agent 1 starts: {agent1_starts}")
         
         while not done:
             # Get action from agent1
@@ -47,23 +52,20 @@ def evaluate_agents(env, agent1=None, n_episodes=100):
                         agent1_wins += 1
                     elif info['winner'] == 'opponent':
                         agent2_wins += 1
+                    elif info['winner'] == 'not terminated':
+                        not_terminated += 1
+
                     else:
                         draws += 1
         
         episode_rewards.append(total_reward)
         episode_lengths.append(steps)
-        
-        if (episode + 1) % 10 == 0:
-            print(f"\nCompleted {episode + 1}/{n_episodes} episodes")
-            print(f"Agent 1 wins: {agent1_wins}, Agent 2 wins: {agent2_wins}, Draws: {draws}")
-            print(f"Agent 1 win rate: {agent1_wins/(episode+1):.1%}")
-            print(f"Average episode length: {np.mean(episode_lengths):.1f} steps")
-            print("-" * 50)
     
     print("\nFinal Results:")
     print(f"Agent 1 wins: {agent1_wins}")
     print(f"Agent 2 wins: {agent2_wins}")
     print(f"Draws: {draws}")
+    print(f"Not terminated: {not_terminated}")
     print(f"Agent 1 win rate: {agent1_wins/n_episodes:.1%}")
     print(f"Average episode length: {np.mean(episode_lengths):.1f} steps")
     
@@ -71,6 +73,7 @@ def evaluate_agents(env, agent1=None, n_episodes=100):
         'agent1_wins': agent1_wins,
         'agent2_wins': agent2_wins,
         'draws': draws,
+        'not_terminated': not_terminated,
         'win_rate': agent1_wins/n_episodes,
         'avg_length': np.mean(episode_lengths)
     }
@@ -98,18 +101,8 @@ if __name__ == "__main__":
         print("\nVerbose mode enabled - running single episode")
     
     # Load models if specified
-    agent1 = PPO.load(args.model1) if args.model1 else None
+    agent1 = PPO.load(args.model1) if args.model1 else RandomPlayer()
     agent2 = PPO.load(args.model2) if args.model2 else RandomPlayer()
     
-    # Create environment with agent2 as opponent
-    eval_env = Monitor(RandomStartTwoPlayerEnv(
-        opponent_policy=lambda x: agent2.predict(x)[0],
-        verbose_dict=verbose_dict
-    ))
-    
-    # Print agent descriptions
-    print("\nAgent 1:", "Model" if agent1 else "Random")
-    print("Agent 2:", "Model" if args.model2 else "Random")
-    
-    # Run evaluation
-    results = evaluate_agents(eval_env, agent1=agent1, n_episodes=args.episodes) 
+    results = evaluate_agents(agent1, agent2, n_episodes=args.episodes)
+
