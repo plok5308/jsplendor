@@ -38,9 +38,19 @@ class Game:
                     verbose=self.verbose_dict['board'],
                     logger=TestLogger.get_logger() if self.verbose_dict['board'] else None)
         
+        # Store current players' names
+        player_names = [p.name for p in self.players]
+        
         # Clear and reinitialize players
         self.players = []
-        self.add_player("player1")  # Add first player by default
+        
+        # Add at least one player
+        if not player_names:
+            player_names = ["player1"]
+        
+        # Recreate all players
+        for name in player_names:
+            self.add_player(name)
 
         if self.verbose:
             self.logger.info("Initial game status")
@@ -171,3 +181,9 @@ class Game:
 
         assert sum_development_cards == 90, f"Development cards don't sum to 90: {sum_development_cards}"
         assert sum_noble == 3, f"Noble cards don't sum to 3: {sum_noble}"
+
+    def do_action(self, player_idx, action):
+        """Execute an action for the specified player"""
+        result = self.players[player_idx].do_action(self.board, action)
+        self.step += 1  # Increment step counter after each action
+        return result
