@@ -153,7 +153,7 @@ class RandomStartTwoPlayerEnv(gym.Env):
                 elif player_vp < opponent_vp:
                     reward = -1
                 else:
-                    reward = 0
+                    reward = -1
 
             info['winner'] = 'player' if player_vp > opponent_vp else 'opponent'
             info['reward'] = reward

@@ -6,16 +6,30 @@ class RandomPlayer:
     def __init__(self):
         self.name = "RandomPlayer"
     
-    def __call__(self, obs):
-        """Select a random valid action from the action mask
+    def __call__(self, observation):
+        """Legacy method for compatibility"""
+        return self.predict(observation)[0]
+
+    def predict(self, observation, deterministic=True):
+        """Match PPO agent's predict interface
         
         Args:
-            obs: Observation array where last 27 values are the action mask
-        
+            observation: Environment observation
+            deterministic: Ignored for random agent
+            
         Returns:
-            int: Selected action index
+            Tuple of (action, None) to match PPO interface
         """
-        # Last 27 values are action mask
-        action_mask = obs[-27:]
-        valid_actions = np.where(action_mask > 0)[0]
-        return np.random.choice(valid_actions) 
+        # Get action mask from observation
+        if isinstance(observation, np.ndarray):
+            action_mask = observation[-27:]  # Last 27 elements are action mask
+        else:
+            action_mask = observation['action_mask']
+            
+        # Get valid actions
+        valid_actions = np.where(action_mask)[0]
+        
+        # Select random valid action
+        action = int(np.random.choice(valid_actions))  # Convert to int
+        
+        return action, None  # Return None for state to match PPO interface
