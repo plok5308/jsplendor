@@ -129,7 +129,7 @@ class PlayerObservation:
     @staticmethod
     def get_observation(game, player):
         """Get full player observation"""
-        step_obs = PlayerObservation.get_step_obs(game)
+        step_obs = PlayerObservation.get_step_obs(player)
         coin_obs = PlayerObservation.get_coin_obs(player)
         development_obs = PlayerObservation.get_development_obs(player)
         victory_point_obs = PlayerObservation.get_victory_point_obs(player)
@@ -139,10 +139,10 @@ class PlayerObservation:
         return np.clip(obs, 0, HIGH_VALUE-2)
     
     @staticmethod
-    def get_step_obs(game):
+    def get_step_obs(player):
         """Get step observation"""
         x = np.zeros(1, dtype=np.int32)
-        x[0] = min(game.step, HIGH_VALUE-2)  # Clip step
+        x[0] = min(player.step, HIGH_VALUE-2)
         return x
     
     @staticmethod
@@ -152,12 +152,12 @@ class PlayerObservation:
         if isinstance(player.coins, dict):
             for key, value in player.coins.items():
                 if isinstance(key, str):
-                    x[PlayerObservation.COLOR_MAP[key]] = min(value, HIGH_VALUE-2)  # Clip coin values
+                    x[PlayerObservation.COLOR_MAP[key]] = min(value, HIGH_VALUE-2)
                 else:
-                    x[key] = min(value, HIGH_VALUE-2)  # Clip coin values
+                    x[key] = min(value, HIGH_VALUE-2)
         else:
             for i, value in enumerate(player.coins):
-                x[i] = min(value, HIGH_VALUE-2)  # Clip coin values
+                x[i] = min(value, HIGH_VALUE-2)
         return x
     
     @staticmethod
@@ -166,13 +166,13 @@ class PlayerObservation:
         x = np.zeros(5, dtype=np.int32)
         for card in player.development_cards:
             x[PlayerObservation.COLOR_MAP[card.gem_color]] += 1
-        return np.clip(x, 0, HIGH_VALUE-2)  # Clip card counts
+        return np.clip(x, 0, HIGH_VALUE-2)
     
     @staticmethod
     def get_victory_point_obs(player):
         """Get victory point observation"""
         x = np.zeros(1, dtype=np.int32)
-        x[0] = min(player.sum_victory_point, HIGH_VALUE-2)  # Clip victory points
+        x[0] = min(player.sum_victory_point, HIGH_VALUE-2)
         return x
 
 def get_observation_space(game):

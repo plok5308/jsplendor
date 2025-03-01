@@ -56,7 +56,6 @@ class Game:
             self.logger.info("Initial game status")
             self.print_status()
 
-        self.step = 0
         self.check_all_coins()
         self.check_all_cards()
 
@@ -84,56 +83,6 @@ class Game:
         for player in self.players:
             if self.verbose_dict['player']:
                 player.print_status(object_name=player.name)
-
-    def get_random_action_datas(self):  # for collecting data
-        actions_bool = self.player1.get_all_possible_actions(self.board)
-        possible_actions = np.where(actions_bool==1)[0].tolist()
-        action = random.choice(possible_actions)
-        action_result = self.run_with_action(action)
-
-        return action, action_result, actions_bool
-
-    def run_with_action(self, action):
-        self.step += 1
-        action_result = dict()
-        action_result['victory_point'] = 0
-        action_result['over_coin_count'] = 0
-        action_result['is_skip'] = False
-        action_result['is_get_card'] = False
-        action_result['is_noble_visit'] = False
-        action_result['step'] = self.step
-
-        if action >= 15 and action < 20:
-            action_result['buy_l1_card'] = True
-        else:
-            action_result['buy_l1_card'] = False
-
-        actions_bool = self.player1.get_all_possible_actions(self.board)
-
-        if actions_bool[action]:
-            victory_point, over_coin_count, get_card, noble_visit = self.player1.do_action(self.board, action)
-            action_result['victory_point'] = victory_point
-            action_result['over_coin_count'] = over_coin_count
-            action_result['is_get_card'] = get_card
-            action_result['is_noble_visit'] = noble_visit
-            
-            # Add log messages
-            if self.gui:
-                if get_card:
-                    self.gui.add_log_message(f"Step {self.step}: Got a card")
-                if over_coin_count > 0:
-                    self.gui.add_log_message(f"Step {self.step}: Dropped {over_coin_count} coins")
-                if noble_visit:
-                    self.gui.add_log_message(f"Step {self.step}: Attracted a noble")
-                if action >= 10 and action < 15:  # Log double coin collection
-                    color = Element(action - 15).name
-                    self.gui.add_log_message(f"Step {self.step}: Got two {color} coins")
-        else:  # invalid action
-            action_result['is_skip'] = True
-            if self.gui:
-                self.gui.add_log_message(f"Step {self.step}: Invalid action")
-
-        return action_result
 
     def check_all_coins(self):
         """Verify total coins across all components"""
@@ -185,5 +134,4 @@ class Game:
     def do_action(self, player_idx, action):
         """Execute an action for the specified player"""
         result = self.players[player_idx].do_action(self.board, action)
-        self.step += 1  # Increment step counter after each action
         return result

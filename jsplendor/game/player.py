@@ -18,6 +18,7 @@ class Player(GameComponent):
         self.n_coin_action = 15
         self.n_buy_action = 12
         self.num_actions = self.n_coin_action + self.n_buy_action
+        self.step = 0  # Add step counter for each player
         self._update_score()
 
     def _update_score(self):
@@ -35,6 +36,7 @@ class Player(GameComponent):
         self.sum_development_card_gem = sum_development_card_gem
 
     def do_action(self, board, action):
+        self.step += 1  # Increment step when player takes action
         over_coin_count = 0
         get_card = False
         noble_visit = False
@@ -48,6 +50,9 @@ class Player(GameComponent):
                 noble_visit = self.check_and_get_a_noble(board)
 
         self._update_score() 
+
+        if self.verbose:
+            self.logger.info(f'Step {self.step}, VP: {self.sum_victory_point}')
 
         return self.sum_victory_point, over_coin_count, get_card, noble_visit
 
@@ -225,8 +230,7 @@ class Player(GameComponent):
             self.development_cards.append(card)
             board.update_table_development_card(card)
             
-            if self.verbose:
-                self.logger.info(f'VP: {self.sum_victory_point}')
+
             get_card = True
 
         else:
