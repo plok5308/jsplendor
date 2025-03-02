@@ -11,13 +11,15 @@ from jsplendor.models.random_player import RandomPlayer
 
 def evaluate_agents(agent1, agent2, n_episodes=1):
     env = Monitor(RandomStartTwoPlayerEnv(
-        opponent_policy=lambda x: agent2.predict(x)[0],
+        opponent_policy=lambda x: agent2.predict(x, deterministic=args.deterministic2)[0],
         verbose_dict=verbose_dict
     ))
     
     # Print agent descriptions
     print("\nAgent 1:", "Model" if args.model1 else "Random")
     print("Agent 2:", "Model" if args.model2 else "Random")
+    print(f"Agent 1 deterministic: {args.deterministic1}")
+    print(f"Agent 2 deterministic: {args.deterministic2}")
     
     print("\nStarting evaluation...")
     episode_rewards = []
@@ -37,7 +39,7 @@ def evaluate_agents(agent1, agent2, n_episodes=1):
         
         while not done:
             # Get action from agent1
-            action, _ = agent1.predict(obs, deterministic=True)
+            action, _ = agent1.predict(obs, deterministic=args.deterministic1)
             action = int(action)  # Ensure integer action
             
             #print('before action')
@@ -94,6 +96,8 @@ if __name__ == "__main__":
     parser.add_argument('--debug', action='store_true', help='Enable debug mode')
     parser.add_argument('--model1', type=str, help='Path to first model (None for random)')
     parser.add_argument('--model2', type=str, help='Path to second model (None for random)')
+    parser.add_argument('--deterministic1', action='store_true', help='Use deterministic actions for agent1')
+    parser.add_argument('--deterministic2', action='store_true', help='Use deterministic actions for agent2')
     parser.add_argument('--episodes', type=int, default=100, help='Number of episodes to evaluate')
     parser.add_argument('--verbose', action='store_true', help='Show game logs')
     args = parser.parse_args()

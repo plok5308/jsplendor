@@ -127,16 +127,6 @@ def train_self_play(args):
     eval_log_dir = f'logs/{args.exp}'
     os.makedirs(eval_log_dir, exist_ok=True)
 
-    eval_callback = EvalCallback(
-        eval_env,
-        best_model_save_path=eval_log_dir,
-        log_path=eval_log_dir,
-        eval_freq=args.n_steps,
-        n_eval_episodes=128,
-        deterministic=False,
-        render=False
-    )
-
     if args.load_model:
         print(f"Loading pretrained model from {args.load_model}...")
         model = PPO.load(
@@ -158,7 +148,6 @@ def train_self_play(args):
         # Train model
         model.learn(
             total_timesteps=args.generation_timesteps,
-            callback=eval_callback,
             progress_bar=not args.debug
         )
         
@@ -196,8 +185,8 @@ if __name__ == "__main__":
     parser = argparse.ArgumentParser(description='Train PPO agent for JSplendor with self-play')
     parser.add_argument('--debug', action='store_true', help='Run in debug mode')
     parser.add_argument('--load_model', type=str, help='Path to pretrained model to continue training')
-    parser.add_argument('--exp', type=str, default='self_play3', help='Experiment name for logging')
-    parser.add_argument('--total_generations', type=int, default=100, help='Total number of generations to train')
+    parser.add_argument('--exp', type=str, default='self_play4', help='Experiment name for logging')
+    parser.add_argument('--total_generations', type=int, default=10000, help='Total number of generations to train')
     parser.add_argument('--generation_timesteps', type=int, default=65536, help='Timesteps to train per generation')
     parser.add_argument('--ent_coef', type=float, default=0, help='Entropy coefficient for exploration')
     parser.add_argument('--min_prob', type=float, default=0, help='Minimum probability for valid actions')
