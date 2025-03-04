@@ -9,7 +9,7 @@ from jsplendor.utils.config import get_verbose_dict
 from jsplendor.models.random_player import RandomPlayer
 
 class EloPlayer:
-    def __init__(self, name, model=None, initial_elo=1000):
+    def __init__(self, name, model=None, initial_elo=1100):
         self.name = name
         self.model = model
         self.elo = initial_elo
@@ -82,11 +82,15 @@ def evaluate_match(player1, player2, n_games=100, deterministic=False):
 def calculate_elo_ratings(models_dir, n_games=20, deterministic=False):
     """Calculate Elo ratings for all models"""
     # Get all model paths
-    model_paths = sorted(glob.glob(os.path.join(models_dir, "model_gen_*")))
+    #model_paths = sorted(glob.glob(os.path.join(models_dir, "best_models", "model_gen_*")))
+
+    model_paths = glob.glob(os.path.join(models_dir, "**", "*.zip"), recursive=True)
+    model_paths = sorted(model_paths)
+
     print(f"\nFound {len(model_paths)} models to evaluate")
     
     # Create players list including random player with 1000 Elo
-    players = [EloPlayer("Random", RandomPlayer(), initial_elo=1000)]
+    players = [EloPlayer("Random", RandomPlayer(), initial_elo=1100)]
     
     # Add trained models
     for path in model_paths:
@@ -143,7 +147,7 @@ def calculate_elo_ratings(models_dir, n_games=20, deterministic=False):
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description='Calculate Elo ratings for JSplendor models')
-    parser.add_argument('--models_dir', type=str, default='logs/self_play_single/best_models',
+    parser.add_argument('--models_dir', type=str, default='pretrained',
                        help='Directory containing the models')
     parser.add_argument('--n_games', type=int, default=20,
                        help='Number of games to play per match')

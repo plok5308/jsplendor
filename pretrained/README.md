@@ -2,39 +2,9 @@
 
 This directory contains pretrained models for JSplendor and their Elo ratings.
 
-## Downloading Models
-
-This repository uses Git LFS to store model files. To download the models:
-
-1. Install Git LFS:
-```bash
-# Ubuntu/Debian
-sudo apt install git-lfs
-
-# macOS
-brew install git-lfs
-
-# Windows (with Chocolatey)
-choco install git-lfs
-```
-
-2. Enable Git LFS:
-```bash
-git lfs install
-```
-
-3. Clone or pull the repository:
-```bash
-# New clone
-git clone https://github.com/your-username/jsplendor.git
-
-# Or if already cloned
-git lfs pull
-```
-
 ## Elo Rating Results (2024-03-25)
 
-![Elo Ratings](250304_elo.png)
+![Elo Ratings](250305_elo.png)
 
 ### Test Configuration
 - Games per match: 20 (10 games each as first/second player)
@@ -56,7 +26,7 @@ git lfs pull
 ### Usage
 To evaluate models yourself:
 ```bash
-python calculate_elo.py --models_dir pretrained/best_models --n_games 20
+python calculate_elo.py --models_dir pretrained --n_games 20
 ```
 
 This will generate a new Elo rating for each model.
