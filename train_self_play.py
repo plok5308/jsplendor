@@ -4,7 +4,7 @@ import numpy as np
 import argparse
 from stable_baselines3 import PPO
 from stable_baselines3.common.evaluation import evaluate_policy
-from stable_baselines3.common.callbacks import EvalCallback
+from stable_baselines3.common.callbacks import EvalCallback, EventCallback
 from stable_baselines3.common.monitor import Monitor
 from stable_baselines3.common.vec_env import SubprocVecEnv
 from stable_baselines3.common.utils import set_random_seed
@@ -79,12 +79,6 @@ def evaluate_agent(env, model, n_episodes=100, deterministic=True):
                     episode_lengths.append(max(info['steps'].values()))
     
     win_rate = wins/total_games if total_games > 0 else 0
-    print("\nEvaluation Results:")
-    print(f"Total games: {total_games}")
-    print(f"Wins: {wins}, Losses: {losses}, Draws: {draws}, Not terminated: {not_terminated}")
-    print(f"Win rate: {win_rate:.1%}")
-    print(f"Average reward: {np.mean(episode_rewards):.2f}")
-    print(f"Average episode length: {np.mean(episode_lengths):.1f} steps")
     
     return {
         'wins': wins,
@@ -118,6 +112,86 @@ def make_env(opponent, verbose_dict, rank: int, seed: int=0):
     set_random_seed(seed)
     return _init
 
+class SelfPlayCallback(EventCallback):
+    def __init__(self, eval_env, opponent_builder, verbose_dict, best_models_dir, n_eval_episodes=100, deterministic=True):
+        super().__init__(None, verbose=False)
+        self.eval_env = eval_env
+        self.opponent_builder = opponent_builder
+        self.verbose_dict = verbose_dict
+        self.best_models_dir = best_models_dir
+        self.n_eval_episodes = n_eval_episodes
+        self.deterministic = deterministic
+        self.generation = 0
+        self.win_rate_threshold = 0.6
+        self.best_mean_reward = -np.inf
+        self.last_mean_reward = -np.inf
+
+    def _on_step(self) -> bool:
+        # Check if it's time to evaluate
+        if self.n_calls % self.model.n_steps == 0:
+            print("\nEvaluating against current opponent...")
+            eval_results = evaluate_agent(self.eval_env, self.model, 
+                                       n_episodes=self.n_eval_episodes,
+                                       deterministic=self.deterministic)
+            
+            # Log to tensorboard
+            self.logger.record("eval/mean_reward", eval_results['avg_reward'])
+            self.logger.record("eval/mean_ep_length", eval_results['avg_length'])
+            self.logger.record("eval/win_rate", eval_results['win_rate'])
+            self.logger.record("eval/wins", eval_results['wins'])
+            self.logger.record("eval/losses", eval_results['losses'])
+            self.logger.record("eval/draws", eval_results['draws'])
+            self.logger.record("eval/not_terminated", eval_results['not_terminated'])
+            self.logger.record("eval/generation", self.generation)
+            
+            # Dump log info to disk
+            self.logger.dump(self.n_calls)
+            
+            # Update best mean reward
+            mean_reward = eval_results['avg_reward']
+            if mean_reward > self.best_mean_reward:
+                self.best_mean_reward = mean_reward
+            
+            self.last_mean_reward = mean_reward
+            
+            # If win rate exceeds threshold, update opponent
+            if eval_results['win_rate'] > self.win_rate_threshold:
+                print("\n" + "-"*50)
+                print(f"Win rate {eval_results['win_rate']:.1%} exceeds threshold!")
+                print(f"Saving model and updating opponent...")
+                
+                # Save current model
+                model_path = os.path.join(self.best_models_dir, f"model_gen_{self.generation}")
+                self.model.save(model_path)
+                
+                # Create and set new opponent
+                opponent_model = PPO.load(model_path)
+                new_opponent = ModelPlayer(opponent_model, deterministic=self.deterministic)
+                
+                # Update environments
+                if isinstance(self.model.env, SubprocVecEnv):
+                    self.model.env = SubprocVecEnv(
+                        [make_env(new_opponent, self.verbose_dict, i) 
+                         for i in range(self.model.env.num_envs)]
+                    )
+                else:
+                    self.model.env = Monitor(
+                        RandomStartTwoPlayerEnv(new_opponent, verbose_dict=self.verbose_dict)
+                    )
+                
+                # Update eval environment
+                self.eval_env = Monitor(
+                    RandomStartTwoPlayerEnv(new_opponent, verbose_dict=self.verbose_dict)
+                )
+                
+                print(f"Now training against model from generation {self.generation}")
+                print(f"Best mean reward: {self.best_mean_reward:.2f}")
+                print("-"*50)
+                
+                self.generation += 1
+                
+        return True
+
 def train_self_play(args):
     # Set up verbose dict based on debug flag
     verbose_dict = get_verbose_dict()
@@ -144,15 +218,14 @@ def train_self_play(args):
     eval_log_dir = f'logs/{args.exp}'
     os.makedirs(eval_log_dir, exist_ok=True)
 
-    # Add eval callback with single environment
-    eval_callback = EvalCallback(
-        eval_env,
-        best_model_save_path=eval_log_dir,
-        log_path=eval_log_dir,
-        eval_freq=args.n_steps,
-        n_eval_episodes=100,  # No need to adjust for num_cpu now
-        deterministic=args.deterministic,
-        render=False
+    # Create self-play callback
+    self_play_callback = SelfPlayCallback(
+        eval_env=eval_env,
+        opponent_builder=lambda: RandomPlayer(),  # Initial opponent builder
+        verbose_dict=verbose_dict,
+        best_models_dir=best_models_dir,
+        n_eval_episodes=100,
+        deterministic=args.deterministic
     )
 
     if args.load_model:
@@ -202,58 +275,17 @@ def train_self_play(args):
             device="cuda" if torch.cuda.is_available() else "cpu"
         )
 
-    generation = 0
-    while generation < args.total_generations:
-        print("\n" + "="*50)
-        print(f"Training Generation {generation}")
-        print("="*50)
-        
-        # Train model with adjusted timesteps
-        if args.debug:
-            actual_timesteps = args.n_steps
-        else:
-            actual_timesteps = args.n_steps * args.num_cpu
-        
-        print(f"\nTraining for {actual_timesteps} timesteps...")
-        model.learn(
-            total_timesteps=actual_timesteps,
-            progress_bar=not args.debug,
-            callback=eval_callback
-        )
-        
-        print("\nEvaluating against current opponent...")
-        eval_results = evaluate_agent(eval_env, model, deterministic=args.deterministic)
-        
-        # If win rate is above threshold, save model and use it as new opponent
-        if eval_results['win_rate'] > 0.6:
-            print("\n" + "-"*50)
-            print(f"Win rate {eval_results['win_rate']:.1%} exceeds threshold!")
-            print(f"Saving model and updating opponent...")
-            model_path = os.path.join(best_models_dir, f"model_gen_{generation}")
-            model.save(model_path)
-            
-            # Create new opponent from current model
-            opponent_model = PPO.load(model_path)
-            opponent = ModelPlayer(opponent_model, deterministic=args.deterministic)
-            
-            # Update environments with new opponent
-            if args.debug:
-                train_env = Monitor(RandomStartTwoPlayerEnv(opponent, verbose_dict=verbose_dict))
-                eval_env = Monitor(RandomStartTwoPlayerEnv(opponent, verbose_dict=verbose_dict))
-            else:
-                train_env = SubprocVecEnv([make_env(opponent, verbose_dict, i) for i in range(args.num_cpu)])
-                # Keep evaluation environment single
-                eval_env = Monitor(RandomStartTwoPlayerEnv(opponent, verbose_dict=verbose_dict))
-            
-            model.set_env(train_env)
-            print(f"Now training against model from generation {generation}")
-            print("-"*50)
-        
-        generation += 1
+    # Train model
+    total_timesteps = args.n_steps * args.total_generations
+    model.learn(
+        total_timesteps=total_timesteps,
+        progress_bar=not args.debug,
+        callback=self_play_callback
+    )
     
     print("\n" + "="*50)
     print('Training completed.')
-    print(f"Completed {generation} generations")
+    print(f"Completed {self_play_callback.generation} generations")
     print("="*50)
     
     # Save final model
@@ -265,7 +297,7 @@ if __name__ == "__main__":
     parser.add_argument('--debug', action='store_true', help='Run in debug mode with single environment')
     parser.add_argument('--num_cpu', type=int, default=8, help='Number of CPU cores to use')
     parser.add_argument('--load_model', type=str, help='Path to pretrained model to continue training')
-    parser.add_argument('--exp', type=str, default='self_play6', help='Experiment name for logging')
+    parser.add_argument('--exp', type=str, default='tmp', help='Experiment name for logging')
     parser.add_argument('--total_generations', type=int, default=10000, help='Total number of generations to train')
     parser.add_argument('--ent_coef', type=float, default=0, help='Entropy coefficient for exploration')
     parser.add_argument('--n_steps', type=int, default=16384, help='Number of steps per update')
