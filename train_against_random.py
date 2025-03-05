@@ -11,6 +11,7 @@ import gym
 
 from jsplendor.env.two_player_env import RandomStartTwoPlayerEnv
 from jsplendor.models.transformer import TransformerFeatureExtractor
+from jsplendor.models.linear import LinearFeatureExtractor
 from jsplendor.utils.config import get_verbose_dict
 from jsplendor.models.random_player import RandomPlayer
 from jsplendor.policy.masked_policy import MaskedActorCriticPolicy
@@ -90,7 +91,7 @@ def train(args):
         )
     else:
         policy_kwargs = {
-            'features_extractor_class': TransformerFeatureExtractor,
+            'features_extractor_class': LinearFeatureExtractor,
             'net_arch': dict(pi=[64], vf=[64]),
             'activation_fn': torch.nn.ReLU,
             'temperature': 1.0,

@@ -12,24 +12,32 @@ from stable_baselines3.common.buffers import RolloutBuffer
 
 from jsplendor.env.two_player_env import RandomStartTwoPlayerEnv
 from jsplendor.models.transformer import TransformerFeatureExtractor
+from jsplendor.models.linear import LinearFeatureExtractor
 from jsplendor.utils.config import get_verbose_dict
 from jsplendor.models.random_player import RandomPlayer
 from jsplendor.policy.masked_policy import MaskedActorCriticPolicy
 
 def create_model(env, args):
-    # Create policy kwargs with transformer and masking settings
+    # Select feature extractor based on model type
+    if args.model_type == 'transformer':
+        feature_extractor = TransformerFeatureExtractor
+    elif args.model_type == 'linear':
+        feature_extractor = LinearFeatureExtractor
+    else:
+        raise ValueError(f"Unknown model type: {args.model_type}")
+    
+    # Create policy kwargs with selected feature extractor
     policy_kwargs = {
-        'features_extractor_class': TransformerFeatureExtractor,
-        'net_arch': dict(pi=[64], vf=[64]),
+        'features_extractor_class': feature_extractor,
+        'net_arch': dict(pi=[64], vf=[64]),  # Match feature dimension
         'activation_fn': torch.nn.ReLU,
-        'min_prob': args.min_prob,
         'temperature': 1.0,
         'top_k': 0,
         'top_p': 1.0
     }
 
     return PPO(
-        MaskedActorCriticPolicy,  # Use masked policy instead of base policy
+        MaskedActorCriticPolicy,
         env,
         n_steps=args.n_steps,
         batch_size=512,
@@ -80,6 +88,14 @@ def evaluate_agent(env, model, n_episodes=100, deterministic=True):
     
     win_rate = wins/total_games if total_games > 0 else 0
     
+
+    print("\nEvaluation Results:")
+    print(f"Total games: {total_games}")
+    print(f"Wins: {wins}, Losses: {losses}, Draws: {draws}, Not terminated: {not_terminated}")
+    print(f"Win rate: {win_rate:.1%}")
+    print(f"Average reward: {np.mean(episode_rewards):.2f}")
+    print(f"Average episode length: {np.mean(episode_lengths):.1f} steps")
+
     return {
         'wins': wins,
         'losses': losses,
@@ -254,26 +270,7 @@ def train_self_play(args):
         print("Model loaded successfully.")
         print(f"Continuing training in experiment: {args.exp}")
     else:
-        policy_kwargs = {
-            'features_extractor_class': TransformerFeatureExtractor,
-            'net_arch': dict(pi=[64], vf=[64]),
-            'activation_fn': torch.nn.ReLU,
-            'temperature': 1.0,
-            'top_k': 0,
-            'top_p': 1.0
-        }
-
-        model = PPO(
-            MaskedActorCriticPolicy,
-            env=train_env,
-            n_steps=args.n_steps,
-            batch_size=args.batch_size,
-            learning_rate=2e-6,
-            policy_kwargs=policy_kwargs,
-            tensorboard_log=f"logs/{args.exp}",
-            ent_coef=args.ent_coef,
-            device="cuda" if torch.cuda.is_available() else "cpu"
-        )
+        model = create_model(train_env, args)
 
     # Train model
     total_timesteps = args.n_steps * args.total_generations
@@ -303,6 +300,8 @@ if __name__ == "__main__":
     parser.add_argument('--n_steps', type=int, default=16384, help='Number of steps per update')
     parser.add_argument('--batch_size', type=int, default=512, help='Size of the batch for training')
     parser.add_argument('--deterministic', action='store_true', help='Use deterministic actions during evaluation')
+    parser.add_argument('--model_type', type=str, choices=['transformer', 'linear'], default='linear',
+                      help='Type of feature extractor to use')
     args = parser.parse_args()
 
     model = train_self_play(args)
