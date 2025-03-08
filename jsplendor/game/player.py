@@ -60,8 +60,18 @@ class Player(GameComponent):
         actions = np.zeros(self.num_actions)
 
         # Original coin actions (0-9)
-        for i in range(self.n_coin_action - 5):
-            actions[i] = 1
+        for i in range(self.n_coin_action - 5):  # First 10 actions are for 3 different coins
+            # Get the coin combination for this action
+            candidated_ids = get_coin_comb(i)
+            # Count how many coins are available in this combination
+            available_coins = 0
+            for ids in candidated_ids:
+                color = Element(ids).name
+                if self.is_possible_to_get_coin(board, color):
+                    available_coins += 1
+            # Set action as valid if at least one coin is available
+            if available_coins > 0:
+                actions[i] = 1
 
         # Double coin actions (10-14)
         for i in range(5):  # Loop through 0-4 for the 5 colors
@@ -75,6 +85,11 @@ class Player(GameComponent):
                 actions[i] = 1
 
         actions = actions.astype(np.bool_)
+        
+        # Safety check: if no actions are valid, allow all coin-taking actions
+        if not np.any(actions):
+            actions[:self.n_coin_action] = True
+        
         return actions
 
     def get_coins(self, board, x):

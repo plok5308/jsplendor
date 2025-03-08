@@ -4,12 +4,12 @@ import numpy as np
 import argparse
 from stable_baselines3 import PPO
 from tqdm import tqdm
-from jsplendor.env.two_player_env import RandomStartTwoPlayerEnv
+from jsplendor.env import SelfPlayEnv
 from jsplendor.utils.config import get_verbose_dict
 from jsplendor.models.random_player import RandomPlayer
 
 class EloPlayer:
-    def __init__(self, name, model=None, initial_elo=1100):
+    def __init__(self, name, model=None, initial_elo=1200):
         self.name = name
         self.model = model
         self.elo = initial_elo
@@ -33,7 +33,7 @@ def update_elo(rating1, rating2, score, k=32):
 
 def evaluate_match(player1, player2, n_games=100, deterministic=False):
     """Evaluate a match between two players"""
-    env = RandomStartTwoPlayerEnv(
+    env = SelfPlayEnv(
         opponent_policy=lambda x: player2.predict(x, deterministic=deterministic)[0],
         verbose_dict=get_verbose_dict()
     )
@@ -79,25 +79,24 @@ def evaluate_match(player1, player2, n_games=100, deterministic=False):
     
     return win_rate
 
-def calculate_elo_ratings(models_dir, n_games=20, deterministic=False):
-    """Calculate Elo ratings for all models"""
-    # Get all model paths
-    #model_paths = sorted(glob.glob(os.path.join(models_dir, "best_models", "model_gen_*")))
-
-    model_paths = glob.glob(os.path.join(models_dir, "**", "*.zip"), recursive=True)
-    model_paths = sorted(model_paths)
-
-    print(f"\nFound {len(model_paths)} models to evaluate")
+def load_models(model_dir):
+    """Load both transformer and linear models"""
+    players = [EloPlayer("Random", RandomPlayer(), initial_elo=500)]
     
-    # Create players list including random player with 1000 Elo
-    players = [EloPlayer("Random", RandomPlayer(), initial_elo=1100)]
-    
-    # Add trained models
-    for path in model_paths:
-        name = os.path.basename(path)
+    model_paths = glob.glob(os.path.join(model_dir, "**", "*.zip"), recursive=True)
+    for path in sorted(model_paths):
+        name = f"{os.path.basename(path)}"
         print(f"Loading model: {name}")
         model = PPO.load(path)
         players.append(EloPlayer(name, model))
+    
+    return players
+
+def calculate_elo_ratings(model_dir, n_games=20, deterministic=False):
+    """Calculate Elo ratings for all models"""
+    # Load all models
+    players = load_models(model_dir)
+    print(f"\nFound {len(players)-1} models to evaluate ({len(players)} players including Random)")
     
     # Play round-robin tournament
     n_players = len(players)
@@ -137,22 +136,22 @@ def calculate_elo_ratings(models_dir, n_games=20, deterministic=False):
     # Sort and print results
     players.sort(key=lambda x: x.elo, reverse=True)
     print("\nFinal Elo Ratings:")
-    print("-" * 50)
-    print(f"{'Player':<20} {'Elo':>8} {'Games':>8}")
-    print("-" * 50)
+    print("-" * 60)
+    print(f"{'Player':<30} {'Elo':>8} {'Games':>8}")
+    print("-" * 60)
     for player in players:
-        print(f"{player.name:<20} {player.elo:>8.1f} {player.games_played:>8}")
+        print(f"{player.name:<30} {player.elo:>8.1f} {player.games_played:>8}")
     
     return players
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description='Calculate Elo ratings for JSplendor models')
-    parser.add_argument('--models_dir', type=str, default='pretrained',
-                       help='Directory containing the models')
-    parser.add_argument('--n_games', type=int, default=20,
+    parser.add_argument('--model_dir', type=str, default='pretrained/linear2',
+                       help='Directory containing models')
+    parser.add_argument('--n_games', type=int, default=200,
                        help='Number of games to play per match')
     parser.add_argument('--deterministic', action='store_true',
                        help='Use deterministic actions instead of stochastic')
     args = parser.parse_args()
     
-    players = calculate_elo_ratings(args.models_dir, args.n_games, args.deterministic) 
+    players = calculate_elo_ratings(args.model_dir, args.n_games, args.deterministic) 

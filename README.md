@@ -2,16 +2,13 @@
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
-JSplendor is a Python implementation of the Splendor board game with an AI agent using PPO (Proximal Policy Optimization).
+This repository contains a strong AI implementation using PPO (Proximal Policy Optimization), demonstrated through the Splendor board game.
+
+If you find this repository helpful, please consider giving it a star ⭐! It helps make this project more visible to others.
 
 ## Features
 
-- Full Splendor game implementation with GUI interface
-- Advanced AI agent:
-  - PPO agent with transformer architecture for optimal decision making
-  - Action masking for valid moves only
-- Comprehensive logging and visualization
-- Multi-environment training support
+Self-play training with curriculum learning.
 
 ## Installation
 
@@ -26,21 +23,24 @@ pip install -r requirements.txt
 ### Training
 
 ```bash
-# Train a new PPO agent
-python train.py --exp experiment_name --num_cpu 8
-
-# Continue training from existing model
-python train.py --exp experiment_name --load_model pretrained/best_model
+# Train with self-play
+python train_self_play.py --exp experiment_name --num_cpu 4
+# Train against random opponent with step reward
+python train_against_random.py --exp experiment_name --num_cpu 4
 ```
 
 ### Evaluation
 
 ```bash
-# Test model performance
-python test.py --num_games 128 --verbose
+# Evaluate models against each other
+python evaluate_agents.py \
+    --model1_path pretrained/linear2/model_gen_12.zip \
+    --model2_path pretrained/linear2/model_gen_9.zip \
+    --n_episodes 1 \
+    --verbose \
 
-# Launch GUI interface
-python test_gui.py
+# Calculate ELO ratings
+python calculate_elo.py --model_dir pretrained/linear2 --n_games 200
 ```
 
 ## Project Structure
@@ -48,21 +48,23 @@ python test_gui.py
 ```
 jsplendor/
 ├── jsplendor/
-│   ├── env/              # Gym environment
-│   │   ├── env.py       # Main environment
-│   │   └── observation.py # State representation
-│   ├── game/            # Core game logic
-│   ├── gui/             # PyGame interface
-│   ├── models/          # Neural networks
-│   │   └── transformer.py # Transformer architecture
-│   ├── policy/          # AI policies
-│   │   └── masked_policy.py # PPO policy
-│   └── utils/           # Utilities and logging
-├── tests/               # Test files
-├── pretrained/          # Model weights
-├── train.py            # Training script
-├── test.py             # Evaluation script
-└── test_gui.py         # GUI testing
+│ ├── env/
+│ │ ├── env.py # Self-play environment
+│ │ └── observation.py # State representation
+│ ├── game/ # Core game logic
+│ ├── models/ # Neural networks
+│ │ ├── transformer.py # Transformer architecture (TODO: update the network architecture)
+│ │ ├── linear.py # Basic linear network
+│ │ └── linear2.py # Linear network with skip connections (recommended)
+│ ├── policy/ # Custom policies
+│ │ └── masked_policy.py # PPO policy with action masking
+│ └── utils/ # Utilities and logging
+├── tests/ # Test files
+├── pretrained/ # Pre-trained models
+│ └── linear2/ # Best performing models
+├── train_against_random.py # Training against random opponent with step reward
+├── train_self_play.py # Self-play training
+└── evaluate_agents.py # Model evaluation
 ```
 
 ## Requirements
@@ -71,19 +73,10 @@ jsplendor/
 - PyTorch
 - Stable-Baselines3
 - Gymnasium
-- PyGame
 - NumPy
-- tqdm
 - x-transformers
 
 ## Logging
 
-The system provides comprehensive logging:
-- Action probabilities and selections
-- Game state transitions
-- Training metrics and evaluations
-- Final statistics and analysis
-
-Logs are stored in:
-- Training: `logs/{experiment_name}/`
-- Testing: `pretrained/logs/`
+Training and evaluation results are stored in:
+- Training logs: `logs/{experiment_name}/`

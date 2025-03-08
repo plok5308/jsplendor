@@ -10,12 +10,13 @@ from stable_baselines3.common.vec_env import SubprocVecEnv
 from stable_baselines3.common.utils import set_random_seed
 from stable_baselines3.common.buffers import RolloutBuffer
 
-from jsplendor.env.two_player_env import RandomStartTwoPlayerEnv
+from jsplendor.env.env import SelfPlayEnv
 from jsplendor.models.transformer import TransformerFeatureExtractor
-from jsplendor.models.linear import LinearFeatureExtractor
+from jsplendor.models.linear2 import LinearFeatureExtractor
 from jsplendor.utils.config import get_verbose_dict
 from jsplendor.models.random_player import RandomPlayer
 from jsplendor.policy.masked_policy import MaskedActorCriticPolicy
+from jsplendor.env import StepRewardWrapper
 
 def create_model(env, args):
     # Select feature extractor based on model type
@@ -117,10 +118,14 @@ class ModelPlayer:
         action, _ = self.model.predict(observation, deterministic=self.deterministic)
         return action
 
-def make_env(opponent, verbose_dict, rank: int, seed: int=0):
+def make_env(opponent_policy, verbose_dict, rank: int, seed: int=0):
     """Create a wrapped, monitored environment"""
     def _init():
-        env = RandomStartTwoPlayerEnv(opponent, verbose_dict=verbose_dict)
+        env = SelfPlayEnv(
+            opponent_policy=opponent_policy,
+            verbose_dict=verbose_dict
+        )
+        env = StepRewardWrapper(env)
         env = Monitor(env)
         env.reset(seed=seed+rank)
         return env
@@ -192,12 +197,12 @@ class SelfPlayCallback(EventCallback):
                     )
                 else:
                     self.model.env = Monitor(
-                        RandomStartTwoPlayerEnv(new_opponent, verbose_dict=self.verbose_dict)
+                        SelfPlayEnv(new_opponent, verbose_dict=self.verbose_dict)
                     )
                 
                 # Update eval environment
                 self.eval_env = Monitor(
-                    RandomStartTwoPlayerEnv(new_opponent, verbose_dict=self.verbose_dict)
+                    SelfPlayEnv(new_opponent, verbose_dict=self.verbose_dict)
                 )
                 
                 print(f"Now training against model from generation {self.generation}")
@@ -224,12 +229,12 @@ def train_self_play(args):
     
     # Set up environments - vectorized for training, single for evaluation
     if args.debug:
-        train_env = Monitor(RandomStartTwoPlayerEnv(opponent, verbose_dict=verbose_dict))
-        eval_env = Monitor(RandomStartTwoPlayerEnv(opponent, verbose_dict=verbose_dict))
+        train_env = Monitor(SelfPlayEnv(opponent, verbose_dict=verbose_dict))
+        eval_env = Monitor(SelfPlayEnv(opponent, verbose_dict=verbose_dict))
     else:
         train_env = SubprocVecEnv([make_env(opponent, verbose_dict, i) for i in range(args.num_cpu)])
         # Always use single environment for evaluation
-        eval_env = Monitor(RandomStartTwoPlayerEnv(opponent, verbose_dict=verbose_dict))
+        eval_env = Monitor(SelfPlayEnv(opponent, verbose_dict=verbose_dict))
 
     eval_log_dir = f'logs/{args.exp}'
     os.makedirs(eval_log_dir, exist_ok=True)
@@ -292,7 +297,7 @@ def train_self_play(args):
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description='Train PPO agent for JSplendor with self-play')
     parser.add_argument('--debug', action='store_true', help='Run in debug mode with single environment')
-    parser.add_argument('--num_cpu', type=int, default=8, help='Number of CPU cores to use')
+    parser.add_argument('--num_cpu', type=int, default=1, help='Number of CPU cores to use')
     parser.add_argument('--load_model', type=str, help='Path to pretrained model to continue training')
     parser.add_argument('--exp', type=str, default='tmp', help='Experiment name for logging')
     parser.add_argument('--total_generations', type=int, default=10000, help='Total number of generations to train')

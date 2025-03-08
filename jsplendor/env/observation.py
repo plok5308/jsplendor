@@ -122,22 +122,48 @@ class PlayerObservation:
         coin_space = 6  # Player's coins
         development_space = 5  # Count of cards per color
         victory_point_space = 1  # Total victory points
-        total_space = step_space + coin_space + development_space + victory_point_space  # 13
+        level1_count_space = 1  # Total count of level 1 cards
+        
+        # Add spaces for card price differences and total costs
+        price_diff_space = 12 * 5  # 12 cards x 5 colors
+        total_cost_space = 12 * 5  # 12 cards x 5 colors
+        
+        total_space = (step_space + coin_space + development_space + 
+                      victory_point_space + level1_count_space +
+                      price_diff_space + total_cost_space)
         
         return total_space
     
     @staticmethod
+    def get_level1_count_obs(player):
+        """Get total count of level 1 cards"""
+        count = sum(1 for card in player.development_cards if card.level == 1)
+        return np.array([min(count, HIGH_VALUE-2)], dtype=np.int32)
+    
+    @staticmethod
     def get_observation(game, player):
-        """Get full player observation"""
+        """Get full player observation including price differences and total costs"""
         step_obs = PlayerObservation.get_step_obs(player)
         coin_obs = PlayerObservation.get_coin_obs(player)
         development_obs = PlayerObservation.get_development_obs(player)
         victory_point_obs = PlayerObservation.get_victory_point_obs(player)
+        level1_count_obs = PlayerObservation.get_level1_count_obs(player)
+        price_diff_obs = PlayerObservation.get_card_price_diff_obs(game.board, player)
+        total_cost_obs = PlayerObservation.get_total_cost_obs(game.board, player)
         
-        obs = np.concatenate([step_obs, coin_obs, development_obs, victory_point_obs])
+        obs = np.concatenate([
+            step_obs, 
+            coin_obs, 
+            development_obs, 
+            victory_point_obs,
+            level1_count_obs,  # Add level 1 cards count
+            price_diff_obs,
+            total_cost_obs
+        ])
+        
         # Clip player observation values
         return np.clip(obs, 0, HIGH_VALUE-2)
-    
+
     @staticmethod
     def get_step_obs(player):
         """Get step observation"""
@@ -175,13 +201,65 @@ class PlayerObservation:
         x[0] = min(player.sum_victory_point, HIGH_VALUE-2)
         return x
 
+    @staticmethod
+    def get_card_price_diff_obs(board, player):
+        """Calculate difference between card prices and player's gems"""
+        cards = board.flatten_table_cards
+        player_gems = np.zeros(5, dtype=np.int32)
+        
+        # Count player's development cards by color
+        for card in player.development_cards:
+            player_gems[PlayerObservation.COLOR_MAP[card.gem_color]] += 1
+        
+        diffs = []
+        for card in cards:
+            if card is None:
+                diffs.extend([0] * 5)
+            else:
+                # For each gem type, calculate price - player's gems
+                card_price = np.array(card.price)
+                diff = card_price - player_gems
+                diff = np.clip(diff, 0, HIGH_VALUE-2)  # Clip values to valid range
+                diffs.extend(diff)
+        
+        return np.array(diffs, dtype=np.int32)
+
+    @staticmethod
+    def get_total_cost_obs(board, player):
+        """Calculate total cost considering both development cards and coins"""
+        cards = board.flatten_table_cards
+        player_gems = np.zeros(5, dtype=np.int32)
+        
+        # Convert player coins from dict to array
+        player_coins = np.zeros(5, dtype=np.int32)
+        for color, count in player.coins.items():
+            if color != 'GOLD':  # Skip gold coins
+                player_coins[PlayerObservation.COLOR_MAP[color]] = count
+        
+        # Count player's development cards by color
+        for card in player.development_cards:
+            player_gems[PlayerObservation.COLOR_MAP[card.gem_color]] += 1
+        
+        total_costs = []
+        for card in cards:
+            if card is None:
+                total_costs.extend([0] * 5)
+            else:
+                # Calculate total cost: price - development cards - coins
+                card_price = np.array(card.price)
+                cost = card_price - player_gems - player_coins
+                cost = np.clip(cost, 0, HIGH_VALUE-2)  # Clip values to valid range
+                total_costs.extend(cost)
+        
+        return np.array(total_costs, dtype=np.int32)
+
 def get_observation_space(game):
     """Get total observation space including board, players, and action mask"""
     # Board space
     board_space = BoardObservation.get_space()  # 113 (6 coins + 84 cards + 35 nobles)
     
-    # Player space
-    player_space = PlayerObservation.get_space()  # 13 (1 step + 6 coins + 5 colors + 1 vp)
+    # Player space (includes price diffs and total costs)
+    player_space = PlayerObservation.get_space()
     
     # CLS token space
     cls_space = 1  # 62 (using HIGH_VALUE=63)
@@ -191,7 +269,6 @@ def get_observation_space(game):
     
     # Total space calculation
     total_space = cls_space + board_space + (player_space * 2) + action_space
-    # 62 + 113 + (13 * 2) + 27 = 228
     
     return spaces.Box(
         low=0,
@@ -215,46 +292,21 @@ def get_observation(game, player_idx=0, verbose=False, logger=None):
     cls_token = np.ones(1, dtype=np.int32) * (HIGH_VALUE-1)
     
     # Combine observations
-    obs = np.concatenate([cls_token, board_obs, current_obs, opponent_obs])
-
-    #print(f"cls_token: {cls_token}")
-    #print(f"board_obs: {board_obs}")
-    #print(f"current_obs: {current_obs}")
-    #print(f"opponent_obs: {opponent_obs}")
-    #print(f"obs: {obs}")
+    obs = np.concatenate([
+        cls_token,
+        board_obs,
+        current_obs,
+        opponent_obs
+    ])
     
     if verbose and logger:
         logger.info("-" * 50)
         logger.info("Base Observation:")
         logger.info(f"Shape: {obs.shape}")
-        logger.info(f"CLS({cls_token.shape[0]}) + Board({board_obs.shape[0]}) + Current({current_obs.shape[0]}) + Opponent({opponent_obs.shape[0]})")
+        logger.info(f"CLS({cls_token.shape[0]}) + Board({board_obs.shape[0]}) + " +
+                   f"Current({current_obs.shape[0]}) + Opponent({opponent_obs.shape[0]})")
     
     return obs
-
-def get_card_price_diff_obs(board, player):
-    """Calculate difference between card prices and player's gems"""
-    cards = board.flatten_table_cards
-    player_gems = np.zeros(5, dtype=np.int32)
-    
-    # Count player's development cards by color
-    for card in player.development_cards:
-        player_gems[PlayerObservation.COLOR_MAP[card.gem_color]] += 1
-    
-    diffs = []
-    for card in cards:
-        if card is None:
-            diffs.extend([0] * 5)
-        else:
-            # For each gem type, calculate price - player's gems
-            card_price = np.array(card.price)
-            # Add offset of 10 to make all values positive
-            #diff = card_price - player_gems + 10  #temp
-            diff = card_price - player_gems
-
-            diff = np.clip(diff, 0, HIGH_VALUE-2)  # Clip values to valid range
-            diffs.extend(diff)
-    
-    return np.array(diffs, dtype=np.int32)
 
 def get_high_level_price_sum_obs(board):
     """Sum of prices for level 2 and 3 cards per gem type"""

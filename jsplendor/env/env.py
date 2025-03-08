@@ -1,15 +1,17 @@
 import numpy as np
+import torch
 import gymnasium as gym
 from gymnasium import spaces
+from copy import deepcopy
 
 from jsplendor.game import Game
 from jsplendor.env.observation import get_observation_space, get_observation, HIGH_VALUE
-from jsplendor.utils import get_verbose_dict
-from jsplendor.utils.logger import TestLogger
+from jsplendor.utils.config import get_verbose_dict
+from jsplendor.utils import TestLogger
 
-
-class JsplendorEnv(gym.Env):
-    def __init__(self, verbose_dict=None):
+class SelfPlayEnv(gym.Env):
+    """Two player environment with random starting positions"""
+    def __init__(self, opponent_policy=None, verbose_dict=None):
         if verbose_dict is None:
             verbose_dict = get_verbose_dict()
         
@@ -17,144 +19,222 @@ class JsplendorEnv(gym.Env):
         if self.verbose:
             self.logger = TestLogger('logs/env')
             
-        self.game = Game(verbose_dict)
-        action_n = self.game.player1.num_actions
+        # Store opponent policy
+        self.opponent_policy = opponent_policy
+            
+        # Initialize game
+        self.game = Game(verbose_dict)  # This will create player1
+        
+        # Add second player if not already present
+        if len(self.game.players) == 1:
+            self.game.add_player("player2")
+        
+        # Verify both players are initialized
+        assert len(self.game.players) == 2, "Game must have exactly 2 players"
+                
+        # Action and observation spaces
+        action_n = self.game.players[0].num_actions
         self.action_space = spaces.Discrete(action_n)
         
-        # Create a single Box space that includes both observation and action mask
-        obs_space = get_observation_space()
+        obs_space = get_observation_space(self.game)
         self.observation_space = spaces.Box(
             low=0,
             high=HIGH_VALUE,
-            shape=(obs_space.shape[0] + action_n,),  # 175 + 27 = 202
+            shape=(obs_space.shape[0],),
             dtype=np.int32
         )
-        self.skip_sum = 0
 
-        # parameters
+        # Parameters
         self.target_vp = 15
-        self.max_step = 127
-        self.bonus_step = 35
-        self.l1_penalty_step = 13
+        self.max_step = 300
 
-        # Penalties
-        self.penalty = dict()
-        self.penalty['step'] = 1
-        self.penalty['step2'] = 2
-        self.penalty['over_coin'] = 1
-        self.penalty['step_over'] = 100
-        self.penalty['l1_card'] = 3
+    def get_action_mask(self, player_idx=0):
+        """Get action mask for specified player"""
+        return self.game.players[player_idx].get_all_possible_actions(self.game.board)  # Use player's method directly
+
+    def get_env_observation(self, player_idx=0):
+        """Get environment observation from specified player's perspective, including action mask"""
+        # Get observation containing both players' states
+        obs = get_observation(self.game, player_idx)
         
-        # Rewards
-        self.reward = dict()
-        self.reward['reach_goal'] = 50
-        self.reward['bonus'] = 10
+        # Get action mask for current player
+        action_mask = self.get_action_mask(player_idx)
+        
+        # Combine observation and action mask
+        final_obs = np.concatenate([obs, action_mask])
+        
+        return final_obs
 
-        # Additional tracking
-        self.previous_vp = 0  # New: track VP changes
+    def _step_opponent(self, opponent_idx):
+        opponent_player = self.game.players[opponent_idx]
 
-    def get_action_mask(self):
-        """Convert possible actions to a binary mask"""
-        mask = np.zeros(self.action_space.n, dtype=np.float32)
-        possible_actions = self.get_possible_actions()
-        mask[possible_actions] = 1.0
-        return mask
+        opponent_obs = self.get_env_observation(opponent_idx)
+        opponent_action = self.opponent_policy(opponent_obs)
+        opponent_vp, _, _, _ = opponent_player.do_action(self.game.board, opponent_action)
+        return opponent_vp
 
     def step(self, action):
+        # Execute learning player's action
+        player_idx = 0 if self.player_starts_first else 1
+        opponent_idx = 1 - player_idx
+        current_player = self.game.players[player_idx]
+        opponent_player = self.game.players[opponent_idx]
+            
+        # Log current state
         if self.verbose:
             self.logger.info("\n" + "="*50)
-            self.logger.info(f"Step {self.game.step + 1}")
-            self.logger.info("-"*30)
-        
-        terminated = False
-        truncated = False
+            self.logger.info(f"Steps - Player 0: {self.game.players[0].step}, Player 1: {self.game.players[1].step}")
+            self.logger.info(f"Current Player: {player_idx}")
+            self.logger.info("Player Action:")
+            self.logger.info(f"Selected action: {action}")
+            self.logger.info(f"Player coins: {current_player.coins}")
+            self.logger.info(f"Player cards: {[card.name for card in current_player.development_cards]}")
+            self.logger.info(f"Player VP: {current_player.sum_victory_point}")
 
-        reward, terminated, step_, is_noble_visit, action_result = self._run_action(action)
+        # Execute player's action
+        action_result = current_player.do_action(self.game.board, action)
 
-        if step_ >= self.max_step:
-            reward += -1 * self.penalty['step_over']
-            terminated = True
+        # Execute opponent's action for this turn
+        if not self.player_starts_first:
+            # Check game end before opponent's next action
+            terminated, reward, info = self._check_game_end(
+                current_player.sum_victory_point,
+                opponent_player.sum_victory_point
+            )
+            if terminated:
+                observation = self.get_env_observation(player_idx)
+                return observation, reward, terminated, False, info
 
-        if (action_result['buy_l1_card'] and (step_ >= self.l1_penalty_step)):
-            reward += -1 * self.penalty['l1_card']
-        
-        observation = get_observation(self.game)
-        action_mask = self.get_action_mask()
-        
-        # Concatenate observation and action mask
-        obs = np.concatenate([observation, action_mask])
-        
-        vp_gained = action_result['victory_point'] - self.previous_vp
+        # Execute opponent's action
+        opponent_vp = self._step_opponent(opponent_idx)
 
-        info = {
-            "is_noble_visit": is_noble_visit,
-            "is_get_card": action_result.get('is_get_card', False),
-            "victory_point": action_result['victory_point'],
-            "vp_gained": vp_gained,
-            "step": step_,
-            "seed": getattr(self, 'seed', None)
+        # Final game end check
+        terminated, reward, info = self._check_game_end(
+            current_player.sum_victory_point,
+            opponent_player.sum_victory_point
+        )
+        
+        # Get next observation
+        observation = self.get_env_observation(player_idx)
+
+        # Add steps info to info dictionary
+        info['steps'] = {
+            "player0": self.game.players[0].step,
+            "player1": self.game.players[1].step
         }
 
-        if self.verbose:
-            # Only log step-related information, not probabilities
-            if terminated:
-                self.logger.info("-"*30)
-                if self.game.player1.sum_victory_point >= self.target_vp:
-                    self.logger.info("Game finished! Victory achieved!")
-                else:
-                    self.logger.info("Game terminated (max steps reached)")
-                self.logger.info("="*50 + "\n")
-        
-        return obs, reward, terminated, truncated, info
+        return observation, reward, terminated, False, info
 
-    def get_possible_actions(self):
-        return self.game.player1.get_all_possible_actions(self.game.board)
-
-    def _run_action(self, action):
+    def _check_game_end(self, player_vp, opponent_vp):
         terminated = False
-        action_result = self.game.run_with_action(action)
-        step_ = action_result['step']
-
         reward = 0
-        if step_ > self.bonus_step:
-            over_step = step_ - self.bonus_step
-            reward -= self.penalty['step2']
-        else:
-            reward -= self.penalty['step']
+        info = {}
 
-        if action_result['over_coin_count'] > 0:
-            reward -= action_result['over_coin_count'] * self.penalty['over_coin']
+        if opponent_vp is None:
+            assert not (self.player_starts_first), "Opponent VP must be provided if player goes first"
 
-        is_noble_visit = action_result['is_noble_visit']
-
-        if action_result['victory_point'] >= self.target_vp:
-            reward += self.reward['reach_goal']
-
-            if step_ < self.bonus_step:
-                bonus_scale = self.bonus_step - step_
-                reward += bonus_scale * self.reward['bonus']
-
+        # Use max of both players' steps to check max steps
+        max_steps = max(self.game.players[0].step, self.game.players[1].step)
+        if max_steps >= self.max_step:
             terminated = True
+            reward = -1
+            info['winner'] = 'not terminated'
+            info['reward'] = reward
+            info['steps'] = {  # Add steps info here too
+                "player0": self.game.players[0].step,
+                "player1": self.game.players[1].step
+            }
+            return terminated, reward, info
+        else:
+            if (player_vp >= self.target_vp or opponent_vp >= self.target_vp):
+                terminated = True
+                if player_vp > opponent_vp:
+                    reward = 1
+                elif player_vp < opponent_vp:
+                    reward = -1
+                else:
+                    reward = 0
 
-        return reward, terminated, step_, is_noble_visit, action_result
+                info['winner'] = 'player' if player_vp > opponent_vp else 'opponent'
+                info['reward'] = reward
+                info['steps'] = {  # Add steps info here too
+                    "player0": self.game.players[0].step,
+                    "player1": self.game.players[1].step
+                }
+            
+            return terminated, reward, info
 
     def reset(self, seed=None, options=None):
-        np.random.seed(seed)
-        self.skip_sum = 0
-        self.previous_vp = 0
+        """Reset environment and randomly determine player order"""
+        if seed is not None:
+            np.random.seed(seed)
+        
+        # Reset game first
         self.game.reset()
         
-        observation = get_observation(self.game)
-        action_mask = self.get_action_mask()
+        # Make sure second player is added after reset
+        if len(self.game.players) == 1:
+            self.game.add_player("player2")
         
-        # Concatenate observation and action mask
-        obs = np.concatenate([observation, action_mask])
+        # Randomly decide if trained agent starts first
+        self.player_starts_first = bool(np.random.randint(2))
+
+        player_idx = 0 if self.player_starts_first else 1
         
-        info = {"seed": seed}
-        return obs, info
+        # If player goes second, let opponent make first move
+        if not self.player_starts_first:
+            opponent_obs = self.get_env_observation(0)  # Get observation for opponent
+            opponent_action = self.opponent_policy(opponent_obs)
+            
+            if self.verbose:
+                self.logger.info("\n" + "="*50)
+                self.logger.info("Opponent's First Move:")
+                self.logger.info(f"Selected action: {opponent_action}")
+                self.logger.info(f"Opponent coins: {self.game.players[0].coins}")
+                self.logger.info(f"Valid actions: {np.where(self.get_action_mask(0))[0]}")
+            
+            # Execute opponent's action
+            self.game.players[0].do_action(self.game.board, opponent_action)
+        
+        # Get observation from correct perspective
+        observation = self.get_env_observation(player_idx)
+        info = {
+            "starts_first": self.player_starts_first,
+            "steps": {  # Add both players' steps to info
+                "player0": self.game.players[0].step,
+                "player1": self.game.players[1].step
+            }
+        }
+        
+        if self.verbose:
+            self.logger.info("\nReset State:")
+            self.logger.info(f"Player starts first: {self.player_starts_first}")
+            self.logger.info(f"Player idx: {player_idx}")
+            self.logger.info(f"Steps - Player 0: {self.game.players[0].step}, Player 1: {self.game.players[1].step}")
+            self.logger.info("="*50)
+        
+        return observation, info
 
     def render(self):
         pass
 
     def close(self):
-        pass
+        pass 
+
+
+class StepRewardWrapper(gym.Wrapper):
+    """Wrapper that adds step-based reward while preserving original rewards"""
+    def __init__(self, env):
+        super().__init__(env)
+        
+    def step(self, action):
+        obs, reward, terminated, truncated, info = self.env.step(action)
+        
+        # Add step-based reward only when winning
+        if terminated and info.get('winner') == 'player':
+            player_steps = info['steps']['player0'] if self.env.player_starts_first else info['steps']['player1']
+            step_reward = 100 - player_steps
+            reward = reward + step_reward  # Add to original reward
+            info['step_reward'] = step_reward
+            
+        return obs, reward, terminated, truncated, info

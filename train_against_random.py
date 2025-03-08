@@ -9,38 +9,22 @@ from stable_baselines3.common.vec_env import SubprocVecEnv
 from stable_baselines3.common.utils import set_random_seed
 import gym
 
-from jsplendor.env.two_player_env import RandomStartTwoPlayerEnv
+from jsplendor.env import SelfPlayEnv, StepRewardWrapper
 from jsplendor.models.transformer import TransformerFeatureExtractor
 from jsplendor.models.linear import LinearFeatureExtractor
 from jsplendor.utils.config import get_verbose_dict
 from jsplendor.models.random_player import RandomPlayer
 from jsplendor.policy.masked_policy import MaskedActorCriticPolicy
 
-class StepRewardWrapper(gym.Wrapper):
-    """Wrapper that adds step-based reward while preserving original rewards"""
-    def __init__(self, env):
-        super().__init__(env)
-        
-    def step(self, action):
-        obs, reward, terminated, truncated, info = self.env.step(action)
-        
-        # Add step-based reward only when winning
-        if terminated and info.get('winner') == 'player':
-            player_steps = info['steps']['player0'] if self.env.player_starts_first else info['steps']['player1']
-            step_reward = 100 - player_steps
-            reward = reward + step_reward  # Add to original reward
-            info['step_reward'] = step_reward
-            
-        return obs, reward, terminated, truncated, info
 
 def make_env(verbose_dict, rank: int, seed: int=0):
     """Create a wrapped, monitored environment"""
     def _init():
-        env = RandomStartTwoPlayerEnv(
+        env = SelfPlayEnv(
             opponent_policy=RandomPlayer(),
             verbose_dict=verbose_dict
         )
-        env = StepRewardWrapper(env)  # Add step reward wrapper
+        env = StepRewardWrapper(env)
         env = Monitor(env)
         env.reset(seed=seed+rank)
         return env
@@ -59,11 +43,11 @@ def train(args):
     
     # Set up environments with wrapper
     if args.debug:
-        train_env = Monitor(StepRewardWrapper(RandomStartTwoPlayerEnv(RandomPlayer(), verbose_dict=verbose_dict)))
-        eval_env = Monitor(StepRewardWrapper(RandomStartTwoPlayerEnv(RandomPlayer(), verbose_dict=verbose_dict)))
+        train_env = Monitor(StepRewardWrapper(SelfPlayEnv(RandomPlayer(), verbose_dict=verbose_dict)))
+        eval_env = Monitor(StepRewardWrapper(SelfPlayEnv(RandomPlayer(), verbose_dict=verbose_dict)))
     else:
         train_env = SubprocVecEnv([make_env(verbose_dict, i) for i in range(args.num_cpu)])
-        eval_env = Monitor(StepRewardWrapper(RandomStartTwoPlayerEnv(RandomPlayer(), verbose_dict=verbose_dict)))
+        eval_env = Monitor(StepRewardWrapper(SelfPlayEnv(RandomPlayer(), verbose_dict=verbose_dict)))
 
     # Create log directory
     log_dir = f'logs/{args.exp}'
