@@ -43,6 +43,59 @@ python evaluate_agents.py \
 python calculate_elo.py --model_dir pretrained/linear2 --n_games 200
 ```
 
+## GUI Game Play
+
+The game provides a graphical interface to watch AI agents play against each other. You can control the game flow and see the agents' decision-making process.
+
+![JSplendor GUI](gui.png)
+
+### Running the GUI
+
+To start the GUI game, use:
+
+```bash
+python test_gui.py --model1_path path/to/model1 --model2_path path/to/model2 --model1_type linear --model2_type linear
+```
+
+For random players:
+```bash
+python test_gui.py --model1_type random --model2_type random
+```
+
+### GUI Controls
+
+The interface provides two main control buttons at the bottom right:
+
+1. **Show Probs / Execute Button**
+   - First click: Shows action probabilities for the current player
+   - Second click: Executes the selected action
+   - The button color indicates the current player (blue for P1, orange for P2)
+
+2. **Auto Play Button**
+   - Toggles automatic play mode
+   - When enabled, the game will automatically play moves with a 1-second delay
+   - Green when active, blue when inactive
+
+### Game Display
+
+The GUI shows:
+- Player information at the top (Victory Points, Nobles, Model type)
+- Noble cards below the player info
+- Development cards for each level (L3, L2, L1)
+- Board coins on the right side
+- Player development gems and coins on the right side below board coins
+- Current player's turn indicator in the action button
+
+### Action Probabilities
+
+When "Show Probs" is clicked, the terminal will display:
+- All valid actions for the current state
+- Probability distribution over these actions
+- Detailed description of each possible action
+- Current game state including board and player information
+
+For PPO models, probabilities are calculated from the model's policy. For random players, probabilities are uniformly distributed across valid actions.
+
 ## Project Structure
 
 ```

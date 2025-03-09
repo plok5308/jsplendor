@@ -118,10 +118,10 @@ if __name__ == "__main__":
                        help='Path to first model')
     parser.add_argument('--model2_path', type=str,
                        help='Path to second model')
-    parser.add_argument('--model1_type', type=str, choices=['transformer', 'linear', 'random'], 
-                       default='linear', help='Type of first model')
-    parser.add_argument('--model2_type', type=str, choices=['transformer', 'linear', 'random'],
-                       default='linear', help='Type of second model')
+    parser.add_argument('--model1_type', type=str, choices=['linear', 'random'], 
+                       default='random', help='Type of first model')
+    parser.add_argument('--model2_type', type=str, choices=['linear', 'random'],
+                       default='random', help='Type of second model')
     parser.add_argument('--n_episodes', type=int, default=100,
                        help='Number of episodes to evaluate')
     parser.add_argument('--deterministic1', action='store_true',
