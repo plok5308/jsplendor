@@ -8,11 +8,12 @@ class Element(Enum):
     BLACK=4
     GOLD=5
 
-def get_verbose_dict(default:bool = False):
-    verbose_dict = dict()
-    verbose_dict['env'] = default
-    verbose_dict['game'] = default
-    verbose_dict['board'] = default
-    verbose_dict['player'] = default
-
+def get_verbose_dict(verbose=False):
+    """Get dictionary of verbose settings for different components"""
+    verbose_dict = {
+        'env': verbose,
+        'game': verbose,
+        'board': verbose,
+        'player': verbose
+    }
     return verbose_dict

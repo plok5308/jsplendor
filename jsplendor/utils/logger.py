@@ -3,8 +3,8 @@ import logging
 import sys
 from datetime import datetime
 import numpy as np
-from jsplendor.utils.element import Element
-from jsplendor.game.utils import get_coin_comb
+from jsplendor.utils.config import Element, get_coin_comb
+from .base_logger import BaseLogger
 
 class StreamToLogger:
     """
@@ -25,7 +25,7 @@ class StreamToLogger:
     def flush(self):
         self.original_stdout.flush()
 
-class TestLogger:
+class TestLogger(BaseLogger):
     def __init__(self, log_dir, verbose=False):
         self.verbose = verbose
         self._setup_logger(log_dir)
@@ -67,11 +67,6 @@ class TestLogger:
         """Log an info message"""
         if self.logger:
             self.logger.info(message)
-
-    @classmethod
-    def get_logger(cls):
-        """Get the shared logger instance"""
-        return logging.getLogger('jsplendor')
 
     def log_config(self, args, model_path):
         """Log test configuration"""
@@ -130,7 +125,7 @@ class TestLogger:
         # sys.stdout = self.original_stdout
         pass
 
-class ActionLogger:
+class ActionLogger(BaseLogger):
     @staticmethod
     def log_action_probabilities(logger, env, action_probs, verbose=True):
         """Log available actions and their probabilities"""

@@ -1,13 +1,15 @@
 import pygame
 import os
 import numpy as np
-from jsplendor.env import JsplendorEnv
 from jsplendor.utils import TestLogger, Element, ActionLogger
 from stable_baselines3 import PPO
 from jsplendor.env.observation import get_observation
 import torch
-from jsplendor.game.utils import get_coin_comb
+from jsplendor.utils.config import get_coin_comb
 from jsplendor.utils.logger import ActionLogger
+from copy import deepcopy
+from jsplendor.game import Game
+from jsplendor.models.random_player import RandomPlayer
 
 class SplendorGUI:
     def __init__(self, game):
@@ -61,6 +63,10 @@ class SplendorGUI:
         self.scroll_bar_width = 15
         self.visible_lines = 10  # Number of visible lines in log
         self.line_height = 25  # Height of each line in pixels
+
+        # Add player labels
+        self.PLAYER1_COLOR = (100, 150, 255)  # Light blue
+        self.PLAYER2_COLOR = (255, 150, 100)  # Light orange
 
         # Load assets
         self.load_assets()
@@ -164,25 +170,32 @@ class SplendorGUI:
         inner_rect = pygame.Rect(x - size//2 + 2, y - size//2 + 2, size - 4, size - 4)
         pygame.draw.rect(target_surface, self.COLORS[color], inner_rect)
 
-    def draw(self, surface=None):
+    def draw_game_state(self, surface=None):
+        """Draw the base game state (cards, coins, etc)"""
         target_surface = surface if surface is not None else self.screen
         
         # Fill background
         target_surface.fill((200, 200, 200))
 
-        # Draw step counter, victory points, and noble count at top center
-        step_text = self.font.render(f"Step: {self.game.step}", True, self.BLACK)
-        vp_text = self.font.render(f"Victory Points: {self.game.player1.sum_victory_point}", True, self.BLACK)
-        noble_text = self.font.render(f"Nobles: {len(self.game.player1.noble_cards)}", True, self.BLACK)
+        # Draw player information at top
+        # Player 1 info (left side)
+        p1_step_text = self.font.render(f"Player 1 - Step: {self.game.players[0].step}", True, self.BLACK)
+        p1_vp_text = self.font.render(f"Victory Points: {self.game.players[0].sum_victory_point}", True, self.BLACK)
+        p1_noble_text = self.font.render(f"Nobles: {len(self.game.players[0].noble_cards)}", True, self.BLACK)
         
-        # Position step counter, VP, and noble count with spacing
-        step_rect = step_text.get_rect(center=(self.WINDOW_WIDTH // 2 - 200, 30))
-        vp_rect = vp_text.get_rect(center=(self.WINDOW_WIDTH // 2, 30))
-        noble_rect = noble_text.get_rect(center=(self.WINDOW_WIDTH // 2 + 200, 30))
+        # Player 2 info (right side)
+        p2_step_text = self.font.render(f"Player 2 - Step: {self.game.players[1].step}", True, self.BLACK)
+        p2_vp_text = self.font.render(f"Victory Points: {self.game.players[1].sum_victory_point}", True, self.BLACK)
+        p2_noble_text = self.font.render(f"Nobles: {len(self.game.players[1].noble_cards)}", True, self.BLACK)
         
-        target_surface.blit(step_text, step_rect)
-        target_surface.blit(vp_text, vp_rect)
-        target_surface.blit(noble_text, noble_rect)
+        # Position player info
+        target_surface.blit(p1_step_text, (20, 10))
+        target_surface.blit(p1_vp_text, (20, 30))
+        target_surface.blit(p1_noble_text, (20, 50))
+        
+        target_surface.blit(p2_step_text, (self.WINDOW_WIDTH - 250, 10))
+        target_surface.blit(p2_vp_text, (self.WINDOW_WIDTH - 250, 30))
+        target_surface.blit(p2_noble_text, (self.WINDOW_WIDTH - 250, 50))
 
         # Fixed y-positions for different sections
         NOBLE_Y = 80
@@ -223,25 +236,50 @@ class SplendorGUI:
         target_surface.blit(board_coins_text, (1000, BOARD_COINS_Y - 50))
         self.draw_coins(self.game.board.coins, 1000, BOARD_COINS_Y, target_surface)
 
-        # Draw player development gems and coins in one row
-        player_gems_text = self.font.render("Player Development Gems:", True, self.BLACK)
-        target_surface.blit(player_gems_text, (100, PLAYER_CARDS_Y - 25))
+        # Draw player 1 development gems and coins
+        player1_gems_text = self.font.render("Player 1 Development Gems:", True, self.BLACK)
+        target_surface.blit(player1_gems_text, (100, PLAYER_CARDS_Y - 25))
         
-        # Draw development gem counts
+        # Draw P1 development gem counts with larger squares and spacing
         gem_colors = ['WHITE', 'BLUE', 'GREEN', 'RED', 'BLACK']
-        for i, (color, count) in enumerate(zip(gem_colors, self.game.player1.sum_development_card_gem)):
-            # Draw square gem icon
-            self.draw_square_gem(color, 100 + i * 80, PLAYER_CARDS_Y + 20, 25, target_surface)
-            # Draw count
-            count_text = self.font.render(str(count), True, self.BLACK)
-            count_rect = count_text.get_rect(center=(100 + i * 80, PLAYER_CARDS_Y + 50))
+        square_size = 40  # Increased from 25
+        spacing = 100     # Increased from 80
+        for i, (color, count) in enumerate(zip(gem_colors, self.game.players[0].sum_development_card_gem)):
+            x = 100 + i * spacing
+            y = PLAYER_CARDS_Y + 20
+            self.draw_square_gem(color, x, y, square_size, target_surface)
+            # Draw count with white text for dark backgrounds, black for light
+            text_color = self.WHITE if color in ['BLACK', 'BLUE'] else self.BLACK
+            count_text = self.font.render(str(count), True, text_color)
+            count_rect = count_text.get_rect(center=(x, y))  # Center in the square
             target_surface.blit(count_text, count_rect)
 
-        # Draw player coins next to development gems
-        player_coins_text = self.font.render("Player Coins:", True, self.BLACK)
-        coins_x = 100 + len(gem_colors) * 80 + 60  # Position after gems with some spacing
-        target_surface.blit(player_coins_text, (coins_x, PLAYER_CARDS_Y - 25))
-        self.draw_coins(self.game.player1.coins, coins_x, PLAYER_CARDS_Y + 20, target_surface)
+        # Draw P1 coins
+        player1_coins_text = self.font.render("Player 1 Coins:", True, self.BLACK)
+        coins_x = 100 + len(gem_colors) * spacing + 60  # Adjusted for new spacing
+        target_surface.blit(player1_coins_text, (coins_x, PLAYER_CARDS_Y - 25))
+        self.draw_coins(self.game.players[0].coins, coins_x, PLAYER_CARDS_Y + 20, target_surface)
+
+        # Draw player 2 development gems and coins (below player 1)
+        player2_y = PLAYER_CARDS_Y + 100
+        player2_gems_text = self.font.render("Player 2 Development Gems:", True, self.BLACK)
+        target_surface.blit(player2_gems_text, (100, player2_y - 25))
+        
+        # Draw P2 development gem counts with larger squares and spacing
+        for i, (color, count) in enumerate(zip(gem_colors, self.game.players[1].sum_development_card_gem)):
+            x = 100 + i * spacing
+            y = player2_y + 20
+            self.draw_square_gem(color, x, y, square_size, target_surface)
+            # Draw count with white text for dark backgrounds, black for light
+            text_color = self.WHITE if color in ['BLACK', 'BLUE'] else self.BLACK
+            count_text = self.font.render(str(count), True, text_color)
+            count_rect = count_text.get_rect(center=(x, y))  # Center in the square
+            target_surface.blit(count_text, count_rect)
+
+        # Draw P2 coins
+        player2_coins_text = self.font.render("Player 2 Coins:", True, self.BLACK)
+        target_surface.blit(player2_coins_text, (coins_x, player2_y - 25))
+        self.draw_coins(self.game.players[1].coins, coins_x, player2_y + 20, target_surface)
 
         pygame.display.flip()
 
@@ -260,49 +298,100 @@ class SplendorGUI:
                 
                 if event.type == pygame.MOUSEBUTTONDOWN:
                     if self.ai_button_rect.collidepoint(event.pos):
-                        # No need to show probabilities here
-                        self.take_ai_action()
-                        game_state_changed = True
+                        if self.action_state == 'ready':
+                            # First click: show probabilities
+                            self.show_action_probabilities()
+                            self.action_state = 'showing_probs'
+                            game_state_changed = True
+                        elif self.action_state == 'showing_probs':
+                            # Second click: execute action immediately
+                            self.take_ai_action()
+                            self.action_state = 'ready'
+                            game_state_changed = True
                     elif self.auto_play_rect.collidepoint(event.pos):
                         self.is_auto_playing = not self.is_auto_playing
                         self.last_action_time = current_time
                         game_state_changed = True
-                    elif self.speed_up_rect.collidepoint(event.pos):
-                        self.turn_delay = max(100, self.turn_delay - 100)  # Minimum 0.1s
-                        game_state_changed = True
-                    elif self.speed_down_rect.collidepoint(event.pos):
-                        self.turn_delay = min(5000, self.turn_delay + 100)  # Maximum 5s
-                        game_state_changed = True
             
+            # Handle auto-play
             if self.is_auto_playing and current_time - self.last_action_time >= self.turn_delay:
-                # No need to show probabilities here
-                done = self.take_ai_action()
+                self.show_action_probabilities()  # Show probabilities before action
+                self.take_ai_action()
                 self.last_action_time = current_time
                 game_state_changed = True
             
             if game_state_changed:
                 self.screen.fill((200, 200, 200))
-                self.draw()
+                self.draw_game_state()
                 game_state_changed = False
             
             pygame.display.flip()
 
         pygame.quit()
 
+    def draw(self, surface=None):
+        # First draw everything from parent class
+        super().draw(surface)
+        target_surface = surface if surface is not None else self.screen
+        
+        # Draw AI action button with current state
+        button_color = self.PLAYER1_COLOR if self.current_player == 1 else self.PLAYER2_COLOR
+        if self.action_requested:
+            # Dim the button color when action is pending
+            button_color = tuple(max(0, c - 50) for c in button_color)
+        pygame.draw.rect(target_surface, button_color, self.ai_button_rect)
+        pygame.draw.rect(target_surface, (50, 100, 200), self.ai_button_rect, 2)
+        
+        # Change button text based on state
+        if self.action_state == 'ready':
+            text = f"P{self.current_player} Show Probs"
+        elif self.action_state == 'showing_probs':
+            text = f"P{self.current_player} Execute"
+        else:  # pending_action
+            text = "Pending..."
+            
+        text_surface = self.font.render(text, True, (0, 0, 0))
+        text_rect = text_surface.get_rect(center=self.ai_button_rect.center)
+        target_surface.blit(text_surface, text_rect)
+        
+        # Draw auto-play button
+        button_color = (150, 255, 150) if self.is_auto_playing else (100, 150, 255)
+        pygame.draw.rect(target_surface, button_color, self.auto_play_rect)
+        pygame.draw.rect(target_surface, (50, 100, 200), self.auto_play_rect, 2)
+        text_surface = self.font.render("Auto Play", True, (0, 0, 0))
+        text_rect = text_surface.get_rect(center=self.auto_play_rect.center)
+        target_surface.blit(text_surface, text_rect)
+
 class AIGameGUI(SplendorGUI):
-    def __init__(self, game, env, model, logger):
+    def __init__(self, model1, model2, logger, verbose_dict):
+        # Initialize with a new game instance
+        game = Game(verbose_dict)
+        
+        # Add second player to the game
+        game.add_player("player2")
+        
         super().__init__(game)
         
-        # Store environment and model
-        self.env = env
-        self.model = model
+        # Store models and logger
+        self.model1 = model1
+        self.model2 = model2
         self.logger = logger
-        self.verbose = True
         
-        # Initialize observation without resetting the env
-        self.obs = get_observation(self.env.game)
-        action_mask = self.env.get_action_mask()
-        self.obs = np.concatenate([self.obs, action_mask])
+        # Store verbose settings
+        self.verbose_dict = verbose_dict
+        self.verbose = verbose_dict['env']
+        
+        self.current_player = 1  # Track whose turn it is
+        
+        # Initialize observation
+        self.update_observation()
+        
+        # Add state tracking
+        self.action_state = 'ready'  # 'ready', 'showing_probs', 'pending_action'
+        self.action_requested = False
+        self.action_request_time = 0
+        self.action_delay = 1000  # 1 second delay before action execution
+        self.selected_action = None  # Store the selected action
         
         # Create AI action button
         self.ai_button_rect = pygame.Rect(
@@ -322,74 +411,26 @@ class AIGameGUI(SplendorGUI):
         
         # Auto-play settings
         self.is_auto_playing = False
-        self.turn_delay = 1000  # Default 1 second delay (in milliseconds)
+        self.turn_delay = 1000  # Default 1 second delay between auto-play actions
         self.last_action_time = pygame.time.get_ticks()
-        
-        # Create speed control buttons with delay display in between
-        button_size = 40
-        spacing = 40
-        total_width = button_size * 2 + spacing
-        base_x = self.WINDOW_WIDTH - 410
-        
-        self.speed_down_rect = pygame.Rect(
-            base_x,
-            self.WINDOW_HEIGHT - 100,
-            button_size,
-            button_size
-        )
-        
-        self.speed_up_rect = pygame.Rect(
-            base_x + button_size + spacing,
-            self.WINDOW_HEIGHT - 100,
-            button_size,
-            button_size
-        )
-        
-        # Sync initial state
-        self.sync_game_state()
 
-    def sync_game_state(self):
-        # Sync board state
-        self.game.board.coins = self.env.game.board.coins.copy()
-        self.game.board.noble_cards = self.env.game.board.noble_cards.copy()
-        
-        # Sync table cards
-        self.game.board.table_level1 = self.env.game.board.table_level1.copy()
-        self.game.board.table_level2 = self.env.game.board.table_level2.copy()
-        self.game.board.table_level3 = self.env.game.board.table_level3.copy()
-        
-        # Sync deck cards
-        self.game.board.level1_cards = self.env.game.board.level1_cards.copy()
-        self.game.board.level2_cards = self.env.game.board.level2_cards.copy()
-        self.game.board.level3_cards = self.env.game.board.level3_cards.copy()
-        
-        # Update flattened table cards
-        self.game.board._flatten_table_cards()
-        
-        # Sync player state
-        self.game.player1.coins = self.env.game.player1.coins.copy()
-        self.game.player1.development_cards = self.env.game.player1.development_cards.copy()
-        self.game.player1.noble_cards = self.env.game.player1.noble_cards.copy()
-        
-        # Update player's score and gem counts
-        self.game.player1._update_score()
-        
-        # Sync game step
-        self.game.step = self.env.game.step
-        
-        # Calculate and show probabilities for the new state
-        self.get_action_probabilities()
+    def update_observation(self):
+        """Get current observation for the active player"""
+        player_idx = self.current_player - 1
+        self.obs = get_observation(self.game, player_idx, verbose=self.verbose_dict['env'], logger=self.logger)
+        action_mask = self.game.players[player_idx].get_all_possible_actions(self.game.board)
+        self.obs = np.concatenate([self.obs, action_mask])
 
-    def get_action_probabilities(self):
-        """Calculate and log current action probabilities"""
-        obs_tensor = torch.FloatTensor(self.obs)
+    def get_action_probabilities(self, model, obs):
+        """Calculate action probabilities for the current state"""
+        obs_tensor = torch.FloatTensor(obs)
         
         # Split observation and action mask
-        action_mask = obs_tensor[-self.env.action_space.n:]
-        obs_features = obs_tensor[:-self.env.action_space.n]
+        action_mask = obs_tensor[-self.game.players[0].num_actions:]
+        obs_features = obs_tensor[:-self.game.players[0].num_actions]
         
         # Move tensors to the same device as the model
-        device = next(self.model.policy.parameters()).device
+        device = next(model.policy.parameters()).device
         obs_features = obs_features.to(device)
         action_mask = action_mask.to(device)
         
@@ -401,90 +442,224 @@ class AIGameGUI(SplendorGUI):
         
         with torch.no_grad():
             # Get raw logits from policy network
-            features = self.model.policy.extract_features(obs_dict['obs'])
-            latent_pi, _ = self.model.policy.mlp_extractor(features)
-            logits = self.model.policy.action_net(latent_pi)
+            features = model.policy.extract_features(obs_dict['obs'])
+            latent_pi, _ = model.policy.mlp_extractor(features)
+            logits = model.policy.action_net(latent_pi)
             
             # Apply action mask
             logits = torch.where(
                 obs_dict['action_mask'].bool(),
                 logits,
-                torch.tensor(-1e+8).to(logits.device)
+                torch.tensor(-float('inf')).to(logits.device)  # Use -inf instead of -1e+8
             )
             
             # Convert to probabilities
             action_probs = torch.softmax(logits, dim=-1)
-            action_probs = action_probs.squeeze(0).cpu().numpy()
             
-            # Use common logger
-            ActionLogger.log_action_probabilities(self.logger, self.env, action_probs, self.verbose)
+            # Ensure normalization
+            action_probs = action_probs / action_probs.sum()
+            
+            return action_probs.squeeze(0).cpu().numpy()
+
+    def get_action_description(self, action_idx):
+        """Get description for each action based on Player class implementation"""
+        if action_idx < 10:  # First 10 actions (0-9) are for three different coins
+            # Get coin combinations from player's get_coin_comb
+            candidated_ids = get_coin_comb(action_idx)
+            colors = [Element(idx).name for idx in candidated_ids]
+            return f"Take three different coins from: {', '.join(colors)}"
+        elif action_idx < 15:  # Actions 10-14 are for taking two same coins
+            color = Element(action_idx - 10).name
+            return f"Take two {color} coins"
+        elif action_idx < 27:  # Actions 15-26 are for buying development cards
+            card_idx = action_idx - 15
+            level = (card_idx // 4) + 1
+            pos = card_idx % 4
+            cards = (self.game.board.table_level1 if level == 1 else 
+                    self.game.board.table_level2 if level == 2 else 
+                    self.game.board.table_level3)
+            if pos < len(cards):
+                card = cards[pos]
+                if card:
+                    return f"Buy L{level} card: {card.name} (VP: {card.victory_point}, Gem: {card.gem_color})"
+            return f"Buy L{level} card at position {pos} (Invalid - no card)"
+        else:
+            return "Unknown action"
+
+    def show_action_probabilities(self):
+        """Show action probabilities without executing action"""
+        current_model = self.model1 if self.current_player == 1 else self.model2
+        current_player = self.game.players[self.current_player - 1]
+        
+        # Log basic game state
+        self.logger.info("\n" + "="*50)
+        self.logger.info(f"Turn {current_player.step} - Player {self.current_player}")
+        self.logger.info(f"Victory Points - P1: {self.game.players[0].sum_victory_point}, P2: {self.game.players[1].sum_victory_point}")
+        
+        # Get valid actions
+        valid_actions = np.where(self.game.players[self.current_player-1].get_all_possible_actions(self.game.board))[0]
+        
+        # Show action probabilities
+        self.logger.info("\nAll valid action probabilities:")
+        total_prob = 0
+        
+        if isinstance(current_model, RandomPlayer):
+            # For random player, distribute probability equally among valid actions
+            prob = 1.0 / len(valid_actions)
+            for action_idx in valid_actions:
+                description = self.get_action_description(action_idx)
+                prob_percent = prob * 100
+                self.logger.info(f"Action {action_idx:2d} ({prob_percent:5.1f}%): {description}")
+                total_prob += prob
+        else:
+            # For PPO model, get action probabilities
+            action_probs = self.get_action_probabilities(current_model, self.obs)
+            valid_probs = [(i, action_probs[i]) for i in valid_actions]
+            sorted_actions = sorted(valid_probs, key=lambda x: x[0])
+            
+            for action_idx, prob in sorted_actions:
+                description = self.get_action_description(action_idx)
+                prob_percent = prob * 100
+                self.logger.info(f"Action {action_idx:2d} ({prob_percent:5.1f}%): {description}")
+                total_prob += prob
+        
+        total_percent = total_prob * 100
+        self.logger.info(f"\nTotal probability: {total_percent:.1f}%")
+
+        # Print current game state
+        if self.verbose:
+            self.logger.info(f"\nBoard state:")
+            if self.verbose_dict['board']:
+                self.game.board.print_status()
+            self.logger.info(f"Player state:")
+            if self.verbose_dict['player']:
+                current_player.print_status()
 
     def take_ai_action(self):
-        # Get action from model (no probability display here)
-        action, _state = self.model.predict(self.obs, deterministic=False)
+        # Get current model and player
+        current_model = self.model1 if self.current_player == 1 else self.model2
+        current_player = self.game.players[self.current_player - 1]
         
-        # Use common logger
+        # Get action from current model
+        if isinstance(current_model, RandomPlayer):
+            action = current_model(self.obs)
+        else:
+            action, _state = current_model.predict(self.obs, deterministic=False)
+        
+        # Always log action
+        self.logger.info(f"\nPlayer {self.current_player} taking action: {action}")
         ActionLogger.log_selected_action(self.logger, action, self.verbose)
         
-        # Take step in environment
-        self.obs, reward, done, _, info = self.env.step(action)
+        # Execute action directly on game
+        reward = current_player.do_action(self.game.board, action)
         
-        # Store reward in game object for display
-        self.game.last_reward = reward
+        # Always log result
+        self.logger.info(f"Action result: {reward}")
         
-        # Sync game state with environment (this will show probabilities)
-        self.sync_game_state()
+        # Detailed result if verbose
+        if self.verbose and self.verbose_dict['player']:
+            self.logger.info("Updated player state:")
+            current_player.print_status()
         
-        if done:
+        # Switch current player
+        self.current_player = 2 if self.current_player == 1 else 1
+        
+        # Update observation for next player
+        self.update_observation()
+        
+        # Check for game end
+        done = False
+        p1_vp = self.game.players[0].sum_victory_point
+        p2_vp = self.game.players[1].sum_victory_point
+        if p1_vp >= 15 or p2_vp >= 15:
+            done = True
             self.is_auto_playing = False
-            if self.env.game.player1.sum_victory_point >= self.env.target_vp:
-                self.logger.info("Game Won! Starting new episode...")
-            else:
-                self.logger.info("Episode ended (max steps reached)")
-            self.obs, _ = self.env.reset()
+            winner = "Player 1" if p1_vp > p2_vp else "Player 2"
+            self.logger.info(f"Game Won by {winner}! Starting new episode...")
+            if self.verbose:
+                self.logger.info("Final game state:")
+                if self.verbose_dict['game']:
+                    self.game.print_status()
+            
+            # Reset game
             self.game.reset()
-            self.sync_game_state()
-            self.game.last_reward = 0.0
+            self.current_player = 1
+            self.update_observation()
         
         return done
 
+    def run(self):
+        running = True
+        clock = pygame.time.Clock()
+        game_state_changed = True
+        
+        while running:
+            time_delta = clock.tick(60)/1000.0
+            current_time = pygame.time.get_ticks()
+            
+            for event in pygame.event.get():
+                if event.type == pygame.QUIT:
+                    running = False
+                
+                if event.type == pygame.MOUSEBUTTONDOWN:
+                    if self.ai_button_rect.collidepoint(event.pos):
+                        if self.action_state == 'ready':
+                            # First click: show probabilities
+                            self.show_action_probabilities()
+                            self.action_state = 'showing_probs'
+                            game_state_changed = True
+                        elif self.action_state == 'showing_probs':
+                            # Second click: execute action immediately
+                            self.take_ai_action()
+                            self.action_state = 'ready'
+                            game_state_changed = True
+                    elif self.auto_play_rect.collidepoint(event.pos):
+                        self.is_auto_playing = not self.is_auto_playing
+                        self.last_action_time = current_time
+                        game_state_changed = True
+            
+            # Handle auto-play
+            if self.is_auto_playing and current_time - self.last_action_time >= self.turn_delay:
+                self.show_action_probabilities()  # Show probabilities before action
+                self.take_ai_action()
+                self.last_action_time = current_time
+                game_state_changed = True
+            
+            if game_state_changed:
+                self.draw()
+                game_state_changed = False
+            
+            pygame.display.flip()
+
+        pygame.quit()
+
     def draw(self, surface=None):
-        # First draw everything from parent class
-        super().draw(surface)
+        """Draw the complete GUI including game state and AI controls"""
         target_surface = surface if surface is not None else self.screen
         
-        # Draw AI action button
-        pygame.draw.rect(target_surface, (100, 150, 255), self.ai_button_rect)
-        pygame.draw.rect(target_surface, (50, 100, 200), self.ai_button_rect, 2)
-        text_surface = self.font.render("AI Action", True, (0, 0, 0))
-        text_rect = text_surface.get_rect(center=self.ai_button_rect.center)
-        target_surface.blit(text_surface, text_rect)
+        # Draw base game state
+        self.draw_game_state(target_surface)
         
-        # Draw auto-play button with different color when active
+        # Draw AI-specific elements
+        self.draw_ai_buttons(target_surface)
+
+    def draw_ai_buttons(self, surface):
+        """Draw AI control buttons"""
+        # Draw AI action button
+        button_color = self.PLAYER1_COLOR if self.current_player == 1 else self.PLAYER2_COLOR
+        pygame.draw.rect(surface, button_color, self.ai_button_rect)
+        pygame.draw.rect(surface, (50, 100, 200), self.ai_button_rect, 2)
+        
+        # Draw button text
+        text = f"P{self.current_player} Execute" if self.action_state == 'showing_probs' else f"P{self.current_player} Show Probs"
+        text_surface = self.font.render(text, True, (0, 0, 0))
+        text_rect = text_surface.get_rect(center=self.ai_button_rect.center)
+        surface.blit(text_surface, text_rect)
+        
+        # Draw auto-play button
         button_color = (150, 255, 150) if self.is_auto_playing else (100, 150, 255)
-        pygame.draw.rect(target_surface, button_color, self.auto_play_rect)
-        pygame.draw.rect(target_surface, (50, 100, 200), self.auto_play_rect, 2)
+        pygame.draw.rect(surface, button_color, self.auto_play_rect)
+        pygame.draw.rect(surface, (50, 100, 200), self.auto_play_rect, 2)
         text_surface = self.font.render("Auto Play", True, (0, 0, 0))
         text_rect = text_surface.get_rect(center=self.auto_play_rect.center)
-        target_surface.blit(text_surface, text_rect)
-        
-        # Draw speed control buttons and delay display
-        # Draw "-" button
-        pygame.draw.rect(target_surface, (100, 150, 255), self.speed_down_rect)
-        pygame.draw.rect(target_surface, (50, 100, 200), self.speed_down_rect, 2)
-        text_surface = self.font.render("-", True, (0, 0, 0))
-        text_rect = text_surface.get_rect(center=self.speed_down_rect.center)
-        target_surface.blit(text_surface, text_rect)
-        
-        # Draw "+" button
-        pygame.draw.rect(target_surface, (100, 150, 255), self.speed_up_rect)
-        pygame.draw.rect(target_surface, (50, 100, 200), self.speed_up_rect, 2)
-        text_surface = self.font.render("+", True, (0, 0, 0))
-        text_rect = text_surface.get_rect(center=self.speed_up_rect.center)
-        target_surface.blit(text_surface, text_rect)
-        
-        # Draw delay value centered between buttons
-        delay_text = self.font.render(f"{self.turn_delay/1000:.1f}s", True, (0, 0, 0))
-        center_x = (self.speed_down_rect.centerx + self.speed_up_rect.centerx) // 2
-        delay_rect = delay_text.get_rect(center=(center_x, self.speed_down_rect.centery))
-        target_surface.blit(delay_text, delay_rect) 
+        surface.blit(text_surface, text_rect) 

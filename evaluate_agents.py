@@ -1,0 +1,176 @@
+import os
+import torch
+import numpy as np
+import argparse
+from stable_baselines3 import PPO
+from stable_baselines3.common.monitor import Monitor
+from jsplendor.env import SelfPlayEnv
+from jsplendor.models.transformer import TransformerFeatureExtractor
+from jsplendor.models.linear2 import LinearFeatureExtractor
+from jsplendor.utils.config import get_verbose_dict
+from jsplendor.models.random_player import RandomPlayer
+from jsplendor.policy.masked_policy import MaskedActorCriticPolicy
+
+def evaluate_match(agent1, agent2, n_episodes=100, deterministic1=True, deterministic2=True, verbose=False):
+    """Evaluate matches between two agents"""
+    # Set up verbose dict based on verbose flag
+    verbose_dict = get_verbose_dict()
+    if verbose:
+        verbose_dict['env'] = True
+        verbose_dict['game'] = True
+        verbose_dict['player'] = True
+        verbose_dict['board'] = True
+    
+    env = Monitor(SelfPlayEnv(
+        opponent_policy=lambda x: agent2.predict(x, deterministic=deterministic2)[0],
+        verbose_dict=verbose_dict
+    ))
+    
+    print("\nStarting evaluation...")
+    print(f"Agent 1 deterministic: {deterministic1}")
+    print(f"Agent 2 deterministic: {deterministic2}")
+    print(f"Verbose mode: {verbose}")
+    
+    wins1 = 0  # agent1 wins
+    wins2 = 0  # agent2 wins
+    draws = 0
+    not_terminated = 0
+    episode_lengths = []
+    
+    for episode in range(n_episodes):
+        obs, info = env.reset()
+        done = False
+        
+        while not done:
+            action, _ = agent1.predict(obs, deterministic=deterministic1)
+            obs, reward, terminated, truncated, info = env.step(action)
+            done = terminated or truncated
+            
+            if done:
+                if 'winner' in info:
+                    if info['winner'] == 'player':
+                        wins1 += 1
+                    elif info['winner'] == 'opponent':
+                        wins2 += 1
+                    elif info['winner'] == 'not terminated':
+                        not_terminated += 1
+                    else:
+                        draws += 1
+                if 'steps' in info:
+                    episode_lengths.append(max(info['steps'].values()))
+        
+        if (episode + 1) % 10 == 0:  # Print progress every 10 games
+            print(f"\nGames completed: {episode + 1}/{n_episodes}")
+            print(f"Agent 1 wins: {wins1} ({wins1/(episode+1):.1%})")
+            print(f"Agent 2 wins: {wins2} ({wins2/(episode+1):.1%})")
+            print(f"Draws: {draws} ({draws/(episode+1):.1%})")
+            print(f"Not terminated: {not_terminated} ({not_terminated/(episode+1):.1%})")
+    
+    print("\nFinal Results:")
+    print(f"Agent 1 wins: {wins1} ({wins1/n_episodes:.1%})")
+    print(f"Agent 2 wins: {wins2} ({wins2/n_episodes:.1%})")
+    print(f"Draws: {draws} ({draws/n_episodes:.1%})")
+    print(f"Not terminated: {not_terminated} ({not_terminated/n_episodes:.1%})")
+    print(f"Average episode length: {np.mean(episode_lengths):.1f} steps")
+    
+    return {
+        'wins1': wins1,
+        'wins2': wins2,
+        'draws': draws,
+        'not_terminated': not_terminated,
+        'win_rate1': wins1/n_episodes,
+        'win_rate2': wins2/n_episodes,
+        'avg_length': np.mean(episode_lengths)
+    }
+
+def create_model(env, model_type='transformer'):
+    """Create a new model with specified architecture"""
+    if model_type == 'transformer':
+        feature_extractor = TransformerFeatureExtractor
+    elif model_type == 'linear':
+        feature_extractor = LinearFeatureExtractor
+    else:
+        raise ValueError(f"Unknown model type: {model_type}")
+    
+    policy_kwargs = {
+        'features_extractor_class': feature_extractor,
+        'net_arch': dict(pi=[64], vf=[64]),
+        'activation_fn': torch.nn.ReLU,
+        'temperature': 1.0,
+        'top_k': 0,
+        'top_p': 1.0
+    }
+
+    return PPO(
+        MaskedActorCriticPolicy,
+        env,
+        n_steps=16384,
+        batch_size=512,
+        learning_rate=2e-6,
+        policy_kwargs=policy_kwargs,
+        tensorboard_log="logs/eval",
+        device="cuda" if torch.cuda.is_available() else "cpu"
+    )
+
+if __name__ == "__main__":
+    parser = argparse.ArgumentParser(description='Evaluate matches between JSplendor models')
+    parser.add_argument('--model1_path', type=str,
+                       help='Path to first model')
+    parser.add_argument('--model2_path', type=str,
+                       help='Path to second model')
+    parser.add_argument('--model1_type', type=str, choices=['linear', 'random'], 
+                       default='random', help='Type of first model')
+    parser.add_argument('--model2_type', type=str, choices=['linear', 'random'],
+                       default='random', help='Type of second model')
+    parser.add_argument('--n_episodes', type=int, default=100,
+                       help='Number of episodes to evaluate')
+    parser.add_argument('--deterministic1', action='store_true',
+                       help='Use deterministic actions for first model')
+    parser.add_argument('--deterministic2', action='store_true',
+                       help='Use deterministic actions for second model')
+    parser.add_argument('--verbose', action='store_true',
+                       help='Enable verbose mode for detailed game information')
+    args = parser.parse_args()
+    
+    # Validate arguments
+    if args.model1_type != 'random' and not args.model1_path:
+        parser.error("--model1_path is required when model1_type is not 'random'")
+    if args.model2_type != 'random' and not args.model2_path:
+        parser.error("--model2_path is required when model2_type is not 'random'")
+    
+    # Set up environment
+    verbose_dict = get_verbose_dict()
+    if args.verbose:
+        verbose_dict['env'] = True
+        verbose_dict['game'] = True
+        verbose_dict['player'] = True
+        verbose_dict['board'] = True
+    
+    env = Monitor(SelfPlayEnv(
+        opponent_policy=RandomPlayer(),
+        verbose_dict=verbose_dict
+    ))
+    
+    # Create/load first agent
+    if args.model1_type == 'random':
+        agent1 = RandomPlayer()
+        print("Agent 1: Random Player")
+    else:
+        model1 = create_model(env, args.model1_type)
+        print(f"Loading model 1 from {args.model1_path}...")
+        agent1 = model1.load(args.model1_path, env=env)
+        print(f"Agent 1: {args.model1_type.capitalize()} Model")
+    
+    # Create/load second agent
+    if args.model2_type == 'random':
+        agent2 = RandomPlayer()
+        print("Agent 2: Random Player")
+    else:
+        model2 = create_model(env, args.model2_type)
+        print(f"Loading model 2 from {args.model2_path}...")
+        agent2 = model2.load(args.model2_path, env=env)
+        print(f"Agent 2: {args.model2_type.capitalize()} Model")
+    
+    # Run evaluation
+    results = evaluate_match(agent1, agent2, args.n_episodes, args.deterministic1, args.deterministic2, args.verbose)
+

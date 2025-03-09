@@ -1,22 +1,8 @@
 import numpy as np
-import itertools
+from jsplendor.utils.config import get_coin_comb
 
-from jsplendor.utils import Element
-
-def adjust_price(price, point):
-    """
-    args:
-        price - np.array(5)
-        point - np.array(5)
-    """
-    price = price - point
-    price = np.maximum(price, 0)
-
-    return price
-
-def get_coin_comb(x):
-    assert(x>=0 and x<10)
-    lst = [0, 1, 2, 3, 4]
-    combinations = list(itertools.combinations(lst, 3))
-
-    return combinations[x]
+def adjust_price(price, gem_status):
+    """Adjust price based on gem status"""
+    adjusted_price = np.array(price)
+    adjusted_price = np.maximum(adjusted_price - gem_status, 0)
+    return adjusted_price

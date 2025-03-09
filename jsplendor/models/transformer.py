@@ -8,11 +8,14 @@ class TransformerFeatureExtractor(BaseFeaturesExtractor):
     def __init__(self, observation_space: spaces.Box):
         super().__init__(observation_space, features_dim=64)
         
+        # Input embedding layer
+        self.embed = nn.Linear(observation_space.shape[0], 64)
+        
         # Layer normalization before transformer
         self.layer_norm = nn.LayerNorm(64)
         
-        # Calculate total sequence length (observation + action mask)
-        total_seq_len = observation_space.shape[0]  # This includes both obs and action mask
+        # Calculate total sequence length
+        total_seq_len = observation_space.shape[0]
         
         self.transformer = TransformerWrapper(
             num_tokens = 64,    # vocabulary size
@@ -20,10 +23,10 @@ class TransformerFeatureExtractor(BaseFeaturesExtractor):
             attn_layers = Encoder(
                 dim = 64,        
                 depth = 2,       
-                heads = 2,        
+                heads = 2
             )
         )
-
+    
     def forward(self, observations: torch.Tensor) -> torch.Tensor:
         # Convert to long for embedding layer
         x = observations.long()

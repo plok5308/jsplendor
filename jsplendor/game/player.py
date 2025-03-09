@@ -18,6 +18,7 @@ class Player(GameComponent):
         self.n_coin_action = 15
         self.n_buy_action = 12
         self.num_actions = self.n_coin_action + self.n_buy_action
+        self.step = 0  # Add step counter for each player
         self._update_score()
 
     def _update_score(self):
@@ -35,6 +36,7 @@ class Player(GameComponent):
         self.sum_development_card_gem = sum_development_card_gem
 
     def do_action(self, board, action):
+        self.step += 1  # Increment step when player takes action
         over_coin_count = 0
         get_card = False
         noble_visit = False
@@ -49,14 +51,27 @@ class Player(GameComponent):
 
         self._update_score() 
 
+        if self.verbose:
+            self.logger.info(f'Step {self.step}, VP: {self.sum_victory_point}')
+
         return self.sum_victory_point, over_coin_count, get_card, noble_visit
 
     def get_all_possible_actions(self, board):
         actions = np.zeros(self.num_actions)
 
         # Original coin actions (0-9)
-        for i in range(self.n_coin_action - 5):
-            actions[i] = 1
+        for i in range(self.n_coin_action - 5):  # First 10 actions are for 3 different coins
+            # Get the coin combination for this action
+            candidated_ids = get_coin_comb(i)
+            # Count how many coins are available in this combination
+            available_coins = 0
+            for ids in candidated_ids:
+                color = Element(ids).name
+                if self.is_possible_to_get_coin(board, color):
+                    available_coins += 1
+            # Set action as valid if at least one coin is available
+            if available_coins > 0:
+                actions[i] = 1
 
         # Double coin actions (10-14)
         for i in range(5):  # Loop through 0-4 for the 5 colors
@@ -70,6 +85,11 @@ class Player(GameComponent):
                 actions[i] = 1
 
         actions = actions.astype(np.bool_)
+        
+        # Safety check: if no actions are valid, allow all coin-taking actions
+        if not np.any(actions):
+            actions[:self.n_coin_action] = True
+        
         return actions
 
     def get_coins(self, board, x):
@@ -225,8 +245,7 @@ class Player(GameComponent):
             self.development_cards.append(card)
             board.update_table_development_card(card)
             
-            if self.verbose:
-                self.logger.info(f'VP: {self.sum_victory_point}')
+
             get_card = True
 
         else:
