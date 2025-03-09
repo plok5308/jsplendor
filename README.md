@@ -47,7 +47,7 @@ python calculate_elo.py --model_dir pretrained/linear2 --n_games 200
 
 The game provides a graphical interface to watch AI agents play against each other. You can control the game flow and see the agents' decision-making process.
 
-![JSplendor GUI](gui.png)
+![JSplendor GUI](./images/gui.png)
 
 ### Running the GUI
 
