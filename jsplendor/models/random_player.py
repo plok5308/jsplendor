@@ -22,7 +22,7 @@ class RandomPlayer:
         """
         # Get action mask from observation
         if isinstance(observation, np.ndarray):
-            action_mask = observation[-27:]  # Last 27 elements are action mask
+            action_mask = observation[-42:]  # Last 42 elements are action mask (updated for reserve actions)
         else:
             action_mask = observation['action_mask']
             

@@ -7,13 +7,13 @@ from stable_baselines3.common.torch_layers import BaseFeaturesExtractor
 class LinearFeatureExtractor(BaseFeaturesExtractor):
     """Simple linear feature extractor that matches transformer's input/output structure"""
     
-    def __init__(self, observation_space: spaces.Box, features_dim: int = 64):
+    def __init__(self, observation_space: spaces.Box, features_dim: int = 64, action_num: int = 42):
         # Initialize with observation space and features dimension
         super().__init__(observation_space, features_dim)
         
         # Store dimensions
         self.full_dim = observation_space.shape[0]
-        self.obs_dim = self.full_dim - 27  # Remove action mask size
+        self.obs_dim = self.full_dim - action_num  # Remove action mask size
         
         # Simple linear layers
         self.linear = nn.Sequential(

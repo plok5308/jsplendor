@@ -61,13 +61,18 @@ class Game:
 
     def add_player(self, name):
         """Add a new player to the game"""
+        # Create logger first if verbose is enabled
+        logger = None
+        if self.verbose_dict['player']:
+            logger = TestLogger.get_logger('logs/game')  # Use singleton logger
+        
         player = Player(
             name=name,
             development_cards=[],
             noble_cards=[],
             coins=get_empty_coin(),
             verbose=self.verbose_dict['player'],
-            logger=TestLogger.get_logger() if self.verbose_dict['player'] else None
+            logger=logger
         )
         self.players.append(player)
         return player

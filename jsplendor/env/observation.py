@@ -123,6 +123,7 @@ class PlayerObservation:
         development_space = 5  # Count of cards per color
         victory_point_space = 1  # Total victory points
         level1_count_space = 1  # Total count of level 1 cards
+        reserved_cards_space = 3 * 7  # 3 reserved cards x card features
         
         # Add spaces for card price differences and total costs
         price_diff_space = 12 * 5  # 12 cards x 5 colors
@@ -130,7 +131,7 @@ class PlayerObservation:
         
         total_space = (step_space + coin_space + development_space + 
                       victory_point_space + level1_count_space +
-                      price_diff_space + total_cost_space)
+                      reserved_cards_space + price_diff_space + total_cost_space)
         
         return total_space
     
@@ -150,6 +151,7 @@ class PlayerObservation:
         level1_count_obs = PlayerObservation.get_level1_count_obs(player)
         price_diff_obs = PlayerObservation.get_card_price_diff_obs(game.board, player)
         total_cost_obs = PlayerObservation.get_total_cost_obs(game.board, player)
+        reserved_cards_obs = PlayerObservation.get_reserved_cards_obs(player)
         
         obs = np.concatenate([
             step_obs, 
@@ -158,7 +160,8 @@ class PlayerObservation:
             victory_point_obs,
             level1_count_obs,  # Add level 1 cards count
             price_diff_obs,
-            total_cost_obs
+            total_cost_obs,
+            reserved_cards_obs
         ])
         
         # Clip player observation values
@@ -253,22 +256,38 @@ class PlayerObservation:
         
         return np.array(total_costs, dtype=np.int32)
 
+    @staticmethod
+    def get_reserved_cards_obs(player):
+        """Get reserved card observation"""
+        x = np.zeros(3 * 7, dtype=np.int32)
+        for i, card in enumerate(player.reserved_cards):
+            x[i * 7:(i + 1) * 7] = BoardObservation._get_card_features(card)
+        return x
+
 def get_observation_space(game):
     """Get total observation space including board, players, and action mask"""
     # Board space
     board_space = BoardObservation.get_space()  # 113 (6 coins + 84 cards + 35 nobles)
     
     # Player space (includes price diffs and total costs)
-    player_space = PlayerObservation.get_space()
+    player_space = PlayerObservation.get_space()  # Should match actual dimensions
     
     # CLS token space
     cls_space = 1  # 62 (using HIGH_VALUE=63)
 
     # Action space
-    action_space = game.players[0].num_actions  # 27
+    action_space = game.players[0].num_actions  # 42 actions including reserve
     
     # Total space calculation
     total_space = cls_space + board_space + (player_space * 2) + action_space
+    
+    # Print dimensions for debugging
+    print(f"Observation space dimensions:")
+    print(f" - CLS token: {cls_space}")
+    print(f" - Board space: {board_space}")
+    print(f" - Player space (x2): {player_space} * 2")
+    print(f" - Action space: {action_space}")
+    print(f" - Total space: {total_space}")
     
     return spaces.Box(
         low=0,

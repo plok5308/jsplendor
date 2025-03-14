@@ -464,7 +464,6 @@ class AIGameGUI(SplendorGUI):
     def get_action_description(self, action_idx):
         """Get description for each action based on Player class implementation"""
         if action_idx < 10:  # First 10 actions (0-9) are for three different coins
-            # Get coin combinations from player's get_coin_comb
             candidated_ids = get_coin_comb(action_idx)
             colors = [Element(idx).name for idx in candidated_ids]
             return f"Take three different coins from: {', '.join(colors)}"
@@ -483,6 +482,25 @@ class AIGameGUI(SplendorGUI):
                 if card:
                     return f"Buy L{level} card: {card.name} (VP: {card.victory_point}, Gem: {card.gem_color})"
             return f"Buy L{level} card at position {pos} (Invalid - no card)"
+        elif action_idx < 30:  # Actions 27-29 are for buying reserved cards
+            card_idx = action_idx - 27
+            player = self.game.players[self.current_player - 1]
+            if card_idx < len(player.reserved_cards):
+                card = player.reserved_cards[card_idx]
+                return f"Buy reserved card: {card.name} (VP: {card.victory_point}, Gem: {card.gem_color})"
+            return f"Buy reserved card at position {card_idx} (Invalid - no card)"
+        elif action_idx < 42:  # Actions 30-41 are for reserving cards
+            card_idx = action_idx - 30
+            level = (card_idx // 4) + 1
+            pos = card_idx % 4
+            cards = (self.game.board.table_level1 if level == 1 else 
+                    self.game.board.table_level2 if level == 2 else 
+                    self.game.board.table_level3)
+            if pos < len(cards):
+                card = cards[pos]
+                if card:
+                    return f"Reserve L{level} card: {card.name} (VP: {card.victory_point}, Gem: {card.gem_color})"
+            return f"Reserve L{level} card at position {pos} (Invalid - no card)"
         else:
             return "Unknown action"
 

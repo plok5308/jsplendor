@@ -122,7 +122,7 @@ if __name__ == "__main__":
                        default='random', help='Type of first model')
     parser.add_argument('--model2_type', type=str, choices=['linear', 'random'],
                        default='random', help='Type of second model')
-    parser.add_argument('--n_episodes', type=int, default=100,
+    parser.add_argument('--n_episodes', type=int, default=1,
                        help='Number of episodes to evaluate')
     parser.add_argument('--deterministic1', action='store_true',
                        help='Use deterministic actions for first model')

@@ -26,10 +26,19 @@ class StreamToLogger:
         self.original_stdout.flush()
 
 class TestLogger(BaseLogger):
-    def __init__(self, log_dir, verbose=False):
+    _instance = None
+    
+    @classmethod
+    def get_logger(cls, log_dir='logs/game'):
+        if cls._instance is None:
+            cls._instance = cls(log_dir)
+        return cls._instance
+
+    def __init__(self, log_dir, verbose=True):
         self.verbose = verbose
         self._setup_logger(log_dir)
         self.log_dir = log_dir
+        print(f"Log file created at: {self.log_file}")
 
     def _setup_logger(self, log_dir):
         # Create logs directory if it doesn't exist
@@ -54,7 +63,7 @@ class TestLogger(BaseLogger):
         file_handler.setFormatter(file_formatter)
         self.logger.addHandler(file_handler)
 
-        # Always add console handler for statistics
+        # Console handler
         console_handler = logging.StreamHandler(sys.stdout)
         console_formatter = logging.Formatter('[%(levelname)s] %(message)s')
         console_handler.setFormatter(console_formatter)
