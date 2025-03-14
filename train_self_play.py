@@ -302,7 +302,7 @@ if __name__ == "__main__":
     parser.add_argument('--exp', type=str, default='tmp', help='Experiment name for logging')
     parser.add_argument('--total_generations', type=int, default=10000, help='Total number of generations to train')
     parser.add_argument('--ent_coef', type=float, default=0, help='Entropy coefficient for exploration')
-    parser.add_argument('--n_steps', type=int, default=65536, help='Number of steps per update')
+    parser.add_argument('--n_steps', type=int, default=int(2**18), help='Number of steps per update')
     parser.add_argument('--batch_size', type=int, default=512, help='Size of the batch for training')
     parser.add_argument('--deterministic', action='store_true', help='Use deterministic actions during evaluation')
     parser.add_argument('--model_type', type=str, choices=['transformer', 'linear'], default='linear',

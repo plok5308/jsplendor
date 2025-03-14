@@ -74,43 +74,61 @@ class Player(GameComponent):
         over_coin_count = 0
         get_card = False
         noble_visit = False
+        spent_coins = None  # Initialize spent_coins variable
 
         action_type, action_index = self._get_action_type_and_index(action)
         
-        # Logging at start of turn
+        # Logging at start of turn with clear separator
         if self.verbose:
-            self.logger.info(f"\n{self.name}'s turn (Step {self.step}):")
-            self.logger.info(f"Current coins: {self.coins}")
+            self.logger.info("\n" + "="*50)
+            self.logger.info(f"Turn {self.step} - {self.name}")
+            self.logger.info("-"*25)
+            
+            # Board State
+            self.logger.info("Board State:")
+            self.logger.info(f"Coins: {board.coins}")
+            self.logger.info("Cards:")
+            self.logger.info(f"Level 3: {[card.name if card else 'Empty' for card in board.table_level3]}")
+            self.logger.info(f"Level 2: {[card.name if card else 'Empty' for card in board.table_level2]}")
+            self.logger.info(f"Level 1: {[card.name if card else 'Empty' for card in board.table_level1]}")
+            self.logger.info(f"Nobles: {[card.name if card else 'Empty' for card in board.noble_cards]}")
+            self.logger.info("-"*25)
+            
+            # Player State
+            self.logger.info("Player State:")
+            self.logger.info(f"Coins: {self.coins}")
             self.logger.info(f"Development cards: {[card.name for card in self.development_cards]}")
             self.logger.info(f"Reserved cards: {[card.name for card in self.reserved_cards]}")
-            self.logger.info(f"Action type: {action_type}, Action index: {action_index}")
+            self.logger.info(f"Victory Points: {self.sum_victory_point}")
+            self.logger.info("-"*25)
+            self.logger.info(f"Action: {action_type.upper()} (index: {action_index})")
         
+        # Execute action
         if action_type == "coin":
             self.get_coins(board, action_index)
             over_coin_count = self.drop_over_coins(board)
 
         elif action_type == "buy":
-            # Logging before buy attempt
             if self.verbose:
                 card = board.flatten_table_cards[action_index]
                 if card:
-                    self.logger.info(f"Attempting to buy card: {card.name}")
+                    self.logger.info(f"Buying card: {card.name}")
                     self.logger.info(f"Card details - Level: {card.level}, VP: {card.victory_point}, Color: {card.gem_color}")
-                    self.logger.info(f"Card price: {card.price}")
+                    self.logger.info(f"Price: {card.price}")
             
-            get_card = self.buy_development_card_on_table(board, action_index)
+            get_card, spent_coins = self.buy_development_card_on_table(board, action_index)  # Capture spent_coins
             
-            # Logging after successful purchase
             if get_card and self.verbose:
-                self.logger.info(f"Purchase successful!")
-                self.logger.info(f"Updated coins: {self.coins}")
-                self.logger.info(f"Updated development cards: {[card.name for card in self.development_cards]}")
+                self.logger.info("Purchase successful!")
             
             if get_card:
                 noble_visit = self.check_and_get_a_noble(board)
+                # Return spent coins to board
+                if spent_coins:  # Check if we have spent coins
+                    for color, amount in spent_coins.items():
+                        board.coins[color] += amount
 
         elif action_type == "buy_reserved_card":
-            # Logging before reserved card purchase attempt
             if self.verbose:
                 if action_index < len(self.reserved_cards):  # Add safety check
                     card = self.reserved_cards[action_index]
@@ -118,20 +136,19 @@ class Player(GameComponent):
                     self.logger.info(f"Card details - Level: {card.level}, VP: {card.victory_point}, Color: {card.gem_color}")
                     self.logger.info(f"Card price: {card.price}")
             
-            get_card = self.buy_reserved_card(action_index)
+            get_card, spent_coins = self.buy_reserved_card(board, action_index)  # Pass board and capture spent_coins
             
-            # Logging after successful reserved card purchase
             if get_card and self.verbose:
                 self.logger.info(f"Reserved card purchase successful!")
-                self.logger.info(f"Updated coins: {self.coins}")
-                self.logger.info(f"Updated development cards: {[card.name for card in self.development_cards]}")
-                self.logger.info(f"Remaining reserved cards: {[card.name for card in self.reserved_cards]}")
             
             if get_card:
                 noble_visit = self.check_and_get_a_noble(board)
+                # Return spent coins to board
+                if spent_coins:  # Check if we have spent coins
+                    for color, amount in spent_coins.items():
+                        board.coins[color] += amount
 
         elif action_type == "reserve":
-            # Logging before reserve attempt
             if self.verbose:
                 card = board.flatten_table_cards[action_index]
                 if card:
@@ -140,18 +157,37 @@ class Player(GameComponent):
             
             self.reserve_development_card(board, action_index)
             
-            # Logging after reserve
             if self.verbose:
                 self.logger.info(f"Updated reserved cards: {[card.name for card in self.reserved_cards]}")
                 if len(self.reserved_cards) >= 3:
                     self.logger.info("Warning: Reserved card limit reached (3 cards)")
 
-        self._update_score() 
+        # Check coin conservation after action
+        if hasattr(board, 'game'):
+            board.game._check_coin_conservation()
+        
+        self._update_score()
 
         # Logging at end of turn
         if self.verbose:
-            self.logger.info(f"End of turn - Victory Points: {self.sum_victory_point}")
-            self.logger.info("-" * 50)
+            self.logger.info("\nEnd of Turn Status:")
+            # Board State
+            self.logger.info("Board State:")
+            self.logger.info(f"Coins: {board.coins}")
+            self.logger.info("Cards:")
+            self.logger.info(f"Level 3: {[card.name if card else 'Empty' for card in board.table_level3]}")
+            self.logger.info(f"Level 2: {[card.name if card else 'Empty' for card in board.table_level2]}")
+            self.logger.info(f"Level 1: {[card.name if card else 'Empty' for card in board.table_level1]}")
+            self.logger.info(f"Nobles: {[card.name if card else 'Empty' for card in board.noble_cards]}")
+            self.logger.info("-"*25)
+            
+            # Player State
+            self.logger.info("Player State:")
+            self.logger.info(f"Coins: {self.coins}")
+            self.logger.info(f"Development cards: {[card.name for card in self.development_cards]}")
+            self.logger.info(f"Reserved cards: {[card.name for card in self.reserved_cards]}")
+            self.logger.info(f"Victory Points: {self.sum_victory_point}")
+            self.logger.info("="*50 + "\n")
 
         return self.sum_victory_point, over_coin_count, get_card, noble_visit
 
@@ -318,10 +354,11 @@ class Player(GameComponent):
         card = board.flatten_table_cards[card_position]
         return self.is_possible_to_buy_card(card)
     
-    def buy_development_card(self, card):
+    def buy_development_card(self, card, board):
         original_price = card.price
         adjusted_price = adjust_price(original_price.copy(), self.sum_development_card_gem)
         gold_needed = 0
+        spent_coins = {'WHITE': 0, 'BLUE': 0, 'GREEN': 0, 'RED': 0, 'BLACK': 0, 'GOLD': 0}
 
         # First calculate how many gold coins we need
         for key in self.coins.keys():
@@ -340,27 +377,38 @@ class Player(GameComponent):
                     # Use as many regular coins as possible
                     coins_to_use = min(self.coins[key], price)
                     self.coins[key] -= coins_to_use
+                    spent_coins[key] = coins_to_use
                     # Use gold coins for the remainder if needed
                     if coins_to_use < price:
                         gold_to_use = price - coins_to_use
                         self.coins["GOLD"] -= gold_to_use
+                        spent_coins["GOLD"] += gold_to_use
+
+        # Return spent coins to board
+        for color, amount in spent_coins.items():
+            board.coins[color] += amount
 
         self.development_cards.append(card)
+        return spent_coins
 
     def buy_development_card_on_table(self, board, card_position):
         get_card = False
+        spent_coins = None
         assert(card_position>=0 and card_position<=self.n_buy_action)
 
         if self.is_possible_to_buy_card_on_table(board, card_position):
             card = board.flatten_table_cards[card_position]
-            self.buy_development_card(card)
+            spent_coins = self.buy_development_card(card, board)  # Pass board and get spent coins
             board.update_table_development_card(card)
             get_card = True
+            
+            if self.verbose:
+                self.logger.info(f"Coins returned to board: {spent_coins}")
         else:
             if self.verbose:
                 self.logger.info('Not enough tokens.')
 
-        return get_card
+        return get_card, spent_coins  # Return both values
 
     def reserve_development_card(self, board, card_position):
         if len(self.reserved_cards) < 3:
@@ -386,13 +434,14 @@ class Player(GameComponent):
             if self.verbose:
                 self.logger.info('Reserved cards are full.')
 
-    def buy_reserved_card(self, card_position):
+    def buy_reserved_card(self, board, card_position):  # Add board parameter
         get_card = False
+        spent_coins = None
 
         card = self.reserved_cards[card_position]
 
         if self.is_possible_to_buy_card(card):
-            self.buy_development_card(card)
+            spent_coins = self.buy_development_card(card, board)  # Get spent coins
             get_card = True
         else:
             if self.verbose:
@@ -401,7 +450,7 @@ class Player(GameComponent):
         self.development_cards.append(card)
         self.reserved_cards.remove(card)
 
-        return get_card
+        return get_card, spent_coins  # Return both values
 
     def check_and_get_a_noble(self, board):
         """Check and acquire a noble card."""
