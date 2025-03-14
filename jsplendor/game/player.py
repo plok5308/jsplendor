@@ -15,9 +15,13 @@ from jsplendor.coin import sum_coins
 class Player(GameComponent):
     def __init__(self, name, development_cards, noble_cards, coins, verbose=False, logger=None):
         super().__init__(name, development_cards, noble_cards, coins, verbose, logger)
-        self.n_coin_action = 15
-        self.n_buy_action = 12
-        self.num_actions = self.n_coin_action + self.n_buy_action
+        self.n_coin_action = 15  # [0, 14]
+        self.n_buy_action = 12  # [15, 26]
+        self.n_buy_reserved_card_action = 3  # [27, 29]
+        self.n_reserve_action = 12  # [30, 41]
+        self.reserved_cards = []
+
+        self.num_actions = self.n_coin_action + self.n_buy_action + self.n_reserve_action
         self.step = 0  # Add step counter for each player
         self._update_score()
 
@@ -35,19 +39,42 @@ class Player(GameComponent):
         self.sum_victory_point = sum_victory_point
         self.sum_development_card_gem = sum_development_card_gem
 
+    def _get_action_type_and_index(self, action):
+        if action < self.n_coin_action:
+            return "coin", action
+        elif action < self.n_coin_action + self.n_buy_action:
+            return "buy", action - self.n_coin_action
+        elif action < self.n_coin_action + self.n_buy_action + self.n_buy_reserved_card_action:
+            return "buy_reserved_card", action - self.n_coin_action - self.n_buy_action
+        elif action < self.n_coin_action + self.n_buy_action + self.n_buy_reserved_card_action + self.n_reserve_action:
+            return "reserve", action - self.n_coin_action - self.n_buy_action - self.n_buy_reserved_card_action
+        else:
+            raise ValueError(f"Invalid action: {action}")
+
     def do_action(self, board, action):
         self.step += 1  # Increment step when player takes action
         over_coin_count = 0
         get_card = False
         noble_visit = False
+
+        action_type, action_index = self._get_action_type_and_index(action)
         
-        if action < self.n_coin_action:
-            self.get_coins(board, action)
+        if action_type == "coin":
+            self.get_coins(board, action_index)
             over_coin_count = self.drop_over_coins(board)
-        else:
-            get_card = self.buy_development_card(board, action-self.n_coin_action)
+
+        elif action_type == "buy":
+            get_card = self.buy_development_card(board, action_index)
             if get_card:
                 noble_visit = self.check_and_get_a_noble(board)
+
+        elif action_type == "buy_reserved_card":
+            get_card = self.buy_reserved_card(action_index)
+            if get_card:
+                noble_visit = self.check_and_get_a_noble(board)
+
+        elif action_type == "reserve":
+            self.reserve_development_card(board, action_index)
 
         self._update_score() 
 
@@ -181,76 +208,88 @@ class Player(GameComponent):
         if self.verbose:
             self.logger.info(f'{self.name} drop a {color} coin.')
 
-    def is_possible_to_buy(self, board, card_position):
-        card = board.flatten_table_cards[card_position]
-
+    def is_possible_to_buy_card(self, card):
         if card is None:
-            pass
-            is_possible = False
+            return False
         else:
             price = card.price
             price = adjust_price(price, self.sum_development_card_gem)
-
-            is_possible = True
+            
+            insufficient_coin_number = 0
             for key, value in self.coins.items():
                 if key=="GOLD":
-                    pass
-                else: 
+                    gold_coin_number = value
+                else:
                     if price[Element[key].value] > value:
-                        is_possible = False
-                        break
+                        insufficient_coin_number += 1
+                        
+            if insufficient_coin_number <= gold_coin_number:
+                return True
+            else:
+                return False
+
+    def is_possible_to_buy_card_on_table(self, board, card_position):
+        card = board.flatten_table_cards[card_position]
+        is_possible = self.is_possible_to_buy_card(card)
 
         return is_possible
     
-    def buy_development_card(self, board, card_position):
+    def buy_development_card(self, card):
+        original_price = card.price
+        adjusted_price = adjust_price(original_price.copy(), self.sum_development_card_gem)
+
+        for key in self.coins.keys():
+            if key=="GOLD":
+                pass
+            else:
+                self.coins[key] -= int(adjusted_price[Element[key].value])
+                if self.coins[key] < 0:  # if the coin is not enough, use gold coin
+                    self.coins['GOLD'] = self.coins['GOLD'] + self.coins[key]
+                    self.coins[key] = 0
+
+        for key in self.coins.keys():
+            assert(self.coins[key] >= 0), f"Coin {key} is negative: {self.coins[key]}"
+
+        self.development_cards.append(card)
+
+    def buy_development_card_on_table(self, board, card_position):
         get_card = False
         assert(card_position>=0 and card_position<=self.n_buy_action)
 
-        if self.is_possible_to_buy(board, card_position):
+        if self.is_possible_to_buy_card_on_table(board, card_position):
             card = board.flatten_table_cards[card_position]
-            original_price = card.price
-            adjusted_price = adjust_price(original_price.copy(), self.sum_development_card_gem)
-            
-            # Log the card purchase with detailed information
-            if self.verbose:
-                # Show original price
-                orig_price_info = []
-                for color, amount in zip(['WHITE', 'BLUE', 'GREEN', 'RED', 'BLACK'], original_price):
-                    if amount > 0:
-                        orig_price_info.append(f"{color}: {amount}")
-                orig_price_str = ", ".join(orig_price_info)
-                
-                # Show adjusted price
-                adj_price_info = []
-                for color, amount in zip(['WHITE', 'BLUE', 'GREEN', 'RED', 'BLACK'], adjusted_price):
-                    if amount > 0:
-                        adj_price_info.append(f"{color}: {amount}")
-                adj_price_str = ", ".join(adj_price_info)
-                
-                self.logger.info(f'{self.name} bought card {card.name}:')
-                self.logger.info(f'  Level: {card.level}')
-                self.logger.info(f'  VP: {card.victory_point}')
-                self.logger.info(f'  Gem Color: {card.gem_color}')
-                self.logger.info(f'  Original Price: {orig_price_str}')
-                self.logger.info(f'  Actual Price: {adj_price_str}')
-            
-            # Use adjusted price for the actual purchase
-            for key in self.coins.keys():
-                if key=="GOLD":
-                    pass
-                else:
-                    self.coins[key] -= int(adjusted_price[Element[key].value])
-                    board.coins[key] += int(adjusted_price[Element[key].value])
-
-            self.development_cards.append(card)
+            self.buy_development_card(card)
             board.update_table_development_card(card)
-            
-
             get_card = True
-
         else:
             if self.verbose:
                 self.logger.info('Not enough tokens.')
+
+        return get_card
+
+    def reserve_development_card(self, board, card_position):
+        if len(self.reserved_cards) < 3:
+            card = board.flatten_table_cards[card_position]
+            self.reserved_cards.append(card)
+            board.update_table_development_card(card)
+        else:
+            if self.verbose:
+                self.logger.info('Reserved cards are full.')
+
+    def buy_reserved_card(self, card_position):
+        get_card = False
+
+        card = self.reserved_cards[card_position]
+
+        if self.is_possible_to_buy_card(card):
+            self.buy_development_card(card)
+            get_card = True
+        else:
+            if self.verbose:
+                self.logger.info('Not enough tokens.')
+
+        self.development_cards.append(card)
+        self.reserved_cards.remove(card)
 
         return get_card
 
@@ -268,11 +307,6 @@ class Player(GameComponent):
                 break
 
         return had_noble_visit
-
-    #def update_noble_cards(self, board):
-    #    """Deprecated - use check_and_get_nobles instead"""
-    #    noble_visit = self.check_and_get_a_noble(board)
-    #    return noble_visit
 
     def is_get_possible_noble_card(self, card):
         if card is None:
