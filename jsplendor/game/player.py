@@ -42,6 +42,9 @@ class Player(GameComponent):
         self.sum_victory_point = 0
         self.step = 0
         self._update_score()
+        
+        # Initialize coins with regular integers
+        self.coins = {color: int(amount) for color, amount in self.coins.items()}
 
     def _update_score(self):
         sum_victory_point = 0
@@ -107,6 +110,10 @@ class Player(GameComponent):
         if action_type == "coin":
             self.get_coins(board, action_index)
             over_coin_count = self.drop_over_coins(board)
+            self._ensure_regular_integers()  # Ensure regular integers after coin actions
+            # Check coins after coin actions
+            if hasattr(board, 'game'):
+                board.game.check_all_coins()
 
         elif action_type == "buy":
             if self.verbose:
@@ -116,37 +123,48 @@ class Player(GameComponent):
                     self.logger.info(f"Card details - Level: {card.level}, VP: {card.victory_point}, Color: {card.gem_color}")
                     self.logger.info(f"Price: {card.price}")
             
-            get_card, spent_coins = self.buy_development_card_on_table(board, action_index)  # Capture spent_coins
+            get_card, spent_coins = self.buy_development_card_on_table(board, action_index)
             
             if get_card and self.verbose:
                 self.logger.info("Purchase successful!")
             
             if get_card:
                 noble_visit = self.check_and_get_a_noble(board)
-                # Return spent coins to board
-                if spent_coins:  # Check if we have spent coins
+                if spent_coins:
                     for color, amount in spent_coins.items():
-                        board.coins[color] += amount
+                        board.coins[color] += int(amount)
+                    if self.verbose:
+                        clean_coins = {k: int(v) for k, v in spent_coins.items()}
+                        self.logger.info(f"Coins returned to board: {clean_coins}")
+                # Check coins after purchase
+                if hasattr(board, 'game'):
+                    board.game.check_all_coins()
+                self._ensure_regular_integers()  # Ensure regular integers after purchase
 
         elif action_type == "buy_reserved_card":
             if self.verbose:
-                if action_index < len(self.reserved_cards):  # Add safety check
+                if action_index < len(self.reserved_cards):
                     card = self.reserved_cards[action_index]
                     self.logger.info(f"Attempting to buy reserved card: {card.name}")
                     self.logger.info(f"Card details - Level: {card.level}, VP: {card.victory_point}, Color: {card.gem_color}")
                     self.logger.info(f"Card price: {card.price}")
+                else:
+                    self.logger.info(f"Invalid reserved card index {action_index}. Have {len(self.reserved_cards)} reserved cards.")
             
-            get_card, spent_coins = self.buy_reserved_card(board, action_index)  # Pass board and capture spent_coins
+            get_card, spent_coins = self.buy_reserved_card(board, action_index)
             
             if get_card and self.verbose:
                 self.logger.info(f"Reserved card purchase successful!")
             
             if get_card:
                 noble_visit = self.check_and_get_a_noble(board)
-                # Return spent coins to board
-                if spent_coins:  # Check if we have spent coins
+                if spent_coins:
                     for color, amount in spent_coins.items():
-                        board.coins[color] += amount
+                        board.coins[color] += int(amount)
+                # Check coins after reserved card purchase
+                if hasattr(board, 'game'):
+                    board.game.check_all_coins()
+                self._ensure_regular_integers()  # Ensure regular integers after reserved card purchase
 
         elif action_type == "reserve":
             if self.verbose:
@@ -156,16 +174,14 @@ class Player(GameComponent):
                     self.logger.info(f"Card details - Level: {card.level}, VP: {card.victory_point}, Color: {card.gem_color}")
             
             self.reserve_development_card(board, action_index)
+            self._ensure_regular_integers()  # Ensure regular integers after reserve
             
             if self.verbose:
                 self.logger.info(f"Updated reserved cards: {[card.name for card in self.reserved_cards]}")
                 if len(self.reserved_cards) >= 3:
                     self.logger.info("Warning: Reserved card limit reached (3 cards)")
 
-        # Check coin conservation after action
-        if hasattr(board, 'game'):
-            board.game._check_coin_conservation()
-        
+        # Remove general coin check since we now check after each specific action
         self._update_score()
 
         # Logging at end of turn
@@ -264,6 +280,10 @@ class Player(GameComponent):
                 coins_msg = "Collected coins: " + ", ".join(collected_coins)
                 self.logger.info(coins_msg)
 
+        # Convert any numpy integers to regular integers when getting coins
+        for color in self.coins.keys():
+            self.coins[color] = int(self.coins[color])
+
     def is_possible_to_get_two_coins(self, board, color):
         if board.coins[color] >= 4:
             return True
@@ -303,6 +323,10 @@ class Player(GameComponent):
             sum_v = sum_coins(self.coins)
             count += 1
 
+        # Ensure regular integers after dropping coins
+        for color in self.coins.keys():
+            self.coins[color] = int(self.coins[color])
+        
         return count
 
     def drop_unnecessary_coin(self, board):
@@ -325,10 +349,13 @@ class Player(GameComponent):
                 break
 
     def drop_a_coin(self, board, color):
-        board.coins[color] += 1
+        board.coins[color] = int(board.coins[color] + 1)
         self.coins[color] -= 1
         if self.verbose:
             self.logger.info(f'{self.name} drop a {color} coin.')
+        # Check coins after dropping
+        if hasattr(board, 'game'):
+            board.game.check_all_coins()
 
     def is_possible_to_buy_card(self, card):
         if card is None:
@@ -377,18 +404,20 @@ class Player(GameComponent):
                     # Use as many regular coins as possible
                     coins_to_use = min(self.coins[key], price)
                     self.coins[key] -= coins_to_use
-                    spent_coins[key] = coins_to_use
+                    spent_coins[key] = int(coins_to_use)  # Convert to regular int
                     # Use gold coins for the remainder if needed
                     if coins_to_use < price:
                         gold_to_use = price - coins_to_use
                         self.coins["GOLD"] -= gold_to_use
-                        spent_coins["GOLD"] += gold_to_use
+                        spent_coins["GOLD"] = int(spent_coins["GOLD"] + gold_to_use)  # Convert to regular int
 
-        # Return spent coins to board
-        for color, amount in spent_coins.items():
-            board.coins[color] += amount
-
+        # Add card to development cards
         self.development_cards.append(card)
+
+        # Convert any numpy integers in coins to regular integers
+        for color in self.coins.keys():
+            self.coins[color] = int(self.coins[color])
+
         return spent_coins
 
     def buy_development_card_on_table(self, board, card_position):
@@ -422,7 +451,15 @@ class Player(GameComponent):
                 
             if board.coins['GOLD'] > 0:
                 board.coins['GOLD'] -= 1
-                self.coins['GOLD'] += 1
+                self.coins['GOLD'] = int(self.coins['GOLD'] + 1)
+                
+                # Ensure all coins are regular integers
+                for color in self.coins.keys():
+                    self.coins[color] = int(self.coins[color])
+                
+                # Check coins after gold transfer
+                if hasattr(board, 'game'):
+                    board.game.check_all_coins()
                 if self.verbose:
                     self.logger.info(f'{self.name} received a GOLD coin for reserving.')
                     self.logger.info(f'Board coins after reserve: {board.coins}')
@@ -438,17 +475,23 @@ class Player(GameComponent):
         get_card = False
         spent_coins = None
 
+        # Check if card_position is valid
+        if card_position >= len(self.reserved_cards):
+            if self.verbose:
+                self.logger.info(f'Invalid reserved card position: {card_position}. Only have {len(self.reserved_cards)} cards.')
+            return get_card, spent_coins
+
         card = self.reserved_cards[card_position]
 
         if self.is_possible_to_buy_card(card):
             spent_coins = self.buy_development_card(card, board)  # Get spent coins
             get_card = True
+            # Move card from reserved to development cards
+            self.development_cards.append(card)
+            self.reserved_cards.remove(card)
         else:
             if self.verbose:
                 self.logger.info('Not enough tokens.')
-
-        self.development_cards.append(card)
-        self.reserved_cards.remove(card)
 
         return get_card, spent_coins  # Return both values
 
@@ -522,4 +565,9 @@ class Player(GameComponent):
                 for name, count in counts.items():
                     if count > 1:
                         self.logger.info(f"Card {name} appears {count} times")
+
+    def _ensure_regular_integers(self):
+        """Convert any numpy integers in coins to regular integers"""
+        for color in self.coins.keys():
+            self.coins[color] = int(self.coins[color])
 
