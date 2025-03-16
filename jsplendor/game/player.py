@@ -174,6 +174,7 @@ class Player(GameComponent):
                     self.logger.info(f"Card details - Level: {card.level}, VP: {card.victory_point}, Color: {card.gem_color}")
             
             self.reserve_development_card(board, action_index)
+            over_coin_count = self.drop_over_coins(board)
             self._ensure_regular_integers()  # Ensure regular integers after reserve
             
             if self.verbose:
@@ -204,6 +205,8 @@ class Player(GameComponent):
             self.logger.info(f"Reserved cards: {[card.name for card in self.reserved_cards]}")
             self.logger.info(f"Victory Points: {self.sum_victory_point}")
             self.logger.info("="*50 + "\n")
+
+        self.check_player_coins()
 
         return self.sum_victory_point, over_coin_count, get_card, noble_visit
 
@@ -332,7 +335,7 @@ class Player(GameComponent):
     def drop_unnecessary_coin(self, board):
         price_sum = np.zeros(5, dtype=int)
 
-        table_cards = board.table_level1
+        table_cards = board.table_level1 + board.table_level2 + board.table_level3
         for card in table_cards:
             if card is None:
                 pass
@@ -571,3 +574,11 @@ class Player(GameComponent):
         for color in self.coins.keys():
             self.coins[color] = int(self.coins[color])
 
+    def check_player_coins(self):
+        for color in self.coins.keys():
+            if self.coins[color] < 0:
+                raise ValueError(f"WARNING: {self.name} has negative {color} coins: {self.coins[color]}")
+        
+        sum_coins = sum(self.coins.values())
+        if sum_coins > 10:
+            raise ValueError(f"WARNING: {self.name} has over 10 coins: {sum_coins}")

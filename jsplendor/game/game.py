@@ -52,9 +52,9 @@ class Game:
         for name in player_names:
             self.add_player(name)
 
-        if self.verbose:
-            self.logger.info("Initial game status")
-            self.print_status()
+        #if self.verbose:
+        #    self.logger.info("Initial game status")
+        #    self.print_status()
 
         self.check_all_coins()
         self.check_all_cards()
