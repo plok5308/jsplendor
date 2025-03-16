@@ -80,17 +80,6 @@ class SelfPlayEnv(gym.Env):
         current_player = self.game.players[player_idx]
         opponent_player = self.game.players[opponent_idx]
             
-        # Log current state
-        if self.verbose:
-            self.logger.info("\n" + "="*50)
-            self.logger.info(f"Steps - Player 0: {self.game.players[0].step}, Player 1: {self.game.players[1].step}")
-            self.logger.info(f"Current Player: {player_idx}")
-            self.logger.info("Player Action:")
-            self.logger.info(f"Selected action: {action}")
-            self.logger.info(f"Player coins: {current_player.coins}")
-            self.logger.info(f"Player cards: {[card.name for card in current_player.development_cards]}")
-            self.logger.info(f"Player VP: {current_player.sum_victory_point}")
-
         # Execute player's action
         action_result = current_player.do_action(self.game.board, action)
 

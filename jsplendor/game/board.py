@@ -94,22 +94,3 @@ class Board(GameComponent):
     def print_status(self, object_name=None):
         if not self.verbose:
             return
-            
-        if object_name is not None:
-            self.logger.info(f"[{object_name}]")
-            
-        self.logger.info("Noble cards: ")
-        self.logger.info(str(self.noble_cards))
-        self.logger.info("Coin status: ")
-        self.logger.info(str(self.coins))    
-        self.logger.info("Table level1: ")
-        self.logger.info(str(self.table_level1))
-        self.logger.info(f"The remain number of Level1: {len(self.level1_cards)}")
-        self.logger.info("Table level2: ")
-        self.logger.info(str(self.table_level2))
-        self.logger.info(f"The remain number of Level2: {len(self.level2_cards)}")
-        self.logger.info("Table level3: ")
-        self.logger.info(str(self.table_level3))
-        self.logger.info(f"The remain number of Level3: {len(self.level3_cards)}")
-        self.logger.info("")
-
