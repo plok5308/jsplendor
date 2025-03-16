@@ -136,10 +136,11 @@ class Player(GameComponent):
                     if self.verbose:
                         clean_coins = {k: int(v) for k, v in spent_coins.items()}
                         self.logger.info(f"Coins returned to board: {clean_coins}")
-                # Check coins after purchase
+                # Check for duplicates after buying card
+                self._check_for_duplicates()
                 if hasattr(board, 'game'):
                     board.game.check_all_coins()
-                self._ensure_regular_integers()  # Ensure regular integers after purchase
+                self._ensure_regular_integers()
 
         elif action_type == "buy_reserved_card":
             if self.verbose:
@@ -161,10 +162,11 @@ class Player(GameComponent):
                 if spent_coins:
                     for color, amount in spent_coins.items():
                         board.coins[color] += int(amount)
-                # Check coins after reserved card purchase
+                # Check for duplicates after buying reserved card
+                self._check_for_duplicates()
                 if hasattr(board, 'game'):
                     board.game.check_all_coins()
-                self._ensure_regular_integers()  # Ensure regular integers after reserved card purchase
+                self._ensure_regular_integers()
 
         elif action_type == "reserve":
             if self.verbose:
@@ -416,6 +418,8 @@ class Player(GameComponent):
 
         # Add card to development cards
         self.development_cards.append(card)
+        # Check for duplicates after adding card
+        self._check_for_duplicates()
 
         # Convert any numpy integers in coins to regular integers
         for color in self.coins.keys():
@@ -430,9 +434,11 @@ class Player(GameComponent):
 
         if self.is_possible_to_buy_card_on_table(board, card_position):
             card = board.flatten_table_cards[card_position]
-            spent_coins = self.buy_development_card(card, board)  # Pass board and get spent coins
+            spent_coins = self.buy_development_card(card, board)
             board.update_table_development_card(card)
             get_card = True
+            # Check for duplicates after buying card
+            self._check_for_duplicates()
             
             if self.verbose:
                 self.logger.info(f"Coins returned to board: {spent_coins}")
@@ -440,7 +446,7 @@ class Player(GameComponent):
             if self.verbose:
                 self.logger.info('Not enough tokens.')
 
-        return get_card, spent_coins  # Return both values
+        return get_card, spent_coins
 
     def reserve_development_card(self, board, card_position):
         if len(self.reserved_cards) < 3:
@@ -487,16 +493,15 @@ class Player(GameComponent):
         card = self.reserved_cards[card_position]
 
         if self.is_possible_to_buy_card(card):
-            spent_coins = self.buy_development_card(card, board)  # Get spent coins
+            spent_coins = self.buy_development_card(card, board)
             get_card = True
-            # Move card from reserved to development cards
-            self.development_cards.append(card)
-            self.reserved_cards.remove(card)
+            # Remove card from reserved cards (card is already added to development cards in buy_development_card)
+            self.reserved_cards.pop(card_position)  # Use pop instead of remove to avoid duplicate issues
         else:
             if self.verbose:
                 self.logger.info('Not enough tokens.')
 
-        return get_card, spent_coins  # Return both values
+        return get_card, spent_coins
 
     def check_and_get_a_noble(self, board):
         """Check and acquire a noble card."""
