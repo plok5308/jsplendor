@@ -7,7 +7,7 @@ from stable_baselines3.common.torch_layers import BaseFeaturesExtractor
 class LinearFeatureExtractor(BaseFeaturesExtractor):
     """Simple linear feature extractor with skip connection"""
     
-    def __init__(self, observation_space: spaces.Box, features_dim: int = 256, action_num: int = 42):
+    def __init__(self, observation_space: spaces.Box, features_dim: int = 256, action_num: int = 43):
         # Initialize with observation space and features dimension
         super().__init__(observation_space, features_dim)
         

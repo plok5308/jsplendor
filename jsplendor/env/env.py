@@ -57,7 +57,7 @@ class SelfPlayEnv(gym.Env):
         """Get environment observation from specified player's perspective, including action mask"""
         # Get observation containing both players' states
         obs = get_observation(self.game, player_idx)
-        
+
         # Get action mask for current player
         action_mask = self.get_action_mask(player_idx)
         

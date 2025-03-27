@@ -10,7 +10,6 @@ from stable_baselines3.common.buffers import RolloutBuffer
 from stable_baselines3.common.monitor import Monitor
 
 from jsplendor.env.env import SelfPlayEnv
-from jsplendor.models.transformer import TransformerFeatureExtractor
 from jsplendor.models.linear2 import LinearFeatureExtractor
 from jsplendor.utils.config import get_verbose_dict
 from jsplendor.models.random_player import RandomPlayer
@@ -20,9 +19,7 @@ from jsplendor.env.utils import make_env
 
 def create_model(env, args):
     # Select feature extractor based on model type
-    if args.model_type == 'transformer':
-        feature_extractor = TransformerFeatureExtractor
-    elif args.model_type == 'linear':
+    if args.model_type == 'linear':
         feature_extractor = LinearFeatureExtractor
     else:
         raise ValueError(f"Unknown model type: {args.model_type}")

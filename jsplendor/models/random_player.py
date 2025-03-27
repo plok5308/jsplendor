@@ -3,8 +3,9 @@ import numpy as np
 class RandomPlayer:
     """A player that selects random valid actions"""
     
-    def __init__(self):
+    def __init__(self, action_num: int = 43):
         self.name = "RandomPlayer"
+        self.action_num = action_num
     
     def __call__(self, observation):
         """Legacy method for compatibility"""
@@ -22,7 +23,7 @@ class RandomPlayer:
         """
         # Get action mask from observation
         if isinstance(observation, np.ndarray):
-            action_mask = observation[-42:]  # Last 42 elements are action mask (updated for reserve actions)
+            action_mask = observation[-self.action_num:]  # Last 42 elements are action mask (updated for reserve actions)
         else:
             action_mask = observation['action_mask']
             

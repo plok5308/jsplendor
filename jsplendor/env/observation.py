@@ -276,7 +276,7 @@ def get_observation_space(game):
     cls_space = 1  # 62 (using HIGH_VALUE=63)
 
     # Action space
-    action_space = game.players[0].num_actions  # 42 actions including reserve
+    action_space = game.players[0].num_actions  # 43 actions including reserve
     
     # Total space calculation
     total_space = cls_space + board_space + (player_space * 2) + action_space

@@ -28,12 +28,14 @@ class Player(GameComponent):
         self.n_buy_action = 12   # 4 cards x 3 levels
         self.n_buy_reserved_card_action = 3  # Up to 3 reserved cards
         self.n_reserve_action = 12  # 4 cards x 3 levels that can be reserved
+        self.n_pass_action = 1
         
         # Total number of actions
         self.num_actions = (self.n_coin_action + 
                           self.n_buy_action + 
                           self.n_buy_reserved_card_action + 
-                          self.n_reserve_action)  # Total 42 actions
+                          self.n_reserve_action +
+                          self.n_pass_action)  # Total 43 actions
         
         # Initialize other attributes
         self.development_cards = []
@@ -69,6 +71,8 @@ class Player(GameComponent):
             return "buy_reserved_card", action - self.n_coin_action - self.n_buy_action
         elif action < self.n_coin_action + self.n_buy_action + self.n_buy_reserved_card_action + self.n_reserve_action:
             return "reserve", action - self.n_coin_action - self.n_buy_action - self.n_buy_reserved_card_action
+        elif action == self.n_coin_action + self.n_buy_action + self.n_buy_reserved_card_action + self.n_reserve_action:
+            return "pass", 0
         else:
             raise ValueError(f"Invalid action: {action}")
 
@@ -184,6 +188,10 @@ class Player(GameComponent):
                 if len(self.reserved_cards) >= 3:
                     self.logger.info("Warning: Reserved card limit reached (3 cards)")
 
+        elif action_type == "pass":
+            if self.verbose:
+                self.logger.info("Passing turn")
+
         # Remove general coin check since we now check after each specific action
         self._update_score()
 
@@ -247,18 +255,16 @@ class Player(GameComponent):
 
         # Reserve card actions (30-41)
         for i in range(self.n_coin_action + self.n_buy_action + self.n_buy_reserved_card_action,
-                      self.num_actions):
+                      self.num_actions - 1):
             if len(self.reserved_cards) < 3:  # Can only reserve if less than 3 cards
                 card_position = i - (self.n_coin_action + self.n_buy_action + self.n_buy_reserved_card_action)
                 card = board.flatten_table_cards[card_position]
                 if card is not None:
                     actions[i] = 1
 
+        actions[self.num_actions - 1] = 1  # Pass action
+
         actions = actions.astype(np.bool_)
-        
-        # Safety check: if no actions are valid, allow all coin-taking actions
-        if not np.any(actions):
-            actions[:self.n_coin_action] = True
         
         return actions
 
