@@ -82,10 +82,11 @@ class ModelPlayer:
 
 
 class SelfPlayCallback(EventCallback):
-    def __init__(self, eval_env, opponent_builder, verbose_dict, best_models_dir, n_eval_episodes=100, deterministic=True):
+    def __init__(self, eval_env, opponent_builder, reserve_masking, verbose_dict, best_models_dir, n_eval_episodes=100, deterministic=True):
         super().__init__(None, verbose=False)
         self.eval_env = eval_env
         self.opponent_builder = opponent_builder
+        self.reserve_masking = reserve_masking
         self.verbose_dict = verbose_dict
         self.best_models_dir = best_models_dir
         self.n_eval_episodes = n_eval_episodes
@@ -140,17 +141,17 @@ class SelfPlayCallback(EventCallback):
                 # Update environments
                 if isinstance(self.model.env, SubprocVecEnv):
                     self.model.env = SubprocVecEnv(
-                        [make_env(new_opponent, self.verbose_dict, i) 
+                        [make_env(new_opponent, self.reserve_masking, self.verbose_dict, i) 
                          for i in range(self.model.env.num_envs)]
                     )
                 else:
                     self.model.env = Monitor(
-                        SelfPlayEnv(new_opponent, verbose_dict=self.verbose_dict)
+                        SelfPlayEnv(new_opponent, self.reserve_masking, self.verbose_dict)
                     )
                 
                 # Update eval environment
                 self.eval_env = Monitor(
-                    SelfPlayEnv(new_opponent, verbose_dict=self.verbose_dict)
+                    SelfPlayEnv(new_opponent, self.reserve_masking, self.verbose_dict)
                 )
                 
                 print(f"Now training against model from generation {self.generation}")

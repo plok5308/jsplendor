@@ -44,9 +44,13 @@ class Player(GameComponent):
         self.sum_victory_point = 0
         self.step = 0
         self._update_score()
-        
+        self.reserve_masking = False
+
         # Initialize coins with regular integers
         self.coins = {color: int(amount) for color, amount in self.coins.items()}
+
+    def set_reserve_masking(self, reserve_masking):
+        self.reserve_masking = reserve_masking
 
     def _update_score(self):
         sum_victory_point = 0
@@ -82,6 +86,9 @@ class Player(GameComponent):
         get_card = False
         noble_visit = False
         spent_coins = None  # Initialize spent_coins variable
+
+        if self.verbose:
+            self.logger.info(f"Action: {action}")
 
         action_type, action_index = self._get_action_type_and_index(action)
         
@@ -254,13 +261,16 @@ class Player(GameComponent):
                     actions[i] = 1
 
         # Reserve card actions (30-41)
-        for i in range(self.n_coin_action + self.n_buy_action + self.n_buy_reserved_card_action,
-                      self.num_actions - 1):
-            if len(self.reserved_cards) < 3:  # Can only reserve if less than 3 cards
-                card_position = i - (self.n_coin_action + self.n_buy_action + self.n_buy_reserved_card_action)
-                card = board.flatten_table_cards[card_position]
-                if card is not None:
-                    actions[i] = 1
+        if self.reserve_masking:
+            pass
+        else:
+            for i in range(self.n_coin_action + self.n_buy_action + self.n_buy_reserved_card_action,
+                        self.num_actions - 1):
+                if len(self.reserved_cards) < 3:  # Can only reserve if less than 3 cards
+                    card_position = i - (self.n_coin_action + self.n_buy_action + self.n_buy_reserved_card_action)
+                    card = board.flatten_table_cards[card_position]
+                    if card is not None:
+                        actions[i] = 1
 
         actions[self.num_actions - 1] = 1  # Pass action
 

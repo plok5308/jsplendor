@@ -12,7 +12,7 @@ from jsplendor.utils import TestLogger
 
 class SelfPlayEnv(gym.Env):
     """Two player environment with random starting positions"""
-    def __init__(self, opponent_policy=None, verbose_dict=None):
+    def __init__(self, opponent_policy=None, reserve_masking=None, verbose_dict=None):
         if verbose_dict is None:
             verbose_dict = get_verbose_dict()
         
@@ -32,6 +32,8 @@ class SelfPlayEnv(gym.Env):
         
         # Verify both players are initialized
         assert len(self.game.players) == 2, "Game must have exactly 2 players"
+
+        self.reserve_masking = reserve_masking
                 
         # Action and observation spaces
         action_n = self.game.players[0].num_actions
@@ -166,6 +168,16 @@ class SelfPlayEnv(gym.Env):
         if len(self.game.players) == 1:
             self.game.add_player("player2")
         
+        if self.reserve_masking == 'player':
+            self.game.players[0].set_reserve_masking(True)
+        elif self.reserve_masking == 'opponent':
+            self.game.players[1].set_reserve_masking(True)
+        elif self.reserve_masking == 'both':
+            self.game.players[0].reserve_masking = True
+            self.game.players[1].reserve_masking = True
+        else:
+            raise ValueError(f"Invalid reserve_masking: {reserve_masking}")
+
         # Randomly decide if trained agent starts first
         self.player_starts_first = bool(np.random.randint(2))
 

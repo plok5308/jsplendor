@@ -62,14 +62,16 @@ def train_self_play(args):
     best_models_dir = os.path.join('logs', args.exp, 'best_models')
     os.makedirs(best_models_dir, exist_ok=True)
     
+    reserve_masking = args.reserve_masking
+    
     # Set up environments - vectorized for training, single for evaluation
     if args.debug:
-        train_env = SelfPlayEnv(opponent, verbose_dict=verbose_dict)
-        eval_env = SelfPlayEnv(opponent, verbose_dict=verbose_dict)
+        train_env = SelfPlayEnv(opponent, reserve_masking, verbose_dict=verbose_dict)
+        eval_env = SelfPlayEnv(opponent, reserve_masking, verbose_dict=verbose_dict)
     else:
-        train_env = SubprocVecEnv([make_env(opponent, verbose_dict, i) for i in range(args.num_cpu)])
+        train_env = SubprocVecEnv([make_env(opponent, reserve_masking, verbose_dict, i) for i in range(args.num_cpu)])
         # Create a single environment for evaluation
-        eval_env = Monitor(SelfPlayEnv(opponent, verbose_dict=verbose_dict))
+        eval_env = Monitor(SelfPlayEnv(opponent, reserve_masking, verbose_dict=verbose_dict))
 
     eval_log_dir = f'logs/{args.exp}'
     os.makedirs(eval_log_dir, exist_ok=True)
@@ -78,6 +80,7 @@ def train_self_play(args):
     self_play_callback = SelfPlayCallback(
         eval_env=eval_env,
         opponent_builder=lambda: RandomPlayer(),  # Initial opponent builder
+        reserve_masking=reserve_masking,
         verbose_dict=verbose_dict,
         best_models_dir=best_models_dir,
         n_eval_episodes=10,
@@ -142,6 +145,8 @@ if __name__ == "__main__":
     parser.add_argument('--deterministic', action='store_true', help='Use deterministic actions during evaluation')
     parser.add_argument('--model_type', type=str, choices=['transformer', 'linear'], default='linear',
                       help='Type of feature extractor to use')
+    parser.add_argument('--reserve_masking', choices=['player', 'opponent', 'both'], default='both',
+                      help='Type of masking to use for reserved cards')
     args = parser.parse_args()
 
     model = train_self_play(args)
