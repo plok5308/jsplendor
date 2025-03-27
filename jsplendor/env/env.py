@@ -9,6 +9,7 @@ from jsplendor.env.observation import get_observation_space, get_observation, HI
 from jsplendor.utils.config import get_verbose_dict
 from jsplendor.utils import TestLogger
 
+
 class SelfPlayEnv(gym.Env):
     """Two player environment with random starting positions"""
     def __init__(self, opponent_policy=None, verbose_dict=None):
@@ -209,21 +210,3 @@ class SelfPlayEnv(gym.Env):
 
     def close(self):
         pass 
-
-
-class StepRewardWrapper(gym.Wrapper):
-    """Wrapper that adds step-based reward while preserving original rewards"""
-    def __init__(self, env):
-        super().__init__(env)
-        
-    def step(self, action):
-        obs, reward, terminated, truncated, info = self.env.step(action)
-        
-        # Add step-based reward only when winning
-        if terminated and info.get('winner') == 'player':
-            player_steps = info['steps']['player0'] if self.env.player_starts_first else info['steps']['player1']
-            step_reward = 100 - player_steps
-            reward = reward + step_reward  # Add to original reward
-            info['step_reward'] = step_reward
-            
-        return obs, reward, terminated, truncated, info
