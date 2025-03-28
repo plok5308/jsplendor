@@ -43,10 +43,10 @@ def create_model(env, args):
         policy_kwargs=policy_kwargs,
         tensorboard_log=f"logs/{args.exp}",
         ent_coef=args.ent_coef,
+        gamma=args.gamma,
+        gae_lambda=args.gae_lambda,
         device="cuda" if torch.cuda.is_available() else "cpu"
     )
-
-
 
 def train_self_play(args):
     # Set up verbose dict based on debug flag
@@ -147,6 +147,10 @@ if __name__ == "__main__":
                       help='Type of feature extractor to use')
     parser.add_argument('--reserve_masking', choices=['player', 'opponent', 'both'], default='both',
                       help='Type of masking to use for reserved cards')
+    parser.add_argument('--gamma', type=float, default=0.8, 
+                      help='Discount factor (lower values like 0.8 focus more on latter part of game)')
+    parser.add_argument('--gae_lambda', type=float, default=0.95, 
+                      help='GAE lambda parameter for advantage estimation')
     args = parser.parse_args()
 
     model = train_self_play(args)
