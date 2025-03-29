@@ -7,16 +7,13 @@ from jsplendor.utils import TestLogger
 from stable_baselines3 import PPO
 from jsplendor.models.random_player import RandomPlayer
 from jsplendor.utils.config import get_verbose_dict
-from jsplendor.models.transformer import TransformerFeatureExtractor
 from jsplendor.models.linear2 import LinearFeatureExtractor
 from jsplendor.policy.masked_policy import MaskedActorCriticPolicy
 import torch
 
 def create_model(env, model_type='transformer'):
     """Create a new model with specified architecture"""
-    if model_type == 'transformer':
-        feature_extractor = TransformerFeatureExtractor
-    elif model_type == 'linear':
+    if model_type == 'linear':
         feature_extractor = LinearFeatureExtractor
     else:
         raise ValueError(f"Unknown model type: {model_type}")

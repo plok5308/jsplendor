@@ -272,7 +272,8 @@ class Player(GameComponent):
                     if card is not None:
                         actions[i] = 1
 
-        actions[self.num_actions - 1] = 1  # Pass action
+        if np.sum(actions) == 0:
+            actions[self.num_actions - 1] = 1  # Pass action
 
         actions = actions.astype(np.bool_)
         

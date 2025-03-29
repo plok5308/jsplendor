@@ -5,13 +5,12 @@ import argparse
 from stable_baselines3 import PPO
 from stable_baselines3.common.monitor import Monitor
 from jsplendor.env import SelfPlayEnv
-from jsplendor.models.transformer import TransformerFeatureExtractor
 from jsplendor.models.linear2 import LinearFeatureExtractor
 from jsplendor.utils.config import get_verbose_dict
 from jsplendor.models.random_player import RandomPlayer
 from jsplendor.policy.masked_policy import MaskedActorCriticPolicy
 
-def evaluate_match(agent1, agent2, n_episodes=100, deterministic1=True, deterministic2=True, verbose=False):
+def evaluate_match(agent1, agent2, n_episodes=100, deterministic1=True, deterministic2=True, reserve_masking='both', verbose=False):
     """Evaluate matches between two agents"""
     # Set up verbose dict based on verbose flag
     verbose_dict = get_verbose_dict()
@@ -23,6 +22,7 @@ def evaluate_match(agent1, agent2, n_episodes=100, deterministic1=True, determin
     
     env = Monitor(SelfPlayEnv(
         opponent_policy=lambda x: agent2.predict(x, deterministic=deterministic2)[0],
+        reserve_masking=reserve_masking,
         verbose_dict=verbose_dict
     ))
     
@@ -85,9 +85,7 @@ def evaluate_match(agent1, agent2, n_episodes=100, deterministic1=True, determin
 
 def create_model(env, model_type='transformer'):
     """Create a new model with specified architecture"""
-    if model_type == 'transformer':
-        feature_extractor = TransformerFeatureExtractor
-    elif model_type == 'linear':
+    if model_type == 'linear':
         feature_extractor = LinearFeatureExtractor
     else:
         raise ValueError(f"Unknown model type: {model_type}")
@@ -128,6 +126,9 @@ if __name__ == "__main__":
                        help='Use deterministic actions for first model')
     parser.add_argument('--deterministic2', action='store_true',
                        help='Use deterministic actions for second model')
+    parser.add_argument('--reserve_masking', choices=['player', 'opponent', 'both'], default='both',
+                       help='Type of masking to use for reserved cards')
+
     parser.add_argument('--verbose', action='store_true',
                        help='Enable verbose mode for detailed game information')
     args = parser.parse_args()
@@ -148,6 +149,7 @@ if __name__ == "__main__":
     
     env = Monitor(SelfPlayEnv(
         opponent_policy=RandomPlayer(),
+        reserve_masking=args.reserve_masking,
         verbose_dict=verbose_dict
     ))
     
@@ -172,5 +174,5 @@ if __name__ == "__main__":
         print(f"Agent 2: {args.model2_type.capitalize()} Model")
     
     # Run evaluation
-    results = evaluate_match(agent1, agent2, args.n_episodes, args.deterministic1, args.deterministic2, args.verbose)
+    results = evaluate_match(agent1, agent2, args.n_episodes, args.deterministic1, args.deterministic2, args.reserve_masking, args.verbose)
 
