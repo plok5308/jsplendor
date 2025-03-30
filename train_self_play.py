@@ -10,7 +10,7 @@ from stable_baselines3.common.buffers import RolloutBuffer
 from stable_baselines3.common.monitor import Monitor
 
 from jsplendor.env.env import SelfPlayEnv
-from jsplendor.models.linear2 import LinearFeatureExtractor
+from jsplendor.models.linear3 import LinearFeatureExtractor
 from jsplendor.utils.config import get_verbose_dict
 from jsplendor.models.random_player import RandomPlayer
 from jsplendor.policy.masked_policy import MaskedActorCriticPolicy
@@ -83,7 +83,8 @@ def train_self_play(args):
         reserve_masking=reserve_masking,
         verbose_dict=verbose_dict,
         best_models_dir=best_models_dir,
-        n_eval_episodes=1000,
+        n_eval_episodes=args.n_eval_episodes,
+        win_rate_threshold=args.win_rate_threshold,
         deterministic=args.deterministic
     )
 
@@ -145,12 +146,16 @@ if __name__ == "__main__":
     parser.add_argument('--deterministic', action='store_true', help='Use deterministic actions during evaluation')
     parser.add_argument('--model_type', type=str, choices=['transformer', 'linear'], default='linear',
                       help='Type of feature extractor to use')
-    parser.add_argument('--reserve_masking', choices=['player', 'opponent', 'both'], default='both',
+    parser.add_argument('--reserve_masking', choices=['none', 'player', 'opponent', 'both'], default='both',
                       help='Type of masking to use for reserved cards')
     parser.add_argument('--gamma', type=float, default=1.0, 
                       help='Discount factor')
     parser.add_argument('--gae_lambda', type=float, default=0.95, 
                       help='GAE lambda parameter for advantage estimation')
+    parser.add_argument('--win_rate_threshold', type=float, default=0.55,
+                      help='Win rate threshold for updating opponent')
+    parser.add_argument('--n_eval_episodes', type=int, default=1000,
+                      help='Number of evaluation episodes')
     args = parser.parse_args()
 
     model = train_self_play(args)

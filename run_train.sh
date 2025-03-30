@@ -1,1 +1,2 @@
-python train_self_play.py --exp exp_name --num_cpu 1
+#python train_self_play.py --exp allow_reserve --load_model ./logs/linear3/best_models/model_gen_11.zip --reserve_masking none
+python train_self_play.py --exp allow_reserve_opponent --load_model ./logs/linear3/best_models/model_gen_11.zip --reserve_masking opponent --win_rate_threshold 0.6 

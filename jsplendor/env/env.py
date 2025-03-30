@@ -168,7 +168,10 @@ class SelfPlayEnv(gym.Env):
         if len(self.game.players) == 1:
             self.game.add_player("player2")
         
-        if self.reserve_masking == 'player':
+        if self.reserve_masking == 'none':
+            self.game.players[0].set_reserve_masking(False)
+            self.game.players[1].set_reserve_masking(False)
+        elif self.reserve_masking == 'player':
             self.game.players[0].set_reserve_masking(True)
         elif self.reserve_masking == 'opponent':
             self.game.players[1].set_reserve_masking(True)

@@ -82,7 +82,7 @@ class ModelPlayer:
 
 
 class SelfPlayCallback(EventCallback):
-    def __init__(self, eval_env, opponent_builder, reserve_masking, verbose_dict, best_models_dir, n_eval_episodes=100, deterministic=True):
+    def __init__(self, eval_env, opponent_builder, reserve_masking, verbose_dict, best_models_dir, n_eval_episodes=100, win_rate_threshold=0.55, deterministic=True):
         super().__init__(None, verbose=False)
         self.eval_env = eval_env
         self.opponent_builder = opponent_builder
@@ -92,9 +92,10 @@ class SelfPlayCallback(EventCallback):
         self.n_eval_episodes = n_eval_episodes
         self.deterministic = deterministic
         self.generation = 0
-        self.win_rate_threshold = 0.55
+        self.win_rate_threshold = win_rate_threshold
         self.best_mean_reward = -np.inf
         self.last_mean_reward = -np.inf
+        self.last_model_path = None
 
     def _on_step(self) -> bool:
         # Check if it's time to evaluate
@@ -124,17 +125,21 @@ class SelfPlayCallback(EventCallback):
             
             self.last_mean_reward = mean_reward
             
+            # Save current model regardless of performance
+            self.last_model_path = os.path.join(self.best_models_dir, f"model_gen_{self.generation}_last")
+            self.model.save(self.last_model_path)
+            
             # If win rate exceeds threshold, update opponent
             if eval_results['win_rate'] > self.win_rate_threshold:
                 print("\n" + "-"*50)
                 print(f"Win rate {eval_results['win_rate']:.1%} exceeds threshold!")
                 print(f"Saving model and updating opponent...")
                 
-                # Save current model
+                # Save current model as best model
                 model_path = os.path.join(self.best_models_dir, f"model_gen_{self.generation}")
                 self.model.save(model_path)
                 
-                # Create and set new opponent
+                # Create and set new opponent using the best model
                 opponent_model = PPO.load(model_path)
                 new_opponent = ModelPlayer(opponent_model, deterministic=self.deterministic)
                 
