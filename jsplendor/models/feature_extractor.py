@@ -72,54 +72,98 @@ class CombinedFeatureBlock(nn.Module):
         return x
 
 
-class LinearFeatureExtractor(BaseFeaturesExtractor):
+class Conv1DResidualBlock(nn.Module):
+    def __init__(self, channels, seq_len, stride=2):
+        super().__init__()
+        kernel_size = 7  # Increased kernel size for wider receptive field
+        padding = kernel_size // 2
+        
+        # Calculate output sequence length after stride
+        output_seq_len = (seq_len + 2 * padding - kernel_size) // stride + 1
+        
+        self.conv1 = nn.Conv1d(channels, channels, kernel_size=kernel_size, stride=stride, padding=padding)
+        self.norm1 = nn.LayerNorm([channels, output_seq_len])
+        self.conv2 = nn.Conv1d(channels, channels, kernel_size=kernel_size, stride=1, padding=padding)
+        self.norm2 = nn.LayerNorm([channels, output_seq_len])
+        self.activation = nn.GELU()
+        
+        # Downsample residual connection if using stride
+        self.downsample = nn.Conv1d(channels, channels, kernel_size=1, stride=stride) if stride > 1 else None
+        
+    def forward(self, x):
+        residual = x
+        if self.downsample is not None:
+            residual = self.downsample(residual)
+            
+        x = self.conv1(x)
+        x = self.norm1(x)
+        x = self.activation(x)
+        x = self.conv2(x)
+        x = self.norm2(x)
+        return self.activation(x + residual)
+
+
+class CustomFeatureExtractor(BaseFeaturesExtractor):
     """Enhanced feature extractor for Splendor game state"""
     
     def __init__(self, observation_space: spaces.Box, features_dim: int = 256, action_num: int = 43):
         super().__init__(observation_space, features_dim)
         
-        print('Linear3 feature extractor initialized with:')
+        print('Conv1D feature extractor initialized with:')
         # Store dimensions
         self.full_dim = observation_space.shape[0]
         self.obs_dim = self.full_dim - action_num
+        self.single_step_obs_size = 435  # 3 x 435 features
         
-        # Split observation into meaningful chunks
-        self.board_size = 125  
-        self.player_size = 155
+        # Initial embedding with larger kernel
+        kernel_size = 5
+        padding = kernel_size // 2
+        self.embed = nn.Conv1d(3, 64, kernel_size=kernel_size, padding=padding)
+        self.norm = nn.LayerNorm([64, 435])
         
-        # Feature processing blocks
-        self.board_block = BoardFeatureBlock(self.board_size, 256)
-        self.player1_block = PlayerFeatureBlock(self.player_size, 128)
-        self.player2_block = PlayerFeatureBlock(self.player_size, 128)
-        self.combined_block = CombinedFeatureBlock(512, 512, features_dim)
+        # Calculate sequence lengths after each strided block
+        current_size = 435
+        seq_lengths = [current_size]
+        for _ in range(8):
+            current_size = (current_size + 2 * padding - kernel_size) // 2 + 1
+            seq_lengths.append(current_size)
         
-        print('Enhanced feature extractor initialized with:')
+        print(f"Sequence lengths: {seq_lengths}")
+        
+        # Multiple residual blocks with stride
+        self.residual_blocks = nn.ModuleList([
+            Conv1DResidualBlock(64, seq_len, stride=2 if i < len(seq_lengths)-2 else 1)
+            for i, seq_len in enumerate(seq_lengths[:-1])
+        ])
+        
+        # Final processing
+        self.final_linear = nn.Linear(64*4, features_dim)
+        
         print(f' - Full input dim: {self.full_dim}')
         print(f' - Observation dim: {self.obs_dim}')
-        print(f' - Board size: {self.board_size}')
-        print(f' - Player size: {self.player_size}')
         print(f' - Output dim: {features_dim}')
         
     def forward(self, observations: torch.Tensor) -> torch.Tensor:
-        # Handle input formatting
         if observations.dtype != torch.float32:
             observations = observations.float()
             
         if observations.shape[-1] == self.full_dim:
             observations = observations[..., :self.obs_dim]
+
+        # Reshape to [batch_size, channels, sequence_length]
+        x = observations.view(-1, 3, self.single_step_obs_size)
         
-        # Split observation into components
-        board_obs = observations[..., 1:self.board_size+1]  # Skip CLS token
-        player1_obs = observations[..., self.board_size+1:self.board_size+1+self.player_size]
-        player2_obs = observations[..., self.board_size+1+self.player_size:]
+        # Initial embedding
+        x = self.embed(x)  # Shape: [batch_size, 64, 435]
+        x = self.norm(x)
         
-        # Process features through blocks
-        board_features = self.board_block(board_obs)
-        player1_features = self.player1_block(player1_obs)
-        player2_features = self.player2_block(player2_obs)
+        # Process through residual blocks with progressive downsampling
+        for block in self.residual_blocks:
+            x = block(x)
+
+        x = x.view(-1, 64*4)
         
-        # Combine and process features
-        combined = torch.cat([board_features, player1_features, player2_features], dim=-1)
-        output = self.combined_block(combined)
+        # Final projection
+        x = self.final_linear(x)  # Shape: [batch_size, features_dim]
         
-        return output
+        return x

@@ -10,7 +10,7 @@ from stable_baselines3.common.buffers import RolloutBuffer
 from stable_baselines3.common.monitor import Monitor
 
 from jsplendor.env.env import SelfPlayEnv
-from jsplendor.models.linear3 import LinearFeatureExtractor
+from jsplendor.models.feature_extractor import CustomFeatureExtractor
 from jsplendor.utils.config import get_verbose_dict
 from jsplendor.models.random_player import RandomPlayer
 from jsplendor.policy.masked_policy import MaskedActorCriticPolicy
@@ -19,11 +19,8 @@ from jsplendor.env.utils import make_env
 
 def create_model(env, args):
     # Select feature extractor based on model type
-    if args.model_type == 'linear':
-        feature_extractor = LinearFeatureExtractor
-    else:
-        raise ValueError(f"Unknown model type: {args.model_type}")
-    
+    feature_extractor = CustomFeatureExtractor
+
     # Create policy kwargs with selected feature extractor
     policy_kwargs = {
         'features_extractor_class': feature_extractor,
@@ -144,8 +141,6 @@ if __name__ == "__main__":
     parser.add_argument('--n_steps', type=int, default=65536, help='Number of steps per update')
     parser.add_argument('--batch_size', type=int, default=512, help='Size of the batch for training')
     parser.add_argument('--deterministic', action='store_true', help='Use deterministic actions during evaluation')
-    parser.add_argument('--model_type', type=str, choices=['transformer', 'linear'], default='linear',
-                      help='Type of feature extractor to use')
     parser.add_argument('--reserve_masking', choices=['none', 'player', 'opponent', 'both'], default='both',
                       help='Type of masking to use for reserved cards')
     parser.add_argument('--gamma', type=float, default=1.0, 

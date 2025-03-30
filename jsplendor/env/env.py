@@ -50,6 +50,7 @@ class SelfPlayEnv(gym.Env):
         # Parameters
         self.target_vp = 15
         self.max_step = 300
+        self.previous_game = None
 
     def get_action_mask(self, player_idx=0):
         """Get action mask for specified player"""
@@ -58,7 +59,7 @@ class SelfPlayEnv(gym.Env):
     def get_env_observation(self, player_idx=0):
         """Get environment observation from specified player's perspective, including action mask"""
         # Get observation containing both players' states
-        obs = get_observation(self.game, player_idx)
+        obs = get_observation(self.previous_game, self.game, player_idx)
 
         # Get action mask for current player
         action_mask = self.get_action_mask(player_idx)
@@ -77,6 +78,8 @@ class SelfPlayEnv(gym.Env):
         return opponent_vp
 
     def step(self, action):
+        self.previous_game = deepcopy(self.game)
+
         # Execute learning player's action
         player_idx = 0 if self.player_starts_first else 1
         opponent_idx = 1 - player_idx
@@ -218,6 +221,7 @@ class SelfPlayEnv(gym.Env):
             self.logger.info(f"Steps - Player 0: {self.game.players[0].step}, Player 1: {self.game.players[1].step}")
             self.logger.info("="*50)
         
+        self.previous_game = None
         return observation, info
 
     def render(self):

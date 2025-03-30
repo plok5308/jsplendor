@@ -228,17 +228,9 @@ class PlayerObservation:
 def get_observation_space(game):
     board_space = BoardObservation.get_space()
     player_space = PlayerObservation.get_space()
-    cls_space = 1
     action_space = game.players[0].num_actions
     
-    total_space = cls_space + board_space + (player_space * 2) + action_space
-    
-    print(f"Observation space dimensions:")
-    print(f" - CLS token: {cls_space}")
-    print(f" - Board space: {board_space}")
-    print(f" - Player space (x2): {player_space} * 2")
-    print(f" - Action space: {action_space}")
-    print(f" - Total space: {total_space}")
+    total_space = (board_space + (player_space * 2))*3 + action_space
     
     return spaces.Box(
         low=0,
@@ -247,29 +239,44 @@ def get_observation_space(game):
         dtype=np.int32
     )
 
-def get_observation(game, player_idx=0, verbose=False, logger=None):
-    board_obs = BoardObservation.get_observation(game.board)
-    
+def get_observation(previous_game, game, player_idx=0, verbose=False, logger=None):
+
+    if previous_game is None:
+        previous_obs = np.zeros(BoardObservation.get_space() + PlayerObservation.get_space()*2, dtype=np.int32)
+    else:
+        previous_board_obs = BoardObservation.get_observation(previous_game.board)
+        previous_current_player = previous_game.players[player_idx]
+        previous_opponent_player = previous_game.players[1 - player_idx]
+        previous_current_obs = PlayerObservation.get_observation(previous_game, previous_current_player)
+        previous_opponent_obs = PlayerObservation.get_observation(previous_game, previous_opponent_player)
+        
+        previous_obs = np.concatenate([
+            previous_board_obs,
+            previous_current_obs,
+            previous_opponent_obs
+        ])
+
+    current_board_obs = BoardObservation.get_observation(game.board)
     current_player = game.players[player_idx]
-    opponent_player = game.players[1 - player_idx]
+    current_opponent_player = game.players[1 - player_idx]
     current_obs = PlayerObservation.get_observation(game, current_player)
-    opponent_obs = PlayerObservation.get_observation(game, opponent_player)
+    current_opponent_obs = PlayerObservation.get_observation(game, current_opponent_player)
     
-    cls_token = np.ones(1, dtype=np.int32) * (HIGH_VALUE-1)
-    
-    obs = np.concatenate([
-        cls_token,
-        board_obs,
+    current_obs = np.concatenate([
+        current_board_obs,
         current_obs,
-        opponent_obs
+        current_opponent_obs
+    ])  
+
+    diff_obs = current_obs - previous_obs
+
+    obs = np.concatenate([
+        previous_obs,
+        current_obs,
+        diff_obs
     ])
+
     
-    if verbose and logger:
-        logger.info("-" * 50)
-        logger.info("Base Observation:")
-        logger.info(f"Shape: {obs.shape}")
-        logger.info(f"CLS({cls_token.shape[0]}) + Board({board_obs.shape[0]}) + " +
-                   f"Current({current_obs.shape[0]}) + Opponent({opponent_obs.shape[0]})")
     
     return obs
 
