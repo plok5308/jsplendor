@@ -10,7 +10,7 @@ from stable_baselines3.common.buffers import RolloutBuffer
 from stable_baselines3.common.monitor import Monitor
 
 from jsplendor.env.env import SelfPlayEnv
-from jsplendor.models.feature_extractor import CustomFeatureExtractor
+from jsplendor.models.linear4 import LinearFeatureExtractor
 from jsplendor.utils.config import get_verbose_dict
 from jsplendor.models.random_player import RandomPlayer
 from jsplendor.policy.masked_policy import MaskedActorCriticPolicy
@@ -19,7 +19,7 @@ from jsplendor.env.utils import make_env
 
 def create_model(env, args):
     # Select feature extractor based on model type
-    feature_extractor = CustomFeatureExtractor
+    feature_extractor = LinearFeatureExtractor
 
     # Create policy kwargs with selected feature extractor
     policy_kwargs = {

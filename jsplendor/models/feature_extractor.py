@@ -51,31 +51,32 @@ class PlayerFeatureBlock(nn.Module):
         return x
 
 
-class CombinedFeatureBlock(nn.Module):
-    def __init__(self, input_dim, hidden_dim, output_dim):
-        super().__init__()
-        self.linear1 = nn.Linear(input_dim, hidden_dim)
-        self.norm1 = nn.LayerNorm(hidden_dim)
-        self.residual = ResidualBlock(hidden_dim)
-        self.linear2 = nn.Linear(hidden_dim, output_dim)
-        self.norm2 = nn.LayerNorm(output_dim)
-        self.activation = nn.GELU()
+# class CombinedFeatureBlock(nn.Module):
+#     def __init__(self, input_dim, output_dim):
+#         super().__init__()
+#         self.linear1 = nn.Linear(input_dim, input_dim)
+#         self.norm1 = nn.LayerNorm(input_dim)
+#         self.linear2 = nn.Linear(input_dim, output_dim)
+#         self.norm2 = nn.LayerNorm(output_dim)
+#         self.activation = nn.GELU()
         
-    def forward(self, x):
-        x = self.linear1(x)
-        x = self.norm1(x)
-        x = self.activation(x)
-        x = self.residual(x)
-        x = self.linear2(x)
-        x = self.norm2(x)
-        x = self.activation(x)
-        return x
+#     def forward(self, x):
+#         residual = x
+#         x = self.linear1(x)
+#         x = self.norm1(x)
+#         x = self.activation(x)
+#         x = x + residual
+
+#         x = self.linear2(x)
+#         x = self.norm2(x)
+#         x = self.activation(x)
+#         return x
 
 
 class Conv1DResidualBlock(nn.Module):
     def __init__(self, channels, seq_len, stride=2):
         super().__init__()
-        kernel_size = 7  # Increased kernel size for wider receptive field
+        kernel_size = 5  # Increased kernel size for wider receptive field
         padding = kernel_size // 2
         
         # Calculate output sequence length after stride

@@ -230,7 +230,7 @@ def get_observation_space(game):
     player_space = PlayerObservation.get_space()
     action_space = game.players[0].num_actions
     
-    total_space = (board_space + (player_space * 2))*3 + action_space
+    total_space = (board_space + (player_space * 2))*2 + action_space
     
     return spaces.Box(
         low=0,
@@ -268,12 +268,9 @@ def get_observation(previous_game, game, player_idx=0, verbose=False, logger=Non
         current_opponent_obs
     ])  
 
-    diff_obs = current_obs - previous_obs
-
     obs = np.concatenate([
         previous_obs,
         current_obs,
-        diff_obs
     ])
 
     
