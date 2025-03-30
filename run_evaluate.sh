@@ -1,7 +1,8 @@
 python evaluate_agents.py \
     --model1_type linear \
-    --model1_path ./logs/linear3/best_models/model_gen_11.zip \
+    --model1_path ./logs/allow_reserve_opponent/best_models/model_gen_1_last.zip \
     --model2_type linear \
-    --model2_path ./logs/linear3/best_models/model_gen_11.zip \
-    --n_episodes 1000 \
-    #--verbose \
+    --model2_path ./logs/allow_reserve_opponent/best_models/model_gen_1_last.zip \
+    --reserve_masking player \
+    --n_episodes 1 \
+    --verbose \

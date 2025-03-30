@@ -126,8 +126,8 @@ if __name__ == "__main__":
                        help='Use deterministic actions for first model')
     parser.add_argument('--deterministic2', action='store_true',
                        help='Use deterministic actions for second model')
-    parser.add_argument('--reserve_masking', choices=['player', 'opponent', 'both'], default='both',
-                       help='Type of masking to use for reserved cards')
+    parser.add_argument('--reserve_masking', choices=['none', 'player', 'opponent', 'both'], default='both',
+                      help='Type of masking to use for reserved cards')
 
     parser.add_argument('--verbose', action='store_true',
                        help='Enable verbose mode for detailed game information')

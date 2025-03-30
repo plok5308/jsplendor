@@ -9,6 +9,7 @@ from jsplendor.models.random_player import RandomPlayer
 from jsplendor.utils.config import get_verbose_dict
 from jsplendor.models.linear2 import LinearFeatureExtractor
 from jsplendor.policy.masked_policy import MaskedActorCriticPolicy
+from stable_baselines3.common.monitor import Monitor
 import torch
 
 def create_model(env, model_type='transformer'):
@@ -54,6 +55,9 @@ def main():
                        help='Use deterministic actions for second model')
     parser.add_argument('--log_dir', type=str, default='logs/gui_test',
                        help='Directory for logging')
+    parser.add_argument('--reserve_masking', choices=['none', 'player', 'opponent', 'both'], default='none',
+                      help='Type of masking to use for reserved cards')
+                      
     args = parser.parse_args()
 
     # Validate arguments
@@ -72,16 +76,21 @@ def main():
     # Create logger with specified log directory
     logger = TestLogger(args.log_dir)
 
+    # Create environment first
+    env = Monitor(SelfPlayEnv(
+        opponent_policy=RandomPlayer(),  # Temporary opponent, will be updated
+        reserve_masking=args.reserve_masking,
+        verbose_dict=verbose_dict
+    ))
+
     # Create/load first agent
     if args.model1_type == 'random':
         agent1 = RandomPlayer()
         print("Agent 1: Random Player")
     else:
-        # Create dummy env just for model loading
-        dummy_env = SelfPlayEnv(opponent_policy=RandomPlayer())
-        model1 = create_model(dummy_env, args.model1_type)
+        model1 = create_model(env, args.model1_type)
         print(f"Loading model 1 from {args.model1_path}...")
-        agent1 = model1.load(args.model1_path, env=dummy_env)
+        agent1 = model1.load(args.model1_path, env=env)
         print(f"Agent 1: {args.model1_type.capitalize()} Model")
 
     # Create/load second agent
@@ -89,15 +98,16 @@ def main():
         agent2 = RandomPlayer()
         print("Agent 2: Random Player")
     else:
-        # Create dummy env just for model loading
-        dummy_env = SelfPlayEnv(opponent_policy=RandomPlayer())
-        model2 = create_model(dummy_env, args.model2_type)
+        model2 = create_model(env, args.model2_type)
         print(f"Loading model 2 from {args.model2_path}...")
-        agent2 = model2.load(args.model2_path, env=dummy_env)
+        agent2 = model2.load(args.model2_path, env=env)
         print(f"Agent 2: {args.model2_type.capitalize()} Model")
 
-    # Create GUI with both models and their paths
-    gui = AIGameGUI(agent1, agent2, logger, verbose_dict)
+    # Update environment with actual opponent
+    env.env.opponent_policy = lambda x: agent2.predict(x, deterministic=args.deterministic2)[0]
+
+    # Create GUI with both models and their paths, passing the environment
+    gui = AIGameGUI(agent1, agent2, logger, verbose_dict, env=env)
 
     # Run the GUI
     try:
@@ -108,4 +118,5 @@ def main():
         pygame.quit()
 
 if __name__ == "__main__":
+    assert False, "has a bug"
     main() 

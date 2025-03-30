@@ -363,12 +363,10 @@ class SplendorGUI:
         target_surface.blit(text_surface, text_rect)
 
 class AIGameGUI(SplendorGUI):
-    def __init__(self, model1, model2, logger, verbose_dict):
-        # Initialize with a new game instance
-        game = Game(verbose_dict)
-        
-        # Add second player to the game
-        game.add_player("player2")
+    def __init__(self, model1, model2, logger, verbose_dict, env):
+        # Use environment's game instance
+        game = env.env.game  # Get game from SelfPlayEnv
+        self.env = env
         
         super().__init__(game)
         
@@ -384,7 +382,7 @@ class AIGameGUI(SplendorGUI):
         self.current_player = 1  # Track whose turn it is
         
         # Initialize observation
-        self.update_observation()
+        self.obs = self.env.reset()[0]  # Get initial observation
         
         # Add state tracking
         self.action_state = 'ready'  # 'ready', 'showing_probs', 'pending_action'
@@ -417,9 +415,18 @@ class AIGameGUI(SplendorGUI):
     def update_observation(self):
         """Get current observation for the active player"""
         player_idx = self.current_player - 1
-        self.obs = get_observation(self.game, player_idx, verbose=self.verbose_dict['env'], logger=self.logger)
-        action_mask = self.game.players[player_idx].get_all_possible_actions(self.game.board)
-        self.obs = np.concatenate([self.obs, action_mask])
+        if player_idx == 0:
+            # For player 1, get observation from environment without resetting
+            if hasattr(self, 'last_obs'):
+                self.obs = self.last_obs
+            else:
+                # Only reset on first observation
+                self.obs = self.env.reset()[0]
+        else:
+            # For player 2, get observation directly from game
+            self.obs = get_observation(self.game, player_idx, verbose=self.verbose_dict['env'], logger=self.logger)
+            action_mask = self.game.players[player_idx].get_all_possible_actions(self.game.board)
+            self.obs = np.concatenate([self.obs, action_mask])
 
     def get_action_probabilities(self, model, obs):
         """Calculate action probabilities for the current state"""
@@ -556,7 +563,6 @@ class AIGameGUI(SplendorGUI):
     def take_ai_action(self):
         # Get current model and player
         current_model = self.model1 if self.current_player == 1 else self.model2
-        current_player = self.game.players[self.current_player - 1]
         
         # Get action from current model
         if isinstance(current_model, RandomPlayer):
@@ -564,12 +570,13 @@ class AIGameGUI(SplendorGUI):
         else:
             action, _state = current_model.predict(self.obs, deterministic=False)
         
-        # Always log action
+        # Log action
         self.logger.info(f"\nPlayer {self.current_player} taking action: {action}")
         ActionLogger.log_selected_action(self.logger, action, self.verbose)
         
-        # Execute action directly on game
-        reward = current_player.do_action(self.game.board, action)
+        # Always use environment step for both players
+        self.obs, reward, done, _, info = self.env.step(action)
+        self.last_obs = self.obs  # Store observation for next update
         
         # Always log result
         self.logger.info(f"Action result: {reward}")
@@ -577,7 +584,7 @@ class AIGameGUI(SplendorGUI):
         # Detailed result if verbose
         if self.verbose and self.verbose_dict['player']:
             self.logger.info("Updated player state:")
-            current_player.print_status()
+            self.game.players[self.current_player - 1].print_status()
         
         # Switch current player
         self.current_player = 2 if self.current_player == 1 else 1
@@ -586,11 +593,12 @@ class AIGameGUI(SplendorGUI):
         self.update_observation()
         
         # Check for game end
-        done = False
         p1_vp = self.game.players[0].sum_victory_point
         p2_vp = self.game.players[1].sum_victory_point
-        if p1_vp >= 15 or p2_vp >= 15:
+        if not done and (p1_vp >= 15 or p2_vp >= 15):
             done = True
+            
+        if done:
             self.is_auto_playing = False
             winner = "Player 1" if p1_vp > p2_vp else "Player 2"
             self.logger.info(f"Game Won by {winner}! Starting new episode...")
@@ -599,10 +607,9 @@ class AIGameGUI(SplendorGUI):
                 if self.verbose_dict['game']:
                     self.game.print_status()
             
-            # Reset game
-            self.game.reset()
+            # Reset game through environment
+            self.obs = self.env.reset()[0]
             self.current_player = 1
-            self.update_observation()
         
         return done
 
