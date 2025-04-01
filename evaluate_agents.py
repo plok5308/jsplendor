@@ -10,32 +10,20 @@ from jsplendor.utils.config import get_verbose_dict
 from jsplendor.models.random_player import RandomPlayer
 from jsplendor.policy.masked_policy import MaskedActorCriticPolicy
 
-def evaluate_match(agent1, agent2, n_episodes=100, deterministic1=True, deterministic2=True, reserve_masking='both', verbose=False):
-    """Evaluate matches between two agents"""
-    # Set up verbose dict based on verbose flag
-    verbose_dict = get_verbose_dict()
-    if verbose:
-        verbose_dict['env'] = True
-        verbose_dict['game'] = True
-        verbose_dict['player'] = True
-        verbose_dict['board'] = True
-    
-    env = Monitor(SelfPlayEnv(
-        opponent_policy=lambda x: agent2.predict(x, deterministic=deterministic2)[0],
-        reserve_masking=reserve_masking,
-        verbose_dict=verbose_dict
-    ))
-    
+def evaluate_match(agent1, agent2, env, n_episodes=100, deterministic1=True, deterministic2=True):
+    """Evaluate matches between two agents using provided environment"""
     print("\nStarting evaluation...")
     print(f"Agent 1 deterministic: {deterministic1}")
     print(f"Agent 2 deterministic: {deterministic2}")
-    print(f"Verbose mode: {verbose}")
     
     wins1 = 0  # agent1 wins
     wins2 = 0  # agent2 wins
     draws = 0
     not_terminated = 0
     episode_lengths = []
+    
+    # Update environment's opponent policy
+    env.env.opponent_policy = lambda x: agent2.predict(x, deterministic=deterministic2)[0]
     
     for episode in range(n_episodes):
         obs, info = env.reset()
@@ -129,10 +117,6 @@ if __name__ == "__main__":
                        help='Enable verbose mode for detailed game information')
     args = parser.parse_args()
     
-
-        
-    
-    
     # Set up environment
     verbose_dict = get_verbose_dict()
     if args.verbose:
@@ -141,16 +125,19 @@ if __name__ == "__main__":
         verbose_dict['player'] = True
         verbose_dict['board'] = True
     
+    # Set up single environment
     env = Monitor(SelfPlayEnv(
-        opponent_policy=RandomPlayer(),
+        opponent_policy=RandomPlayer(),  # Will be updated later
         reserve_masking=args.reserve_masking,
-        verbose_dict=verbose_dict
+        verbose_dict=verbose_dict,
+        player_starts_first=True
     ))
     
+    # Load agents
     if args.model1_path is not None:
         model1 = create_model(env, 'linear')
         agent1 = model1.load(args.model1_path, env=env)
-        print(f"Agent 1: {args.model1_path.capitalize()} Model")
+        print(f"Agent 1: {args.model1_path}")
     else:
         agent1 = RandomPlayer()
         print("Agent 1: Random Player") 
@@ -158,11 +145,12 @@ if __name__ == "__main__":
     if args.model2_path is not None:
         model2 = create_model(env, 'linear')
         agent2 = model2.load(args.model2_path, env=env)
-        print(f"Agent 2: {args.model2_path.capitalize()} Model")
+        print(f"Agent 2: {args.model2_path}")
     else:
         agent2 = RandomPlayer()
         print("Agent 2: Random Player")
     
-    # Run evaluation
-    results = evaluate_match(agent1, agent2, args.n_episodes, args.deterministic1, args.deterministic2, args.reserve_masking, args.verbose)
+    # Run evaluation with single environment
+    results = evaluate_match(agent1, agent2, env, args.n_episodes, 
+                           args.deterministic1, args.deterministic2)
 

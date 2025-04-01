@@ -179,18 +179,7 @@ class SelfPlayEnv(gym.Env):
         if len(self.game.players) == 1:
             self.game.add_player("player2")
         
-        if self.reserve_masking == 'none':
-            self.game.players[0].set_reserve_masking(False)
-            self.game.players[1].set_reserve_masking(False)
-        elif self.reserve_masking == 'player':
-            self.game.players[0].set_reserve_masking(True)
-        elif self.reserve_masking == 'opponent':
-            self.game.players[1].set_reserve_masking(True)
-        elif self.reserve_masking == 'both':
-            self.game.players[0].reserve_masking = True
-            self.game.players[1].reserve_masking = True
-        else:
-            raise ValueError(f"Invalid reserve_masking: {reserve_masking}")
+
 
         if self.initial_player_starts_first is not None:
             self.player_starts_first = self.initial_player_starts_first
@@ -200,6 +189,19 @@ class SelfPlayEnv(gym.Env):
 
         player_idx = 0 if self.player_starts_first else 1
         
+        if self.reserve_masking == 'none':
+            self.game.players[0].set_reserve_masking(False)
+            self.game.players[1].set_reserve_masking(False)
+        elif self.reserve_masking == 'player':
+            self.game.players[player_idx].set_reserve_masking(True)
+        elif self.reserve_masking == 'opponent':
+            self.game.players[1 - player_idx].set_reserve_masking(True)
+        elif self.reserve_masking == 'both':
+            self.game.players[0].reserve_masking = True
+            self.game.players[1].reserve_masking = True
+        else:
+            raise ValueError(f"Invalid reserve_masking: {reserve_masking}")
+
         # If player goes second, let opponent make first move
         if not self.player_starts_first:
             opponent_obs = self.get_env_observation(0)  # Get observation for opponent

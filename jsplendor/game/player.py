@@ -204,6 +204,9 @@ class Player(GameComponent):
 
         self.check_player_coins()
 
+        if self.verbose:
+            self.logger.info(f"* Victory Points after action: {self.sum_victory_point}")
+
         return self.sum_victory_point, over_coin_count, get_card, noble_visit
 
     def get_all_possible_actions(self, board):
