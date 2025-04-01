@@ -12,7 +12,7 @@ from jsplendor.utils import TestLogger
 
 class SelfPlayEnv(gym.Env):
     """Two player environment with random starting positions"""
-    def __init__(self, opponent_policy=None, reserve_masking=None, verbose_dict=None):
+    def __init__(self, opponent_policy=None, reserve_masking=None, verbose_dict=None, player_starts_first=None):
         if verbose_dict is None:
             verbose_dict = get_verbose_dict()
         
@@ -51,6 +51,8 @@ class SelfPlayEnv(gym.Env):
         self.target_vp = 15
         self.max_step = 300
         self.previous_game = None
+        self.initial_player_starts_first = player_starts_first
+
 
     def get_action_mask(self, player_idx=0):
         """Get action mask for specified player"""
@@ -150,7 +152,13 @@ class SelfPlayEnv(gym.Env):
                 else:
                     reward = 0
 
-                info['winner'] = 'player' if player_vp > opponent_vp else 'opponent'
+                if reward == 1:
+                    info['winner'] = 'player'
+                elif reward == -1:
+                    info['winner'] = 'opponent'
+                else:
+                    info['winner'] = 'draw'
+                
                 info['reward'] = reward
                 info['steps'] = {  # Add steps info here too
                     "player0": self.game.players[0].step,
@@ -184,8 +192,11 @@ class SelfPlayEnv(gym.Env):
         else:
             raise ValueError(f"Invalid reserve_masking: {reserve_masking}")
 
-        # Randomly decide if trained agent starts first
-        self.player_starts_first = bool(np.random.randint(2))
+        if self.initial_player_starts_first is not None:
+            self.player_starts_first = self.initial_player_starts_first
+        else:
+            # Randomly decide if trained agent starts first
+            self.player_starts_first = bool(np.random.randint(2))
 
         player_idx = 0 if self.player_starts_first else 1
         

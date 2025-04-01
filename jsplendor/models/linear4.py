@@ -79,7 +79,7 @@ class LinearFeatureExtractor(BaseFeaturesExtractor):
     def __init__(self, observation_space: spaces.Box, features_dim: int = 256, action_num: int = 43):
         super().__init__(observation_space, features_dim)
         
-        print('Linear3 feature extractor initialized with:')
+        print('Linear4 feature extractor initialized with:')
         # Store dimensions
         self.full_dim = observation_space.shape[0]
         self.obs_dim = self.full_dim - action_num

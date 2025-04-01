@@ -112,14 +112,10 @@ def create_model(env, model_type='transformer'):
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description='Evaluate matches between JSplendor models')
-    parser.add_argument('--model1_path', type=str,
+    parser.add_argument('--model1_path', type=str, default=None,
                        help='Path to first model')
-    parser.add_argument('--model2_path', type=str,
+    parser.add_argument('--model2_path', type=str, default=None,
                        help='Path to second model')
-    parser.add_argument('--model1_type', type=str, choices=['linear', 'random'], 
-                       default='random', help='Type of first model')
-    parser.add_argument('--model2_type', type=str, choices=['linear', 'random'],
-                       default='random', help='Type of second model')
     parser.add_argument('--n_episodes', type=int, default=1,
                        help='Number of episodes to evaluate')
     parser.add_argument('--deterministic1', action='store_true',
@@ -133,11 +129,9 @@ if __name__ == "__main__":
                        help='Enable verbose mode for detailed game information')
     args = parser.parse_args()
     
-    # Validate arguments
-    if args.model1_type != 'random' and not args.model1_path:
-        parser.error("--model1_path is required when model1_type is not 'random'")
-    if args.model2_type != 'random' and not args.model2_path:
-        parser.error("--model2_path is required when model2_type is not 'random'")
+
+        
+    
     
     # Set up environment
     verbose_dict = get_verbose_dict()
@@ -153,25 +147,21 @@ if __name__ == "__main__":
         verbose_dict=verbose_dict
     ))
     
-    # Create/load first agent
-    if args.model1_type == 'random':
-        agent1 = RandomPlayer()
-        print("Agent 1: Random Player")
-    else:
-        model1 = create_model(env, args.model1_type)
-        print(f"Loading model 1 from {args.model1_path}...")
+    if args.model1_path is not None:
+        model1 = create_model(env, 'linear')
         agent1 = model1.load(args.model1_path, env=env)
-        print(f"Agent 1: {args.model1_type.capitalize()} Model")
-    
-    # Create/load second agent
-    if args.model2_type == 'random':
+        print(f"Agent 1: {args.model1_path.capitalize()} Model")
+    else:
+        agent1 = RandomPlayer()
+        print("Agent 1: Random Player") 
+
+    if args.model2_path is not None:
+        model2 = create_model(env, 'linear')
+        agent2 = model2.load(args.model2_path, env=env)
+        print(f"Agent 2: {args.model2_path.capitalize()} Model")
+    else:
         agent2 = RandomPlayer()
         print("Agent 2: Random Player")
-    else:
-        model2 = create_model(env, args.model2_type)
-        print(f"Loading model 2 from {args.model2_path}...")
-        agent2 = model2.load(args.model2_path, env=env)
-        print(f"Agent 2: {args.model2_type.capitalize()} Model")
     
     # Run evaluation
     results = evaluate_match(agent1, agent2, args.n_episodes, args.deterministic1, args.deterministic2, args.reserve_masking, args.verbose)

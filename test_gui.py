@@ -2,7 +2,7 @@ import pygame
 import argparse
 from copy import deepcopy
 from jsplendor.env import SelfPlayEnv
-from jsplendor.gui.game_gui import AIGameGUI
+from jsplendor.gui.game_gui import GameGUI
 from jsplendor.utils import TestLogger
 from stable_baselines3 import PPO
 from jsplendor.models.random_player import RandomPlayer
@@ -80,7 +80,8 @@ def main():
     env = Monitor(SelfPlayEnv(
         opponent_policy=RandomPlayer(),  # Temporary opponent, will be updated
         reserve_masking=args.reserve_masking,
-        verbose_dict=verbose_dict
+        verbose_dict=verbose_dict,
+        player_starts_first=True,
     ))
 
     # Create/load first agent
@@ -107,7 +108,7 @@ def main():
     env.env.opponent_policy = lambda x: agent2.predict(x, deterministic=args.deterministic2)[0]
 
     # Create GUI with both models and their paths, passing the environment
-    gui = AIGameGUI(agent1, agent2, logger, verbose_dict, env=env)
+    gui = GameGUI(agent1, agent2, logger, verbose_dict, env=env)
 
     # Run the GUI
     try:
@@ -118,5 +119,4 @@ def main():
         pygame.quit()
 
 if __name__ == "__main__":
-    assert False, "has a bug"
     main() 

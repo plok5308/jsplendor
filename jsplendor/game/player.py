@@ -202,27 +202,6 @@ class Player(GameComponent):
         # Remove general coin check since we now check after each specific action
         self._update_score()
 
-        # Logging at end of turn
-        if self.verbose:
-            self.logger.info("\nEnd of Turn Status:")
-            # Board State
-            self.logger.info("Board State:")
-            self.logger.info(f"Coins: {board.coins}")
-            self.logger.info("Cards:")
-            self.logger.info(f"Level 3: {[card.name if card else 'Empty' for card in board.table_level3]}")
-            self.logger.info(f"Level 2: {[card.name if card else 'Empty' for card in board.table_level2]}")
-            self.logger.info(f"Level 1: {[card.name if card else 'Empty' for card in board.table_level1]}")
-            self.logger.info(f"Nobles: {[card.name if card else 'Empty' for card in board.noble_cards]}")
-            self.logger.info("-"*25)
-            
-            # Player State
-            self.logger.info("Player State:")
-            self.logger.info(f"Coins: {self.coins}")
-            self.logger.info(f"Development cards: {[card.name for card in self.development_cards]}")
-            self.logger.info(f"Reserved cards: {[card.name for card in self.reserved_cards]}")
-            self.logger.info(f"Victory Points: {self.sum_victory_point}")
-            self.logger.info("="*50 + "\n")
-
         self.check_player_coins()
 
         return self.sum_victory_point, over_coin_count, get_card, noble_visit
