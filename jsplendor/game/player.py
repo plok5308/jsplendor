@@ -41,6 +41,7 @@ class Player(GameComponent):
         self.development_cards = []
         self.noble_cards = []
         self.reserved_cards = []
+        self.reserved_cards_count = 1
         self.sum_victory_point = 0
         self.step = 0
         self._update_score()
@@ -87,8 +88,8 @@ class Player(GameComponent):
         noble_visit = False
         spent_coins = None  # Initialize spent_coins variable
 
-        if self.verbose:
-            self.logger.info(f"Action: {action}")
+        reserve_card = False
+        reserve_full = False
 
         action_type, action_index = self._get_action_type_and_index(action)
         
@@ -189,7 +190,16 @@ class Player(GameComponent):
             self.reserve_development_card(board, action_index)
             over_coin_count = self.drop_over_coins(board)
             self._ensure_regular_integers()  # Ensure regular integers after reserve
+
+            self.reserved_cards_count -= 1
             
+            reserve_card = True
+            if len(self.reserved_cards) >= 3:
+                reserve_full = True
+            else:
+                reserve_full = False
+
+
             if self.verbose:
                 self.logger.info(f"Updated reserved cards: {[card.name for card in self.reserved_cards]}")
                 if len(self.reserved_cards) >= 3:
@@ -207,7 +217,7 @@ class Player(GameComponent):
         if self.verbose:
             self.logger.info(f"* Victory Points after action: {self.sum_victory_point}")
 
-        return self.sum_victory_point, over_coin_count, get_card, noble_visit
+        return self.sum_victory_point, over_coin_count, get_card, noble_visit, reserve_card, reserve_full
 
     def get_all_possible_actions(self, board):
         actions = np.zeros(self.num_actions)
@@ -243,7 +253,7 @@ class Player(GameComponent):
                     actions[i] = 1
 
         # Reserve card actions (30-41)
-        if self.reserve_masking:
+        if self.reserve_masking or self.reserved_cards_count == 0:
             pass
         else:
             for i in range(self.n_coin_action + self.n_buy_action + self.n_buy_reserved_card_action,

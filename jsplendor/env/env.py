@@ -76,7 +76,7 @@ class SelfPlayEnv(gym.Env):
 
         opponent_obs = self.get_env_observation(opponent_idx)
         opponent_action = self.opponent_policy(opponent_obs)
-        opponent_vp, _, _, _ = opponent_player.do_action(self.game.board, opponent_action)
+        opponent_vp, _, _, _, _, _ = opponent_player.do_action(self.game.board, opponent_action)
         return opponent_vp
 
     def step(self, action):
@@ -188,6 +188,13 @@ class SelfPlayEnv(gym.Env):
             self.player_starts_first = bool(np.random.randint(2))
 
         player_idx = 0 if self.player_starts_first else 1
+
+        if self.player_starts_first:
+            self.game.players[0].name = 'player'
+            self.game.players[1].name = 'opponent'
+        else:
+            self.game.players[0].name = 'opponent'
+            self.game.players[1].name = 'player'
         
         if self.reserve_masking == 'none':
             self.game.players[0].set_reserve_masking(False)
@@ -206,13 +213,6 @@ class SelfPlayEnv(gym.Env):
         if not self.player_starts_first:
             opponent_obs = self.get_env_observation(0)  # Get observation for opponent
             opponent_action = self.opponent_policy(opponent_obs)
-            
-            if self.verbose:
-                self.logger.info("\n" + "="*50)
-                self.logger.info("Opponent's First Move:")
-                self.logger.info(f"Selected action: {opponent_action}")
-                self.logger.info(f"Opponent coins: {self.game.players[0].coins}")
-                self.logger.info(f"Valid actions: {np.where(self.get_action_mask(0))[0]}")
             
             # Execute opponent's action
             self.game.players[0].do_action(self.game.board, opponent_action)
