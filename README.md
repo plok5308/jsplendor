@@ -2,6 +2,8 @@
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
+> **Note**: This is a temporary repository. The latest branch is `temporal_obs`.
+
 A strong AI implementation for the board game Splendor using PPO (Proximal Policy Optimization) with self-play training. This project implements a reinforcement learning agent that can play Splendor at a high level.
 
 If you find this repository helpful, please consider giving it a star ⭐! It helps make this project more visible to 
@@ -131,19 +133,6 @@ jsplendor/
 Training and evaluation results are stored in:
 - `logs/{experiment_name}/`
 
-## Citation
-
-If you use this code in your research, please cite:
-
-```bibtex
-@software{jsplendor2024github,
-  author = {Your Name},
-  title = {JSplendor: A Strong AI Implementation for the Splendor Board Game},
-  year = {2024},
-  publisher = {GitHub},
-  url = {https://github.com/yourusername/jsplendor}
-}
-```
 
 ## Contributing
 
