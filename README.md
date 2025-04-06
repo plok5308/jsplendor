@@ -25,31 +25,13 @@ pip install -r requirements.txt
 ### Training
 
 ```bash
-# Train with self-play
-python train_self_play.py --exp experiment_name
+./run_train.sh
 ```
 
 ### Evaluation
 
 ```bash
-# Evaluate models against each other
-python evaluate_agents.py \
-    --model1_path pretrained/model_gen_11.zip \
-    --model2_path pretrained/model_gen_12.zip \
-    --n_episodes 1 \
-    --verbose
-
-## GUI Game Play
-
-Watch AI agents play Splendor through an interactive graphical interface. Observe their decision-making process and control the game flow.
-
-![JSplendor GUI](./images/gui.png)
-
-### Running the GUI
-
-```bash
-# AI vs AI
-python test_gui.py --model1_path pretrained/model_gen_11.zip --model2_path pretrained/model_gen_11.zip
+./run_evaluate.sh
 ```
 
 ## Project Structure
