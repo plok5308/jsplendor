@@ -52,22 +52,27 @@ class Game:
         for name in player_names:
             self.add_player(name)
 
-        if self.verbose:
-            self.logger.info("Initial game status")
-            self.print_status()
+        #if self.verbose:
+        #    self.logger.info("Initial game status")
+        #    self.print_status()
 
         self.check_all_coins()
         self.check_all_cards()
 
     def add_player(self, name):
         """Add a new player to the game"""
+        # Create logger first if verbose is enabled
+        logger = None
+        if self.verbose_dict['player']:
+            logger = TestLogger.get_logger('logs/game')  # Use singleton logger
+        
         player = Player(
             name=name,
             development_cards=[],
             noble_cards=[],
             coins=get_empty_coin(),
             verbose=self.verbose_dict['player'],
-            logger=TestLogger.get_logger() if self.verbose_dict['player'] else None
+            logger=logger
         )
         self.players.append(player)
         return player
@@ -185,3 +190,28 @@ class Game:
         """Execute an action for the specified player"""
         result = self.players[player_idx].do_action(self.board, action)
         return result
+
+    def _check_coin_conservation(self):
+        """Check that total coins in the system remain constant"""
+        total_coins = {color: 0 for color in self.board.coins.keys()}
+        
+        # Add board coins
+        for color, count in self.board.coins.items():
+            total_coins[color] += count
+        
+        # Add player coins
+        for player in self.players:
+            for color, count in player.coins.items():
+                total_coins[color] += count
+        
+        # Check against initial amounts
+        initial_coins = {'WHITE': 4, 'BLUE': 4, 'GREEN': 4, 'RED': 4, 'BLACK': 4, 'GOLD': 5}
+        
+        if total_coins != initial_coins:
+            if self.verbose:
+                self.logger.error("Coin conservation violated!")
+                self.logger.error(f"Expected coins: {initial_coins}")
+                self.logger.error(f"Actual coins: {total_coins}")
+                self.logger.error("Board coins: {self.board.coins}")
+                for i, player in enumerate(self.players):
+                    self.logger.error(f"Player {i} coins: {player.coins}")

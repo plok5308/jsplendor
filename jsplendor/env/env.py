@@ -9,9 +9,10 @@ from jsplendor.env.observation import get_observation_space, get_observation, HI
 from jsplendor.utils.config import get_verbose_dict
 from jsplendor.utils import TestLogger
 
+
 class SelfPlayEnv(gym.Env):
     """Two player environment with random starting positions"""
-    def __init__(self, opponent_policy=None, verbose_dict=None):
+    def __init__(self, opponent_policy=None, reserve_masking=None, verbose_dict=None, player_starts_first=None):
         if verbose_dict is None:
             verbose_dict = get_verbose_dict()
         
@@ -31,6 +32,8 @@ class SelfPlayEnv(gym.Env):
         
         # Verify both players are initialized
         assert len(self.game.players) == 2, "Game must have exactly 2 players"
+
+        self.reserve_masking = reserve_masking
                 
         # Action and observation spaces
         action_n = self.game.players[0].num_actions
@@ -46,7 +49,10 @@ class SelfPlayEnv(gym.Env):
 
         # Parameters
         self.target_vp = 15
-        self.max_step = 300
+        self.max_step = 100
+        self.previous_game = None
+        self.initial_player_starts_first = player_starts_first
+
 
     def get_action_mask(self, player_idx=0):
         """Get action mask for specified player"""
@@ -55,8 +61,8 @@ class SelfPlayEnv(gym.Env):
     def get_env_observation(self, player_idx=0):
         """Get environment observation from specified player's perspective, including action mask"""
         # Get observation containing both players' states
-        obs = get_observation(self.game, player_idx)
-        
+        obs = get_observation(self.previous_game, self.game, player_idx)
+
         # Get action mask for current player
         action_mask = self.get_action_mask(player_idx)
         
@@ -70,27 +76,18 @@ class SelfPlayEnv(gym.Env):
 
         opponent_obs = self.get_env_observation(opponent_idx)
         opponent_action = self.opponent_policy(opponent_obs)
-        opponent_vp, _, _, _ = opponent_player.do_action(self.game.board, opponent_action)
+        opponent_vp, _, _, _, _, _ = opponent_player.do_action(self.game.board, opponent_action)
         return opponent_vp
 
     def step(self, action):
+        self.previous_game = deepcopy(self.game)
+
         # Execute learning player's action
         player_idx = 0 if self.player_starts_first else 1
         opponent_idx = 1 - player_idx
         current_player = self.game.players[player_idx]
         opponent_player = self.game.players[opponent_idx]
             
-        # Log current state
-        if self.verbose:
-            self.logger.info("\n" + "="*50)
-            self.logger.info(f"Steps - Player 0: {self.game.players[0].step}, Player 1: {self.game.players[1].step}")
-            self.logger.info(f"Current Player: {player_idx}")
-            self.logger.info("Player Action:")
-            self.logger.info(f"Selected action: {action}")
-            self.logger.info(f"Player coins: {current_player.coins}")
-            self.logger.info(f"Player cards: {[card.name for card in current_player.development_cards]}")
-            self.logger.info(f"Player VP: {current_player.sum_victory_point}")
-
         # Execute player's action
         action_result = current_player.do_action(self.game.board, action)
 
@@ -155,7 +152,13 @@ class SelfPlayEnv(gym.Env):
                 else:
                     reward = 0
 
-                info['winner'] = 'player' if player_vp > opponent_vp else 'opponent'
+                if reward == 1:
+                    info['winner'] = 'player'
+                elif reward == -1:
+                    info['winner'] = 'opponent'
+                else:
+                    info['winner'] = 'draw'
+                
                 info['reward'] = reward
                 info['steps'] = {  # Add steps info here too
                     "player0": self.game.players[0].step,
@@ -176,22 +179,40 @@ class SelfPlayEnv(gym.Env):
         if len(self.game.players) == 1:
             self.game.add_player("player2")
         
-        # Randomly decide if trained agent starts first
-        self.player_starts_first = bool(np.random.randint(2))
+
+
+        if self.initial_player_starts_first is not None:
+            self.player_starts_first = self.initial_player_starts_first
+        else:
+            # Randomly decide if trained agent starts first
+            self.player_starts_first = bool(np.random.randint(2))
 
         player_idx = 0 if self.player_starts_first else 1
+
+        if self.player_starts_first:
+            self.game.players[0].name = 'player'
+            self.game.players[1].name = 'opponent'
+        else:
+            self.game.players[0].name = 'opponent'
+            self.game.players[1].name = 'player'
         
+        if self.reserve_masking == 'none':
+            self.game.players[0].set_reserve_masking(False)
+            self.game.players[1].set_reserve_masking(False)
+        elif self.reserve_masking == 'player':
+            self.game.players[player_idx].set_reserve_masking(True)
+        elif self.reserve_masking == 'opponent':
+            self.game.players[1 - player_idx].set_reserve_masking(True)
+        elif self.reserve_masking == 'both':
+            self.game.players[0].reserve_masking = True
+            self.game.players[1].reserve_masking = True
+        else:
+            raise ValueError(f"Invalid reserve_masking: {reserve_masking}")
+
         # If player goes second, let opponent make first move
         if not self.player_starts_first:
             opponent_obs = self.get_env_observation(0)  # Get observation for opponent
             opponent_action = self.opponent_policy(opponent_obs)
-            
-            if self.verbose:
-                self.logger.info("\n" + "="*50)
-                self.logger.info("Opponent's First Move:")
-                self.logger.info(f"Selected action: {opponent_action}")
-                self.logger.info(f"Opponent coins: {self.game.players[0].coins}")
-                self.logger.info(f"Valid actions: {np.where(self.get_action_mask(0))[0]}")
             
             # Execute opponent's action
             self.game.players[0].do_action(self.game.board, opponent_action)
@@ -213,6 +234,7 @@ class SelfPlayEnv(gym.Env):
             self.logger.info(f"Steps - Player 0: {self.game.players[0].step}, Player 1: {self.game.players[1].step}")
             self.logger.info("="*50)
         
+        self.previous_game = None
         return observation, info
 
     def render(self):
@@ -220,21 +242,3 @@ class SelfPlayEnv(gym.Env):
 
     def close(self):
         pass 
-
-
-class StepRewardWrapper(gym.Wrapper):
-    """Wrapper that adds step-based reward while preserving original rewards"""
-    def __init__(self, env):
-        super().__init__(env)
-        
-    def step(self, action):
-        obs, reward, terminated, truncated, info = self.env.step(action)
-        
-        # Add step-based reward only when winning
-        if terminated and info.get('winner') == 'player':
-            player_steps = info['steps']['player0'] if self.env.player_starts_first else info['steps']['player1']
-            step_reward = 100 - player_steps
-            reward = reward + step_reward  # Add to original reward
-            info['step_reward'] = step_reward
-            
-        return obs, reward, terminated, truncated, info

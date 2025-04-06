@@ -4,16 +4,18 @@ import numpy as np
 from gymnasium import spaces
 from stable_baselines3.common.torch_layers import BaseFeaturesExtractor
 
+
 class LinearFeatureExtractor(BaseFeaturesExtractor):
     """Simple linear feature extractor with skip connection"""
     
-    def __init__(self, observation_space: spaces.Box, features_dim: int = 256):
+    def __init__(self, observation_space: spaces.Box, features_dim: int = 256, action_num: int = 43):
         # Initialize with observation space and features dimension
         super().__init__(observation_space, features_dim)
         
+        print('Linear2 feature extractor initialized with:')
         # Store dimensions
         self.full_dim = observation_space.shape[0]
-        self.obs_dim = self.full_dim - 27  # Remove action mask size
+        self.obs_dim = self.full_dim - action_num  # Remove action mask size
         
         # First layer
         self.linear1 = nn.Linear(self.obs_dim, 256)  # Wider first layer

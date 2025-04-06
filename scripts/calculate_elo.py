@@ -7,6 +7,7 @@ from tqdm import tqdm
 from jsplendor.env import SelfPlayEnv
 from jsplendor.utils.config import get_verbose_dict
 from jsplendor.models.random_player import RandomPlayer
+from stable_baselines3.common.monitor import Monitor
 
 class EloPlayer:
     def __init__(self, name, model=None, initial_elo=1200):
@@ -31,11 +32,12 @@ def update_elo(rating1, rating2, score, k=32):
     new_rating2 = rating2 + k * ((1 - score) - (1 - expected))
     return new_rating1, new_rating2
 
-def evaluate_match(player1, player2, n_games=100, deterministic=False):
+def evaluate_match(player1, player2, n_games=100, deterministic=False, reserve_masking='both'):
     """Evaluate a match between two players"""
     env = SelfPlayEnv(
         opponent_policy=lambda x: player2.predict(x, deterministic=deterministic)[0],
-        verbose_dict=get_verbose_dict()
+        verbose_dict=get_verbose_dict(),
+        reserve_masking=reserve_masking
     )
     
     wins1 = 0  # player1 wins
@@ -77,7 +79,12 @@ def evaluate_match(player1, player2, n_games=100, deterministic=False):
     print(f"Draws: {draws} ({draws/n_games:.1%})")
     print(f"Not terminated: {not_terminated} ({not_terminated/n_games:.1%})")
     
-    return win_rate
+    return {
+        'win_rate1': wins1/n_games,
+        'win_rate2': wins2/n_games,
+        'draws': draws/n_games,
+        'not_terminated': not_terminated/n_games
+    }
 
 def load_models(model_dir):
     """Load both transformer and linear models"""
@@ -92,7 +99,7 @@ def load_models(model_dir):
     
     return players
 
-def calculate_elo_ratings(model_dir, n_games=20, deterministic=False):
+def calculate_elo_ratings(model_dir, n_games=20, deterministic=False, reserve_masking='both'):
     """Calculate Elo ratings for all models"""
     # Load all models
     players = load_models(model_dir)
@@ -108,6 +115,7 @@ def calculate_elo_ratings(model_dir, n_games=20, deterministic=False):
     print(f"Total games to play: {total_matches * n_games}")
     print(f"Random player starting Elo: {players[0].elo}")
     print(f"Using deterministic actions: {deterministic}")
+    print(f"Reserve masking: {reserve_masking}")
     print("\nStarting matches...")
     
     match_count = 0
@@ -118,9 +126,9 @@ def calculate_elo_ratings(model_dir, n_games=20, deterministic=False):
             print(f"Current Elo - {players[i].name}: {players[i].elo:.1f}, {players[j].name}: {players[j].elo:.1f}")
             
             # Play match both ways (each player gets to go first)
-            score1 = evaluate_match(players[i], players[j], n_games//2, deterministic)
-            score2 = evaluate_match(players[j], players[i], n_games//2, deterministic)
-            avg_score = (score1 + (1 - score2)) / 2
+            results1 = evaluate_match(players[i], players[j], n_games//2, deterministic, reserve_masking)
+            results2 = evaluate_match(players[j], players[i], n_games//2, deterministic, reserve_masking)
+            avg_score = (results1['win_rate1'] + (1 - results2['win_rate1'])) / 2
             
             # Update Elo ratings
             old_elo_i, old_elo_j = players[i].elo, players[j].elo
@@ -144,14 +152,26 @@ def calculate_elo_ratings(model_dir, n_games=20, deterministic=False):
     
     return players
 
-if __name__ == "__main__":
-    parser = argparse.ArgumentParser(description='Calculate Elo ratings for JSplendor models')
-    parser.add_argument('--model_dir', type=str, default='pretrained/linear2',
-                       help='Directory containing models')
-    parser.add_argument('--n_games', type=int, default=200,
+def main():
+    parser = argparse.ArgumentParser()
+    parser.add_argument('--model_dir', type=str, required=True,
+                       help='Directory containing model checkpoints')
+    parser.add_argument('--n_games', type=int, default=100,
                        help='Number of games to play per match')
     parser.add_argument('--deterministic', action='store_true',
-                       help='Use deterministic actions instead of stochastic')
+                       help='Use deterministic actions')
+    parser.add_argument('--reserve_masking', choices=['none', 'player', 'opponent', 'both'],
+                       default='both', help='Type of masking to use for reserved cards')
+    
     args = parser.parse_args()
     
-    players = calculate_elo_ratings(args.model_dir, args.n_games, args.deterministic) 
+    # Calculate Elo ratings for all models in directory
+    players = calculate_elo_ratings(
+        args.model_dir, 
+        args.n_games, 
+        args.deterministic,
+        args.reserve_masking
+    )
+
+if __name__ == "__main__":
+    main() 

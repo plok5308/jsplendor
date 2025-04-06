@@ -6,30 +6,21 @@ import numpy as np
 from jsplendor.utils.config import Element, get_coin_comb
 from .base_logger import BaseLogger
 
-class StreamToLogger:
-    """
-    Custom stream object that redirects stdout to both console and log file
-    """
-    def __init__(self, logger, original_stdout):
-        self.logger = logger
-        self.original_stdout = original_stdout
-
-    def write(self, buf):
-        # Write to original stdout (console)
-        self.original_stdout.write(buf)
-        # Write to log file
-        for line in buf.rstrip().splitlines():
-            if line.strip():  # Only log non-empty lines
-                self.logger.info(line.rstrip())
-
-    def flush(self):
-        self.original_stdout.flush()
 
 class TestLogger(BaseLogger):
-    def __init__(self, log_dir, verbose=False):
+    _instance = None
+    
+    @classmethod
+    def get_logger(cls, log_dir='logs/game'):
+        if cls._instance is None:
+            cls._instance = cls(log_dir)
+        return cls._instance
+
+    def __init__(self, log_dir, verbose=True):
         self.verbose = verbose
         self._setup_logger(log_dir)
         self.log_dir = log_dir
+        print(f"Log file created at: {self.log_file}")
 
     def _setup_logger(self, log_dir):
         # Create logs directory if it doesn't exist
@@ -54,7 +45,7 @@ class TestLogger(BaseLogger):
         file_handler.setFormatter(file_formatter)
         self.logger.addHandler(file_handler)
 
-        # Always add console handler for statistics
+        # Console handler
         console_handler = logging.StreamHandler(sys.stdout)
         console_formatter = logging.Formatter('[%(levelname)s] %(message)s')
         console_handler.setFormatter(console_formatter)
@@ -124,60 +115,3 @@ class TestLogger(BaseLogger):
         # Restore original stdout when logger is destroyed
         # sys.stdout = self.original_stdout
         pass
-
-class ActionLogger(BaseLogger):
-    @staticmethod
-    def log_action_probabilities(logger, env, action_probs, verbose=True):
-        """Log available actions and their probabilities"""
-        if not verbose:
-            return
-            
-        valid_actions = np.where(env.get_action_mask())[0]
-        logger.info("-" * 30)
-        logger.info("Available actions:")
-        
-        # Create list of (action, prob, desc) tuples for sorting
-        action_info = []
-        
-        # Get sum of probabilities for valid actions only
-        valid_probs = action_probs[valid_actions]
-        normalization_factor = valid_probs.sum()
-        
-        # Normalize probabilities to sum to 100%
-        normalized_probs = valid_probs / normalization_factor * 100
-        
-        for i, valid_action in enumerate(valid_actions):
-            prob = normalized_probs[i]
-            
-            if valid_action < 10:  # Original coin collection actions (0-9)
-                coin_ids = get_coin_comb(valid_action)
-                coins = [Element(ids).name for ids in coin_ids]
-                desc = f"Get coins: {', '.join(coins)}"
-            elif valid_action < 15:  # Double coin actions (10-14)
-                color = Element(valid_action - 10).name
-                desc = f"Get two {color} coins"
-            else:  # Buy card actions (15-26)
-                card_pos = valid_action - 15
-                card = env.game.board.flatten_table_cards[card_pos]
-                if card:
-                    desc = f"Buy {card.name} (Level: {card.level}, VP: {card.victory_point}, Color: {card.gem_color})"
-                else:
-                    desc = "Buy card (empty slot)"
-            action_info.append((valid_action, prob, desc))
-        
-        # Sort by action number in ascending order
-        action_info.sort(key=lambda x: x[0])
-        
-        # Log all actions
-        for action, prob, desc in action_info:
-            logger.info(f"  Action {action}: {desc} ({prob:.1f}%)")
-        
-        # Log probability summary
-        logger.info("-" * 30)
-        logger.info(f"Total probability: 100.0%")
-
-    @staticmethod
-    def log_selected_action(logger, action, verbose=True):
-        """Log the selected action"""
-        if verbose:
-            logger.info(f"Selected: Action {action}") 

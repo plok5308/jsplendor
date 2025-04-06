@@ -1,1 +1,6 @@
-python train_self_play.py --exp exp_name --num_cpu 1
+
+# first phase (train model with both masking)
+python train_self_play.py --reserve_masking both
+
+# second phase (train model with opponent masking)
+#python train_self_play.py --reserve_masking opponent --load_model {model_path}
