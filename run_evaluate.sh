@@ -1,6 +1,15 @@
+# play 100 games
 python evaluate_agents.py \
-    --model1_path ./logs/allow_reserve_player/best_models/model_gen_1_last.zip \
-    --model2_path ./logs/linear4/best_models/model_gen_11.zip \
-    --reserve_masking opponent \
-    --n_episodes 1 \
-    --verbose \
+    --player_model_path ./pretrained/hard_11_no_reserve.zip \
+    --opponent_model_path ./pretrained/medium_reserve_once.zip \
+    --reserve_masking player \
+    --n_episodes 100 \
+
+# # play single game with logs
+# python evaluate_agents.py \
+#     --player_model_path ./pretrained/hard_11_no_reserve.zip \
+#     --opponent_model_path ./pretrained/medium_reserve_once.zip \
+#     --reserve_masking player \
+#     --n_episodes 1 \
+#     --verbose \
+

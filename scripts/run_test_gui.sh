@@ -1,6 +1,6 @@
 python test_gui.py \
-    --model1_type linear \
-    --model1_path ./logs/allow_reserve_opponent/best_models/model_gen_1_last.zip \
-    --model2_type linear \
-    --model2_path ./logs/allow_reserve_opponent/best_models/model_gen_1_last.zip \
-    --reserve_masking player
+    --player_model_type linear \
+    --player_model_path ./pretrained/hard_11_no_reserve.zip \
+    --opponent_model_type linear \
+    --opponent_model_path ./pretrained/medium_reserve_once.zip \
+    --reserve_masking opponent

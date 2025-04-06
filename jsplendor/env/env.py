@@ -49,7 +49,7 @@ class SelfPlayEnv(gym.Env):
 
         # Parameters
         self.target_vp = 15
-        self.max_step = 300
+        self.max_step = 100
         self.previous_game = None
         self.initial_player_starts_first = player_starts_first
 

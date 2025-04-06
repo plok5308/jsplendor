@@ -41,18 +41,18 @@ def create_model(env, model_type='transformer'):
 
 def main():
     parser = argparse.ArgumentParser(description='Run JSplendor GUI with two AI agents')
-    parser.add_argument('--model1_path', type=str,
-                       help='Path to first model')
-    parser.add_argument('--model2_path', type=str,
-                       help='Path to second model')
-    parser.add_argument('--model1_type', type=str, choices=['linear', 'random'], 
-                       default='random', help='Type of first model')
-    parser.add_argument('--model2_type', type=str, choices=['linear', 'random'],
-                       default='random', help='Type of second model')
+    parser.add_argument('--player_model_path', type=str, default=None,
+                       help='Path to player model')
+    parser.add_argument('--opponent_model_path', type=str, default=None,
+                       help='Path to opponent model')
+    parser.add_argument('--player_model_type', type=str, choices=['linear', 'random'], 
+                       default='random', help='Type of player model')
+    parser.add_argument('--opponent_model_type', type=str, choices=['linear', 'random'],
+                       default='random', help='Type of opponent model')
     parser.add_argument('--deterministic1', action='store_true',
-                       help='Use deterministic actions for first model')
+                       help='Use deterministic actions for player model')
     parser.add_argument('--deterministic2', action='store_true',
-                       help='Use deterministic actions for second model')
+                       help='Use deterministic actions for opponent model')
     parser.add_argument('--log_dir', type=str, default='logs/gui_test',
                        help='Directory for logging')
     parser.add_argument('--reserve_masking', choices=['none', 'player', 'opponent', 'both'], default='none',
@@ -61,10 +61,10 @@ def main():
     args = parser.parse_args()
 
     # Validate arguments
-    if args.model1_type != 'random' and not args.model1_path:
-        parser.error("--model1_path is required when model1_type is not 'random'")
-    if args.model2_type != 'random' and not args.model2_path:
-        parser.error("--model2_path is required when model2_type is not 'random'")
+    if args.player_model_type != 'random' and not args.player_model_path:
+        parser.error("--player_model_path is required when player_model_type is not 'random'")
+    if args.opponent_model_type != 'random' and not args.opponent_model_path:
+        parser.error("--opponent_model_path is required when opponent_model_type is not 'random'")
 
     # Set all verbose settings to True
     verbose_dict = get_verbose_dict()
@@ -85,24 +85,24 @@ def main():
     ))
 
     # Create/load first agent
-    if args.model1_type == 'random':
+    if args.player_model_type == 'random':
         agent1 = RandomPlayer()
         print("Agent 1: Random Player")
     else:
-        model1 = create_model(env, args.model1_type)
-        print(f"Loading model 1 from {args.model1_path}...")
-        agent1 = model1.load(args.model1_path, env=env)
-        print(f"Agent 1: {args.model1_type.capitalize()} Model")
+        model1 = create_model(env, args.player_model_type)
+        print(f"Loading player model from {args.player_model_path}...")
+        agent1 = model1.load(args.player_model_path, env=env)
+        print(f"Agent 1: {args.player_model_type.capitalize()} Model")
 
     # Create/load second agent
-    if args.model2_type == 'random':
+    if args.opponent_model_type == 'random':
         agent2 = RandomPlayer()
         print("Agent 2: Random Player")
     else:
-        model2 = create_model(env, args.model2_type)
-        print(f"Loading model 2 from {args.model2_path}...")
-        agent2 = model2.load(args.model2_path, env=env)
-        print(f"Agent 2: {args.model2_type.capitalize()} Model")
+        model2 = create_model(env, args.opponent_model_type)
+        print(f"Loading opponent model from {args.opponent_model_path}...")
+        agent2 = model2.load(args.opponent_model_path, env=env)
+        print(f"Agent 2: {args.opponent_model_type.capitalize()} Model")
 
     # Update environment with actual opponent
     env.env.opponent_policy = lambda x: agent2.predict(x, deterministic=args.deterministic2)[0]

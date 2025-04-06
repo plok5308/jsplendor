@@ -149,7 +149,6 @@ if __name__ == "__main__":
         opponent_policy=RandomPlayer(),  # Will be updated later
         reserve_masking=args.reserve_masking,
         verbose_dict=verbose_dict,
-        #player_starts_first=True
     ))
     
     # Load agents
